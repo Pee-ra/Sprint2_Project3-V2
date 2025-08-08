@@ -1,9 +1,15 @@
 import React from 'react'
+import { Button } from '../components/ui/button';
 
-const login = () => {
+
+const Login = () => {
   return (
-    <div>login</div>
+    <div> 
+      <Button>buy</Button> 
+    </div>
+    
   )
 }
 
-export default login
+
+export default Login
