@@ -18,31 +18,31 @@ const Navber = () => {
         <NavigationMenuList>
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
-              <Link to="/">Home</Link>
+              <Link to="/home">Home</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
-              <Link to="/pricing">Pricing</Link>
+              <Link to="/home/pricing">Pricing</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
-              <Link to="/tracking">Tracking</Link>
+              <Link to="/home/tracking">Tracking</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
-              <Link to="/bookService">Book Service</Link>
+              <Link to="/home/bookService">Book Service</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuLink asChild>
-            <Link to="/myOder">My Oder</Link>
+            <Link to="/home/myOder">My Oder</Link>
           </NavigationMenuLink>
           <NavigationMenuItem>
             <NavigationMenuTrigger>
               <NavigationMenuLink asChild>
-                <Link to="/profile">Profile</Link>
+                <Link to="/home/profile">Profile</Link>
               </NavigationMenuLink>
             </NavigationMenuTrigger>
             <NavigationMenuContent>

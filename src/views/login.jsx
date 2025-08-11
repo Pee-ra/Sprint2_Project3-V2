@@ -4,19 +4,31 @@ import { TbCheckbox, TbLockPassword } from "react-icons/tb";
 import { Input, InputWithLabel } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Checkbox } from "../components/ui/checkbox";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+
 const Login = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    email === "admini@gmail.com" && password === "12345"
+      ? navigate("/home")
+      : alert("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
+  };
+
   return (
     <div className="bg-gray-50 font-sans min-h-screen flex items-center justify-center p-6">
       <div className="bg-white w-full max-w-6xl flex shadow-lg rounded-xl overflow-hidden items-center justify-center">
         {/* left content */}
         <div className=" items-center justify-center p-6 flex-1/2">
-          <a
-            href="/"
-            className="text-xs  flex items-center mb-4 gap-2"
-          >
+          <Link to="/" className="text-xs  flex items-center mb-4 gap-2">
             <AiOutlineArrowLeft />
             กลับหน้าแรก
-          </a>
+          </Link>
           <p className=" text-2xl font-bold py-4">Whale wash ยินดีต้อนรับ</p>
           <p className="text-sm py-2">
             เข้าสู่ระบบเพื่อจัดการบริการซักรีดของคุณอย่างง่ายดาย
@@ -46,18 +58,22 @@ const Login = () => {
             <h1 className="text-xl font-semibold mb-2 flex justify-center">
               เข้าสู่ระบบ
             </h1>
-            <form>
+            <form onSubmit={handleLogin}>
               <InputWithLabel
                 label="อีเมล"
                 placeholder="you@example.com"
                 type="email"
                 icon={<HiOutlineMail />}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <br />
               <InputWithLabel
                 label="รหัสผ่าน"
                 type="password"
                 icon={<TbLockPassword />}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <div className=" flex justify-between py-3">
                 <div className="flex gap-1">
