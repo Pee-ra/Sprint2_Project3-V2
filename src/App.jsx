@@ -2,6 +2,11 @@ import React from 'react'
 import Navber from './components/Navber'
 import Profile from './views/Profile';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Home from './views/Home';
+import Pricing from './views/Pricing';
+import Tracking from './views/Tracking';
+import BookService from './views/BookService';
+import MyOrder from './views/MyOrder';
 
 const router = createBrowserRouter([
   {
@@ -12,9 +17,29 @@ const router = createBrowserRouter([
   </div>),
   children : [
       {
+        path : "/",
+        element : <Home/>
+      },
+      {
+        path : "pricing",
+        element : <Pricing/>
+      },
+      {
+        path : "tracking",
+        element : <Tracking/>
+      },
+      {
+        path : "bookService",
+        element : <BookService/>
+      },
+      {
+        path : "myOder",
+        element : <MyOrder/>
+      },
+      {
         path : "profile",
-        element : <Profile/>,
-      }
+        element : <Profile/>
+      },
     ],
   },
 ]);

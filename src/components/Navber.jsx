@@ -9,27 +9,48 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
+import { Link } from "react-router-dom";
+
+
 
 const Navber = () => {
   return (
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuLink>Home</NavigationMenuLink>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink>Login</NavigationMenuLink>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink>Book a service</NavigationMenuLink>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink>My order</NavigationMenuLink>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink>
-            <Link href="profile">Profile</Link>
+          <NavigationMenuLink asChild>
+            <Link href="/">Home</Link>
           </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild>
+            <Link href="/pricing">Pricing</Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild>
+            <Link href="/tracking">Tracking</Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild>
+            <Link href="/bookService">Book Service</Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuLink asChild>
+          <Link href="/myOder">My Oder</Link>
+        </NavigationMenuLink>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>
+            <NavigationMenuLink asChild>
+              <Link href="/profile">Profile</Link>
+            </NavigationMenuLink>
+          </NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <NavigationMenuLink>Link</NavigationMenuLink>
+            <NavigationMenuLink>Link</NavigationMenuLink>
+            <NavigationMenuLink>Link</NavigationMenuLink>
+          </NavigationMenuContent>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
