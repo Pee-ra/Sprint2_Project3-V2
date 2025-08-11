@@ -9,51 +9,54 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
-import { Link } from "react-router-dom";
-
-
+import { Link, Outlet } from "react-router-dom";
 
 const Navber = () => {
   return (
-    <NavigationMenu>
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuLink asChild>
-            <Link href="/">Home</Link>
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink asChild>
-            <Link href="/pricing">Pricing</Link>
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink asChild>
-            <Link href="/tracking">Tracking</Link>
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink asChild>
-            <Link href="/bookService">Book Service</Link>
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-        <NavigationMenuLink asChild>
-          <Link href="/myOder">My Oder</Link>
-        </NavigationMenuLink>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>
+    <div>
+      <NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem>
             <NavigationMenuLink asChild>
-              <Link href="/profile">Profile</Link>
+              <Link to="/">Home</Link>
             </NavigationMenuLink>
-          </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <NavigationMenuLink>Link</NavigationMenuLink>
-            <NavigationMenuLink>Link</NavigationMenuLink>
-            <NavigationMenuLink>Link</NavigationMenuLink>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild>
+              <Link to="/pricing">Pricing</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild>
+              <Link to="/tracking">Tracking</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild>
+              <Link to="/bookService">Book Service</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuLink asChild>
+            <Link to="/myOder">My Oder</Link>
+          </NavigationMenuLink>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>
+              <NavigationMenuLink asChild>
+                <Link to="/profile">Profile</Link>
+              </NavigationMenuLink>
+            </NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <NavigationMenuLink>Link</NavigationMenuLink>
+              <NavigationMenuLink>Link</NavigationMenuLink>
+              <NavigationMenuLink>Link</NavigationMenuLink>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+      <div className="p-6 w-full max-w-6xl">
+        <Outlet />
+      </div>
+    </div>
   );
 };
 
