@@ -1,6 +1,9 @@
 const Login = () => {
   return (
-    <div>login</div>
+    <div> 
+      <Button>buy</Button> 
+    </div>
+    
   )
 }
 
