@@ -6,7 +6,7 @@ import Login from './views/login';
 const App = () => {
   return (
     <div>
-      <Login/>
+      App
     </div>
   )
 }
