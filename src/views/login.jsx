@@ -22,7 +22,7 @@ const Login = () => {
 
   return (
     <div className="bg-gray-50 font-sans min-h-screen flex items-center justify-center p-6">
-      <div className="bg-white w-full max-w-6xl flex shadow-lg rounded-xl overflow-hidden items-center justify-center">
+      <div className="bg-white w-full max-w-5xl flex shadow-lg rounded-xl overflow-hidden items-center justify-center p-6">
         {/* left content */}
         <div className=" items-center justify-center p-6 flex-1/2">
           <Link to="/" className="text-xs  flex items-center mb-4 gap-2">
@@ -34,7 +34,7 @@ const Login = () => {
             เข้าสู่ระบบเพื่อจัดการบริการซักรีดของคุณอย่างง่ายดาย
           </p>
           <img
-            className="bg-gray-100 p-4 rounded-md w-fit h-auto"
+            className="bg-gray-100 p-4 rounded-md w-120 h-80"
             src="https://i.pinimg.com/736x/b3/12/7d/b3127d1ccb49bb2a2967e1274ec6b1a4.jpg"
             alt="washing machine"
           />
@@ -88,7 +88,7 @@ const Login = () => {
               <p className="text-xs py-2 flex justify-center">
                 ยังไม่มีบัญชี?
                 <span className="text-emerald-500 mx-2">
-                  <a href="">สมัครสมาชิก</a>
+                  <Link to="/register">สมัครสมาชิก</Link>
                 </span>
               </p>
             </form>
