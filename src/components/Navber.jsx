@@ -13,9 +13,10 @@ import { Link, Outlet } from "react-router-dom";
 
 const Navber = () => {
   return (
-    <div>
-      <div>
-        <img src="/src/image/Whale wash1.png" alt="" className="" />
+    <div className="flex justify-between p-3">
+      <div className="flex flex-row gap-3">
+        <img src="/src/image/Whale wash1.png" alt="" className=" rounded-4xl max-w-10 max-h-10" />
+        <h1>WhaleWash</h1>
       </div>
       <div>
       <NavigationMenu>
