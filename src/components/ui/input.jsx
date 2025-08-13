@@ -1,12 +1,8 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-function Input({
-  className,
-  type,
-  ...props
-}) {
+function Input({ className, type, ...props }) {
   return (
     <input
       type={type}
@@ -17,8 +13,21 @@ function Input({
         "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
         className
       )}
-      {...props} />
+      {...props}
+    />
   );
 }
 
-export { Input }
+function InputWithLabel({ id, label, placeholder, type = "text", icon, ...props }) {
+  return (
+    <div className="grid w-full max-w-sm items-center gap-3">
+      <label htmlFor={id} className="flex items-center gap-2 cursor-pointer">
+        {icon && <span className="text-gray-600">{icon}</span>}
+        <span>{label}</span>
+      </label>
+      <Input type={type} id={id} placeholder={placeholder} {...props} />
+    </div>
+  );
+}
+
+export { Input, InputWithLabel };
