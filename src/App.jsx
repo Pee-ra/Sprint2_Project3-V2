@@ -8,7 +8,7 @@ import BookService from "./views/BookService";
 import MyOrder from "./views/MyOrder";
 import Login from "./views/login";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import LandingPage from "./views/landingPage";
+import LandingPage from "./views/LandingPage";
 
 
 const router = createBrowserRouter([
