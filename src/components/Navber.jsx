@@ -14,6 +14,10 @@ import { Link, Outlet } from "react-router-dom";
 const Navber = () => {
   return (
     <div>
+      <div>
+        <img src="/src/image/Whale wash1.png" alt="" className="" />
+      </div>
+      <div>
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
@@ -55,6 +59,7 @@ const Navber = () => {
       </NavigationMenu>
       <div className="p-6 w-full max-w-6xl">
         <Outlet />
+      </div>
       </div>
     </div>
   );
