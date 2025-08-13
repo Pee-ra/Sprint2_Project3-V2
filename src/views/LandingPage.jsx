@@ -5,14 +5,15 @@ import { AvatarCircles } from "@/components/magicui/avatar-circles";
 import PackageMonth from '../components/ui/PackageMonth';
 import PackageWeight from '../components/ui/PackageWeight';
 import Footer from '../components/ui/Footer';
+import { Link } from 'react-router-dom';
 
 const LandingPage = () => {
   return (
     <div>
         <nav className='my-6 mt-0 pb-6 mb-30 border-2 border-[#91d4dd]'>
             <ul className='flex justify-end gap-6 mt-4'>
-                <li className='border-3 p-1.5 px-6 rounded-sm hover:bg-[#91d4dd66]'><a href="#">Sign In</a></li>
-                <li className='border-3 p-1.5 px-6 rounded-sm bg-teal-500 hover:bg-[#023F51]'><a href="#" className='text-white'>Get started</a></li>
+                <li className='border-3 p-1.5 px-6 rounded-sm hover:bg-[#91d4dd66]'>Sign In</li>
+                <li className='border-3 p-1.5 px-6 rounded-sm bg-teal-500 hover:bg-[#023F51]'><Link to="/login">Get started</Link></li>
                 <li className='mr-6 border-3 p-1.5 px-6 rounded-sm hover:bg-[#91d4dd66]'><a href="#">Admin</a></li>
             </ul>
         </nav>
@@ -23,7 +24,7 @@ const LandingPage = () => {
                 <p>ตั้งแต่เสื้อยืดตัวโปรดไปจนถึงผ้านวมผืนใหญ่ เราซัก อบ และพับทุกชิ้น<br/>ด้วยความใส่ใจ สะอาด หอม สดชื่น พร้อมส่งคืนถึงมือคุณอย่างรวดเร็ว<br/>เพียงแค่กดสั่งผ่านเว็บไซต์หรือแอปฯ ไม่ต้องหิ้วผ้า ไม่ต้องรอคิว</p>
                 <div className='flex gap-10'>
                     <Button className='bg-teal-500 hover:bg-[#023F51]' >เริ่มสั่งซื้อครั้งแรก →</Button>
-                    <Button className='hover:bg-[#91d4dd]'>เข้าสู่ระบบ</Button>
+                    <Link to="/login"><Button className='hover:bg-[#91d4dd]'>เข้าสู่ระบบ</Button></Link>
                 </div>
                 <p>ลูกค้าพึงพอใจมากกว่า 10,000 ราย</p>
             </div>
@@ -79,7 +80,7 @@ const LandingPage = () => {
             </div>
             {/* ทำproduct card รานเดือน */}
             <div className='m-8'>
-                <PackageMonth />
+                <Link to="/login"><PackageMonth /></Link>
             </div>
 
             <div className='m-8'>
@@ -99,7 +100,7 @@ const LandingPage = () => {
                     <p>ออร์เดอร์สำเร็จ</p>
                 </div>
                 <div>
-                    <h3 className='text-xl font-bold flex'><i class="ri-star-line"></i>4.9</h3>
+                    <h3 className='text-xl font-bold flex'><i className="ri-star-line"></i>4.9</h3>
                     <p>คะแนนเฉลี่ย</p>
                 </div>
                 <div>
