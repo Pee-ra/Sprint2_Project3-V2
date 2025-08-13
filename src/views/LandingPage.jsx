@@ -16,7 +16,7 @@ const LandingPage = () => {
                 <li className='mr-6 border-3 p-1.5 px-6 rounded-sm hover:bg-[#91d4dd66]'><a href="#">Admin</a></li>
             </ul>
         </nav>
-
+        
         <div className='flex'>
             <div className='mx-20 flex flex-col gap-8'>
                 <h1 className='text-5xl font-bold'>บริการซักรีดมืออาชีพ<br/>ใช้งานง่ายดาย</h1>
