@@ -8,10 +8,16 @@ import BookService from "./views/BookService";
 import MyOrder from "./views/MyOrder";
 import Login from "./views/login";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import LandingPage from "./views/landingPage";
+
 
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <LandingPage />,
+  },
+   {
+    path: "/login",
     element: <Login />,
   },
   {
