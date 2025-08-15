@@ -62,7 +62,7 @@ const companyFeatures = [
 
 export function Home({ user, onNavigateToBooking, onNavigateToTracking }) {
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 justify-center">
       {/* Welcome Hero */}
       <div className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-primary/5 to-transparent rounded-2xl p-8">
         <div className="relative z-10">
