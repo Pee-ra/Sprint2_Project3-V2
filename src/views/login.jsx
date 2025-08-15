@@ -57,7 +57,7 @@ const Login = () => {
             <div className= "flex justify-center items-center">
               <img
                 className="w-30 h-auto flex justify-center items-center "
-                src="../src/assets/logotext.png"
+                src="../src/assets/logotextv2.png"
                 alt="logo"
               />
             </div>
