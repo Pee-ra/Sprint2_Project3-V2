@@ -54,7 +54,14 @@ const Login = () => {
         {/* Right Form */}
         <div className="min-h-screen flex items-center justify-center p-6 flex-1/3 min-w-auto">
           <div className="bg-white p-6 rounded-lg shadow-md max-w-md w-full">
-            <p className="mb-4 flex justify-center">Logo</p>
+            <div className= "flex justify-center items-center">
+              <img
+                className="w-30 h-auto flex justify-center items-center "
+                src="../src/assets/logotext.png"
+                alt="logo"
+              />
+            </div>
+
             <h1 className="text-xl font-semibold mb-2 flex justify-center">
               เข้าสู่ระบบ
             </h1>
