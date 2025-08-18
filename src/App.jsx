@@ -11,6 +11,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LandingPage from "./views/LandingPage";
 import Register from "./views/Register";
 import AdminLogin from "./views/AdminLogin";
+import Payment from "./views/Payment";
 
 
 const router = createBrowserRouter([
@@ -46,7 +47,7 @@ const router = createBrowserRouter([
       { path: "/home/pricing", element: <Pricing /> },
       { path: "/home/tracking", element: <Tracking /> },
       { path: "/home/bookingService", element: <BookingService /> },
-      { path: "/home/myorder", element: <MyOrder /> },
+      { path: "/home/payment", element: <Payment/> },
       { path: "/home/profile", element: <Profile /> },
     ],
   },
