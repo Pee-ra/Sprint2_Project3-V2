@@ -33,11 +33,11 @@ const Navber = () => {
           </NavigationMenuItem>
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
-              <Link to="/home/bookService">Book Service</Link>
+              <Link to="/home/bookingService">Booking Service</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuLink asChild>
-            <Link to="/home/myOder">My Oder</Link>
+            <Link to="/home/myorder">My Order</Link>
           </NavigationMenuLink>
           <NavigationMenuItem>
             <NavigationMenuTrigger>
