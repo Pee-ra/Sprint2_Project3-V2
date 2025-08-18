@@ -15,7 +15,6 @@ const AdminLogin = () => {
             alt="logo"
           />
         </div>
-
         <h1 className="text-xl font-semibold mb-4 flex justify-center">
           Admin
         </h1>
