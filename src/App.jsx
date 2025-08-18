@@ -4,7 +4,7 @@ import Profile from "./views/Profile";
 import {Home} from "./views/Home";
 import Pricing from "./views/Pricing";
 import Tracking from "./views/Tracking";
-import BookService from "./views/BookService";
+import {BookingService} from "./views/BookingService";
 import MyOrder from "./views/MyOrder";
 import Login from "./views/login";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -34,8 +34,8 @@ const router = createBrowserRouter([
       { path: "/home", element: <Home /> },
       { path: "/home/pricing", element: <Pricing /> },
       { path: "/home/tracking", element: <Tracking /> },
-      { path: "/home/bookService", element: <BookService /> },
-      { path: "/home/myOder", element: <MyOrder /> },
+      { path: "/home/bookingService", element: <BookingService /> },
+      { path: "/home/myorder", element: <MyOrder /> },
       { path: "/home/profile", element: <Profile /> },
     ],
   },
