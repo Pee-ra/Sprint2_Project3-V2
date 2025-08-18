@@ -66,20 +66,27 @@ const Register = () => {
         {/* Right Form */}
         <div className="min-h-screen flex items-center justify-center p-6 flex-1/3 min-w-auto">
           <div className="bg-white p-6 rounded-lg shadow-md max-w-md w-full">
-            <p className="mb-4 flex justify-center">Logo</p>
+            <div className="mb-4 flex justify-center">
+              <img
+                className="w-30 h-auto flex justify-center items-center "
+                src="../src/assets/logotextv2.png"
+                alt="logo"
+              />
+            </div>
             <h1 className="text-xl font-semibold mb-2 flex justify-center">
               สมัครสมาชิก
             </h1>
             <form>
               <InputWithLabel
                 label="ชื่อ-นามสกุล"
-                placeholder="you@example.com"
+                placeholder="สวัสดี ชาวโลก"
                 type="text"
                 icon={<HiOutlineMail />}
               />
               <br />
               <InputWithLabel
                 label="อีเมล"
+                placeholder="example@email.com"
                 type="email"
                 icon={<HiOutlineMail />}
               />
@@ -90,6 +97,7 @@ const Register = () => {
               />
               <InputWithLabel
                 label="เลขที่ห้อง/ที่อยู่"
+                placeholder="A-00"
                 type=" text"
                 icon={<RiHomeSmile2Line />}
               />
@@ -113,7 +121,7 @@ const Register = () => {
               <Button className="w-full">สมัครสมาชิก</Button>
               <p className="py-2 text-xs flex justify-center gap-2">
                 มีบัญชีอยู่แล้ว?{" "}
-                <span className="text-emerald-500"> เข้าสู่ระบบ</span>
+                <span className="text-emerald-500"> <Link to="/">เข้าสู่ระบบ</Link></span>
               </p>
             </form>
           </div>

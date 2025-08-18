@@ -12,9 +12,9 @@ const LandingPage = () => {
     <div>
         <nav className='my-6 mt-0 pb-6 mb-30 border-2 border-[#91d4dd]'>
             <ul className='flex justify-end gap-6 mt-4'>
-                <li className='border-3 p-1.5 px-6 rounded-sm hover:bg-[#91d4dd66]'>Sign In</li>
+                <li className='border-3 p-1.5 px-6 rounded-sm hover:bg-[#91d4dd66]'><Link to="/register">Sign In</Link></li>
                 <li className='border-3 p-1.5 px-6 rounded-sm bg-teal-500 hover:bg-[#023F51]'><Link to="/login">Get started</Link></li>
-                <li className='mr-6 border-3 p-1.5 px-6 rounded-sm hover:bg-[#91d4dd66]'><a href="#">Admin</a></li>
+                <li className='mr-6 border-3 p-1.5 px-6 rounded-sm hover:bg-[#91d4dd66]'><Link to="/adminlogin">Admin</Link></li>
             </ul>
         </nav>
         

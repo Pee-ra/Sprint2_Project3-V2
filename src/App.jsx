@@ -10,6 +10,7 @@ import Login from "./views/login";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LandingPage from "./views/LandingPage";
 import Register from "./views/Register";
+import AdminLogin from "./views/AdminLogin";
 
 
 const router = createBrowserRouter([
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
    {
     path: "/register",
     element: <Register />,
+  },
+   {
+    path: "/adminlogin",
+    element: <AdminLogin />,
   },
 
   {
