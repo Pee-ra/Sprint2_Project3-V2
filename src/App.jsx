@@ -9,6 +9,8 @@ import MyOrder from "./views/MyOrder";
 import Login from "./views/login";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LandingPage from "./views/LandingPage";
+import Register from "./views/Register";
+import AdminLogin from "./views/AdminLogin";
 
 
 const router = createBrowserRouter([
@@ -20,6 +22,15 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
+   {
+    path: "/register",
+    element: <Register />,
+  },
+   {
+    path: "/adminlogin",
+    element: <AdminLogin />,
+  },
+
   {
     path: "/home",
     element: <Navber />,
