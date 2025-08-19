@@ -5,16 +5,23 @@ import { AvatarCircles } from "@/components/magicui/avatar-circles";
 import PackageMonth from '../components/ui/PackageMonth';
 import PackageWeight from '../components/ui/PackageWeight';
 import Footer from '../components/ui/Footer';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-const LandingPage = () => {
+
+export const LandingPage = ({ onLogin, onRegister, onAdminLogin }) => {
   return (
     <div>
         <nav className='my-6 mt-0 pb-6 mb-30 border-2 border-[#91d4dd]'>
             <ul className='flex justify-end gap-6 mt-4'>
-                <li className='border-3 p-1.5 px-6 rounded-sm hover:bg-[#91d4dd66]'><Link to="/register">Sign In</Link></li>
-                <li className='border-3 p-1.5 px-6 rounded-sm bg-teal-500 hover:bg-[#023F51]'><Link to="/login">Get started</Link></li>
-                <li className='mr-6 border-3 p-1.5 px-6 rounded-sm hover:bg-[#91d4dd66]'><Link to="/adminlogin">Admin</Link></li>
+                <li className='border-3 p-1.5 px-6 rounded-sm hover:bg-[#91d4dd66] cursor-pointer' onClick={onRegister}>
+                    <span>Sign In</span>
+                </li>
+                <li className='border-3 p-1.5 px-6 rounded-sm bg-teal-500 hover:bg-[#023F51] cursor-pointer' onClick={onLogin}>
+                    <span>Get started</span>
+                </li>
+                <li className='mr-6 border-3 p-1.5 px-6 rounded-sm hover:bg-[#91d4dd66] cursor-pointer' onClick={onAdminLogin}>
+                    <span>Admin</span>
+                </li>
             </ul>
         </nav>
         
@@ -23,8 +30,8 @@ const LandingPage = () => {
                 <h1 className='text-5xl font-bold'>บริการซักรีดมืออาชีพ<br/>ใช้งานง่ายดาย</h1>
                 <p>ตั้งแต่เสื้อยืดตัวโปรดไปจนถึงผ้านวมผืนใหญ่ เราซัก อบ และพับทุกชิ้น<br/>ด้วยความใส่ใจ สะอาด หอม สดชื่น พร้อมส่งคืนถึงมือคุณอย่างรวดเร็ว<br/>เพียงแค่กดสั่งผ่านเว็บไซต์หรือแอปฯ ไม่ต้องหิ้วผ้า ไม่ต้องรอคิว</p>
                 <div className='flex gap-10'>
-                    <Button className='bg-teal-500 hover:bg-[#023F51]' >เริ่มสั่งซื้อครั้งแรก →</Button>
-                    <Link to="/login"><Button className='hover:bg-[#91d4dd]'>เข้าสู่ระบบ</Button></Link>
+                    <Button className='bg-teal-500 hover:bg-[#023F51]' onClick={onRegister}>เริ่มสั่งซื้อครั้งแรก →</Button>
+                    <Button onClick={onLogin} className='hover:bg-[#91d4dd]'>เข้าสู่ระบบ</Button>
                 </div>
                 <p>ลูกค้าพึงพอใจมากกว่า 10,000 ราย</p>
             </div>
@@ -33,13 +40,12 @@ const LandingPage = () => {
             </div>
         </div>
 
-
         <div className='mt-30 '>
             <div>  
                 {/* หัวข้อ1 */}
                 <div className='flex flex-col gap-8 text-center'>
                     <h2 className='text-2xl font-bold'>ทำไมต้องเลือก WhaleWash ?</h2>
-                    <p className='mb-10'>เราทำให้การซักรัดเป็นเรื่องง่ายด้วยบริการพรีเมียมและความมุ่งมั่นในความเป็นเลิศ</p>
+                    <p className='mb-10'>เราทำให้การซักรัดเป็นเรื่องง่ายด้วยบริการพรีเมียมและความมุ่งมั่นในความเป็นเลิศ</p>
                 </div>
             </div>
 
@@ -69,8 +75,8 @@ const LandingPage = () => {
                     <p className="text-slate-600">รู้ทุกขั้นตอน ตั้งแต่รับผ้าจนส่งคืนผ่านระบบติดตาม</p>
                 </div>
             </div>
-
         </div>
+
         {/* ราคาชัดเจน */}
         <div className='my-30'>
             {/*หัวข้อ2  */}
@@ -79,8 +85,8 @@ const LandingPage = () => {
                 <p>เลือกแพ็กเกจทีเหมาะสมกับความต้องการของคุณ ทุกแพ็กเกจรวมบริการรับ-ส่งฟรี</p>
             </div>
             {/* ทำproduct card รานเดือน */}
-            <div className='m-8'>
-                <Link to="/login"><PackageMonth /></Link>
+            <div className='m-8 cursor-pointer' onClick={onLogin}>
+                <PackageMonth />
             </div>
 
             <div className='m-8'>
@@ -114,5 +120,3 @@ const LandingPage = () => {
     </div>
   )
 }
-
-export default LandingPage

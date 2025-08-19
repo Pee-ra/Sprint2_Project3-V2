@@ -7,7 +7,7 @@ import { Checkbox } from "../components/ui/checkbox";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-const Login = () => {
+export const Login = ({ onLogin, onSwitchToRegister, onBackToLanding, isAdmin = false }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -106,4 +106,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+
