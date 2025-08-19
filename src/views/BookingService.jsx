@@ -6,6 +6,7 @@ import { Badge } from "../components/ui/badge.jsx";
 import { ImageWithFallback } from "../components/ui/ImageWithFallback.jsx";
 import { perKgRates } from "../data/services.js";
 import { perPieceItems } from "../data/services.js";
+import { ShinyButton } from "@/components/magicui/shiny-button";
 
 export function BookingService({ onNavigateToPayment, user }) {
   const [selectedService, setSelectedService] = useState(null);
@@ -85,7 +86,7 @@ export function BookingService({ onNavigateToPayment, user }) {
     <div className="space-y-8">
       {/* Header */}
       <div className="text-center space-y-4">
-        <h2 className="text-3xl font-bold">จองบริการซักรีด</h2>
+        <h2 className="text-3xl font-bold ">จองบริการซักรีด</h2>
         <p className="text-lg text-muted-foreground">
           เลือกบริการที่เหมาะกับความต้องการของคุณ
         </p>
@@ -94,7 +95,7 @@ export function BookingService({ onNavigateToPayment, user }) {
       {/* Service Type Selection */}
       <div className="flex justify-center">
         <div className="inline-flex rounded-lg border border-border bg-muted p-1">
-          <button
+          <ShinyButton
             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
               serviceType === "per-kg" 
                 ? "bg-background text-foreground shadow-sm" 
@@ -107,13 +108,13 @@ export function BookingService({ onNavigateToPayment, user }) {
               setTotalPrice(0);
             }}
           >
-            คิดตามน้ำหนัก
-          </button>
-          <button
+            <i class="ri-weight-line"></i>  คิดตามน้ำหนัก
+          </ShinyButton>
+          <ShinyButton
             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
               serviceType === "per-piece" 
                 ? "bg-background text-foreground shadow-sm" 
-                : "text-muted-foreground hover:text-foreground"
+                : "text-muted-foreground hover:text-foreground "
             }`}
             onClick={() => {
               setServiceType("per-piece");
@@ -122,8 +123,8 @@ export function BookingService({ onNavigateToPayment, user }) {
               setTotalPrice(0);
             }}
           >
-            คิดตามชิ้น
-          </button>
+            <i class="ri-t-shirt-line"></i> คิดตามชิ้น
+          </ShinyButton>
         </div>
       </div>
 
@@ -132,7 +133,7 @@ export function BookingService({ onNavigateToPayment, user }) {
       {serviceType === "per-kg" && (
         <div className="space-y-6">
           <h3 className="text-xl font-semibold text-center">เลือกน้ำหนักเสื้อผ้า</h3>
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-2xl mx-auto ">
             <Card className="p-6">
               <div className="space-y-4">
                 <div className="aspect-video rounded-lg overflow-hidden mb-4">
@@ -180,7 +181,7 @@ export function BookingService({ onNavigateToPayment, user }) {
                   <div key={item.name} className="flex items-center justify-between p-3 bg-muted rounded-lg">
                     <div>
                       <span className="font-medium">{item.name}</span>
-                      <span className="text-sm text-muted-foreground ml-2">
+                      <span className="text-xl text-muted-foreground ml-2">
                         ฿{item.price}/ชิ้น
                       </span>
                     </div>
@@ -218,9 +219,9 @@ export function BookingService({ onNavigateToPayment, user }) {
           )}
 
           {/* Available Items */}
-          <div className="space-y-4">
+          <div className="space-y-4 ">
             {["เสื้อผ้าทั่วไป", "เสื้อผ้าพิเศษ", "ผ้าบ้าน"].map((category) => (
-              <Card key={category} className="p-6">
+              <Card key={category} className="p-6  ">
                 <h4 className="font-medium mb-4">{category}</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {perPieceItems
