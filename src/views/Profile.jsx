@@ -87,7 +87,7 @@ export function Profile({ user }) {
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h2 className="text-2xl font-semibold mb-2">โปรไฟล์ของฉัน</h2>
+          <h2 className="text-xl font-semibold mb-2">โปรไฟล์ของฉัน</h2>
           <p className="text-muted-foreground">
             จัดการข้อมูลส่วนตัวและการตั้งค่าบัญชี
           </p>
