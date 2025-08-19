@@ -51,13 +51,11 @@ export const perPieceItems = [
     { name: "เสื้อสูท", price: 80, category: "เสื้อผ้าพิเศษ" },
     { name: "สูทชุด", price: 120, category: "เสื้อผ้าพิเศษ" },
     { name: "ผ้าปูที่นอน", price: 40, category: "ผ้าบ้าน" },
-    { name: "ปลอกหมอน", price: 15, category: "ผ้าบ้าน" },
-    { name: "ผ้าม่าน", price: 60, category: "ผ้าบ้าน" },
-    { name: "ผ้าห่ม", price: 200, category: "ผ้าบ้าน" },
-    { name: "เสื้อยืด", price: 20, category: "เสื้อผ้าทั่วไป" },
-    { name: "กางเกงยีนส์", price: 35, category: "เสื้อผ้าทั่วไป" },
-    { name: "กางเกงขายาว", price: 30, category: "เสื้อผ้าทั่วไป" },
-    { name: "ชุดเดรส", price: 45, category: "เสื้อผ้าพิเศษ" },
+    { name: "ปลอกหมอน", price: 20, category: "ผ้าบ้าน" },
+    { name: "ผ้าม่าน", price: 100, category: "ผ้าบ้าน" },
+    { name: "ผ้าห่ม", price: 150, category: "ผ้าบ้าน" },
+    { name: "ชุดเดรส", price: 100, category: "เสื้อผ้าพิเศษ" },
+    { name: "ผ้าไหม", price: 150, category: "เสื้อผ้าพิเศษ" },
 ];
 
 export const dashboardServiceCards = [
@@ -316,6 +314,43 @@ export const trackingSteps = {
     description: "ขอบคุณที่ใช้บริการ CleanEase หากมีข้อสงสัยหรือต้องการบริการเพิ่มเติม สามารถติดต่อเราได้ตลอดเวลา"
   }
 };
+
+export const myOrdershistory = [
+    {
+      id: "ORD-2025-001",
+      service: "บริการตามน้ำหนัก",
+      status: "รอรับผ้า",
+      orderDate: "2025-01-20",
+      pickupDate: "2025-01-22",
+      deliveryDate: "2025-01-24",
+      amount: 200,
+      items: ["เสื้อผ้าคละ 5 กิโลกรัม"],
+      specialInstructions: ""
+    },
+    {
+      id: "ORD-2025-002",
+      service: "คิดตามชิ้น",
+      status: "กำลังดำเนินการ",
+      orderDate: "2025-01-15",
+      pickupDate: "2025-01-16",
+      deliveryDate: "2025-01-18",
+      amount: 280,
+      items: ["ชุดเดรส 2 ตัว", "เสื้อสูท 1 ตัว", "กางเกงยีนส์ 1 ตัว"],
+      specialInstructions: "สูทกรุณาซักแห้ง"
+    },
+    {
+      id: "ORD-2025-003",
+      service: "บริการตามน้ำหนัก",
+      status: "รอรับผ้า",
+      orderDate: "2025-01-20",
+      pickupDate: "2054-01-22",
+      deliveryDate: "2025-01-24",
+      amount: 300,
+      items: ["เสื้อผ้าคละ 8 กิโลกรัม"],
+      specialInstructions: ""
+    },
+
+];
 
 export const companyFeatures = [
   {

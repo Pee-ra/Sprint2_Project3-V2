@@ -4,7 +4,7 @@ import { dashboardServiceCards } from "../data/services.js";
 import { companyFeatures } from "../data/services.js";
 
 
-export function Home({ user, onNavigateToBooking, onNavigateToTracking }) {
+export function DashboardView({ user, onNavigateToBooking, onNavigateToTracking }) {
   return (
     <div className="space-y-8 justify-center">
       {/* Welcome Hero */}
