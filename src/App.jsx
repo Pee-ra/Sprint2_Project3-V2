@@ -14,7 +14,7 @@ export default function App() {
   const [currentView, setCurrentView] = useState("dashboard");
 
   const handleLogin = (userData) => {
-    setUser({ ...userData, role: "customer" });
+    setUser({ ...userData, role: userData.role ?? "customer" });
     setIsAuthenticated(true);
     setCurrentPage("app");
     setCurrentView("dashboard");
@@ -55,20 +55,20 @@ export default function App() {
 
   const renderContent = () => {
     // Admin views
-    if (user?.role === "admin") {
-      switch (currentView) {
-        case "admin-dashboard":
-          return <AdminDashboard />;
-        case "admin-services":
-          return <AdminServices />;
-        case "admin-orders":
-          return <AdminOrders />;
-        case "admin-customers":
-          return <AdminCustomers />;
-        default:
-          return <AdminDashboard />;
-      }
-    }
+    // if (user?.role === "admin") {
+    //   switch (currentView) {
+    //     case "admin-dashboard":
+    //       return <AdminDashboard />;
+    //     case "admin-services":
+    //       return <AdminServices />;
+    //     case "admin-orders":
+    //       return <AdminOrders />;
+    //     case "admin-customers":
+    //       return <AdminCustomers />;
+    //     default:
+    //       return <AdminDashboard />;
+    //   }
+    // }
 
     // Customer views
     switch (currentView) {
