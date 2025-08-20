@@ -12,7 +12,7 @@ import { Checkbox } from "../components/ui/checkbox";
 import { Button } from "../components/ui/button";
 // import { useState } from "react";
 
-const Register = () => {
+export const Register = () => {
   // const navigate = useNavigate();
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
@@ -131,4 +131,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+

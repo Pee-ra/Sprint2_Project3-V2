@@ -1,124 +1,108 @@
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useState } from "react";
-import  TopNavigation from "./views/TopNavigation.jsx";
 import { LandingPage } from "./views/LandingPage.jsx";
-import { Login } from "./views/Login.jsx";
+import  Login  from "./views/Login.jsx";
 import { BookingService } from "./views/BookingService.jsx";
 import { MyOrders } from "./views/MyOrders.jsx";
 import { Profile } from "./views/Profile.jsx";
 import { DashboardView } from "./views/DashboardView.jsx";
+import { AdminDashboard } from "./views/AdminDashboard.jsx";
+import { Register } from "./views/Register.jsx";
+import  AdminLogin  from "./views/AdminLogin.jsx";
+import { AdminOrders } from './views/AdminOrders.jsx';
+import { AdminCustomers } from './views/AdminCustomers.jsx';
+import { Layout } from './components/Layout';
+
+// Protected Route component
+function ProtectedRoute({ children, user, requiredRole }) {
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  if (requiredRole && user.role !== requiredRole) {
+    return <Navigate to={user.role === 'admin' ? '/admin/dashboard' : '/dashboard'} replace />;
+  }
+  
+  return <>{children}</>;
+}
+
+// Customer Layout wrapper
+function CustomerLayout({ user, onLogout }) {
+  return (
+    <ProtectedRoute user={user} requiredRole="customer">
+      <Layout user={user} onLogout={onLogout} isAdmin={false} />
+    </ProtectedRoute>
+  );
+}
+
+// Admin Layout wrapper
+function AdminLayout({ user, onLogout }) {
+  return (
+    <ProtectedRoute user={user} requiredRole="admin">
+      <Layout user={user} onLogout={onLogout} isAdmin={true} />
+    </ProtectedRoute>
+  );
+}
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState("landing");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
-  const [currentView, setCurrentView] = useState("dashboard");
 
   const handleLogin = (userData) => {
-    setUser({ ...userData, role: userData.role ?? "customer" });
-    setIsAuthenticated(true);
-    setCurrentPage("app");
-    setCurrentView("dashboard");
+    setUser({ ...userData, role: "customer" });
+  };
+
+  const handleAdminLogin = (userData) => {
+    setUser({ ...userData, role: "admin" });
+  };
+
+  const handleRegister = (userData) => {
+    setUser({ ...userData, role: "customer" });
   };
 
   const handleLogout = () => {
     setUser(null);
-    setIsAuthenticated(false);
-    setCurrentPage("landing");
-    setCurrentView("dashboard");
-  };
-
-  const handleNavigation = (view) => {
-    setCurrentView(view);
-  };
-
-  // Landing page
-  if (currentPage === "landing") {
-    return (
-      <LandingPage
-        onLogin={() => setCurrentPage("login")}
-        // onRegister={() => setCurrentPage("register")}
-        // onAdminLogin={() => setCurrentPage("admin-login")}
-      />
-    );
-  }
-
-  // Authentication screens
-  if (currentPage === "login") {
-    return (
-      <Login
-        onLogin={handleLogin}
-        onSwitchToRegister={() => setCurrentPage("register")}
-        onBackToLanding={() => setCurrentPage("landing")}
-      />
-    );
-  }
-
-  const renderContent = () => {
-    // Admin views
-    // if (user?.role === "admin") {
-    //   switch (currentView) {
-    //     case "admin-dashboard":
-    //       return <AdminDashboard />;
-    //     case "admin-services":
-    //       return <AdminServices />;
-    //     case "admin-orders":
-    //       return <AdminOrders />;
-    //     case "admin-customers":
-    //       return <AdminCustomers />;
-    //     default:
-    //       return <AdminDashboard />;
-    //   }
-    // }
-
-    // Customer views
-    switch (currentView) {
-      case "booking":
-        return (
-          <BookingService
-            onNavigateToPayment={() => handleNavigation("payment")}
-            user={user}
-          />
-        );
-      case "payment":
-        return (
-          <Payment onBack={() => handleNavigation("booking")} />
-        );
-      case "orders":
-        return <MyOrders />;
-      case "profile":
-        return <Profile user={user} />;
-      case "pricing":
-        return (
-          <PricingView 
-            onNavigateToBooking={() => handleNavigation("booking")} 
-          />
-        );
-      default:
-        return (
-          <DashboardView
-            user={user}
-            onNavigateToBooking={() => handleNavigation("booking")}
-            onNavigateToTracking={() => handleNavigation("pickup-tracking")}
-          />
-        );
-    }
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <TopNavigation
-        onNavigate={handleNavigation}
-        currentView={currentView}
-        user={user}
-        onLogout={handleLogout}
-        isAdmin={user?.role === "admin"}
-      />
+    <Router>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/register" element={<Register onRegister={handleRegister} />} />
+        <Route path="/admin" element={<AdminLogin onLogin={handleAdminLogin} />} />
 
-      <main className="p-4 lg:p-6">
-        <div className="max-w-7xl mx-auto">
-          {renderContent()}
-        </div>
-      </main>
-    </div>
+        {/* Customer Protected Routes with Layout */}
+        <Route path="/" element={<CustomerLayout user={user} onLogout={handleLogout} />}>
+          <Route path="dashboard" element={<DashboardView user={user} />} />
+          <Route path="booking" element={<BookingService user={user} />} />
+          <Route path="orders" element={<MyOrders />} />
+          <Route path="profile" element={<Profile user={user} />} />
+        </Route>
+
+        {/* Admin Protected Routes with Layout */}
+        <Route path="/admin" element={<AdminLayout user={user} onLogout={handleLogout} />}>
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="customers" element={<AdminCustomers />} />
+
+        </Route>
+
+        {/* Redirect based on user role */}
+        <Route 
+          path="/app" 
+          element={
+            user ? (
+              <Navigate to={user.role === 'admin' ? '/admin/dashboard' : '/dashboard'} replace />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          } 
+        />
+
+        {/* Catch all - redirect to appropriate page */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
   );
 }

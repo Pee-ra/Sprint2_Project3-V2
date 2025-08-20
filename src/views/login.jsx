@@ -5,23 +5,22 @@ import { InputWithLabel } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Checkbox } from "../components/ui/checkbox";
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
-export const Login = ({ onLogin, onSwitchToRegister, onBackToLanding, isAdmin = false }) => {
+const Login = ({ onLogin, onSwitchToRegister, onBackToLanding, isAdmin = false }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
 
+  
+
     // ตัวอย่าง: แยก admin / customer แบบง่าย ๆ
     if (email === "admini@gmail.com" && password === "12345") {
-      onLogin({ id: "1", email, name: "Admin", role: "customer" });
-      return;
-    }
-
-    // ล็อกอินสำเร็จกรณีทั่วไป (เดโม) — ส่ง userData ให้ App จัดการสลับหน้า
-    if (email && password) {
-      onLogin({ id: "2", email, name: "Customer", role: "customer" });
+      onLogin({ id: "1", email, name: "user", role: "customer" });
+      navigate('/dashboard');
       return;
     }
 
@@ -35,7 +34,7 @@ export const Login = ({ onLogin, onSwitchToRegister, onBackToLanding, isAdmin = 
         <div className="items-center justify-center p-6 flex-1/2">
           <button
             type="button"
-            onClick={onBackToLanding}
+            onClick={() => navigate('/landing')}
             className="text-xs flex items-center mb-4 gap-2"
           >
             <AiOutlineArrowLeft />
@@ -127,3 +126,4 @@ export const Login = ({ onLogin, onSwitchToRegister, onBackToLanding, isAdmin = 
     </div>
   );
 };
+export default Login;

@@ -2,6 +2,7 @@ import { Button } from "../components/ui/button.jsx";
 import { ImageWithFallback } from "../components/ui/ImageWithFallback.jsx";
 import { dashboardServiceCards } from "../data/services.js";
 import { companyFeatures } from "../data/services.js";
+import { Link } from "react-router-dom";
 
 
 export function DashboardView({ user, onNavigateToBooking, onNavigateToTracking }) {
@@ -18,13 +19,14 @@ export function DashboardView({ user, onNavigateToBooking, onNavigateToTracking 
             ทำให้การดูแลเสื้อผ้าง่ายขึ้น
           </p>
           <div className="flex flex-wrap gap-4">
+            <Link to="/booking">
             <Button
               size="lg"
               className="h-12 px-6"
-              onClick={onNavigateToBooking}
             >
               จองบริการใหม่
             </Button>
+            </Link>
             <Button
               variant="outline"
               size="lg"
@@ -41,7 +43,7 @@ export function DashboardView({ user, onNavigateToBooking, onNavigateToTracking 
       <div className="space-y-6">
         <h2 className="text-2xl font-semibold text-gray-900">บริการของเรา</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {dashboardServiceCards.map((service, index) => (
             <div
               key={index}
@@ -86,7 +88,7 @@ export function DashboardView({ user, onNavigateToBooking, onNavigateToTracking 
       {/* Features Section */}
       <div className="bg-gradient-to-br from-muted/50 to-muted/30 rounded-2xl p-8">
         <h3 className="text-2xl font-semibold mb-6 text-center text-gray-900">
-          ทำไมต้องเลือก CleanEase?
+          ทำไมต้องเลือก "Whale Wash"?
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {companyFeatures.map((feature, index) => (

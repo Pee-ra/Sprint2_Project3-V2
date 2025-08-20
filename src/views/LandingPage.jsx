@@ -13,15 +13,21 @@ export const LandingPage = ({ onLogin, onRegister, onAdminLogin }) => {
     <div>
         <nav className='my-6 mt-0 pb-6 mb-30 border-2 border-[#91d4dd]'>
             <ul className='flex justify-end gap-6 mt-4'>
-                <li className='border-3 p-1.5 px-6 rounded-sm hover:bg-[#91d4dd66] cursor-pointer' onClick={onRegister}>
+                <Link to="/login">
+                <li className='border-3 p-1.5 px-6 rounded-sm hover:bg-[#91d4dd66] cursor-pointer' >
                     <span>Sign In</span>
                 </li>
-                <li className='border-3 p-1.5 px-6 rounded-sm bg-teal-500 hover:bg-[#023F51] cursor-pointer' onClick={onLogin}>
+                </Link>
+                <Link to="/register">
+                <li className='border-3 p-1.5 px-6 rounded-sm bg-teal-500 hover:bg-[#023F51] cursor-pointer' >
                     <span>Get started</span>
                 </li>
-                <li className='mr-6 border-3 p-1.5 px-6 rounded-sm hover:bg-[#91d4dd66] cursor-pointer' onClick={onAdminLogin}>
+                </Link>
+                <Link to="/admin">
+                <li className='mr-6 border-3 p-1.5 px-6 rounded-sm hover:bg-[#91d4dd66] cursor-pointer' >
                     <span>Admin</span>
                 </li>
+                </Link>
             </ul>
         </nav>
         
@@ -30,8 +36,12 @@ export const LandingPage = ({ onLogin, onRegister, onAdminLogin }) => {
                 <h1 className='text-5xl font-bold'>บริการซักรีดมืออาชีพ<br/>ใช้งานง่ายดาย</h1>
                 <p>ตั้งแต่เสื้อยืดตัวโปรดไปจนถึงผ้านวมผืนใหญ่ เราซัก อบ และพับทุกชิ้น<br/>ด้วยความใส่ใจ สะอาด หอม สดชื่น พร้อมส่งคืนถึงมือคุณอย่างรวดเร็ว<br/>เพียงแค่กดสั่งผ่านเว็บไซต์หรือแอปฯ ไม่ต้องหิ้วผ้า ไม่ต้องรอคิว</p>
                 <div className='flex gap-10'>
-                    <Button className='bg-teal-500 hover:bg-[#023F51]' onClick={onRegister}>เริ่มสั่งซื้อครั้งแรก →</Button>
-                    <Button onClick={onLogin} className='hover:bg-[#91d4dd]'>เข้าสู่ระบบ</Button>
+                    <Link to="/register">
+                    <Button  className='bg-teal-500 hover:bg-[#023F51]' >เริ่มสั่งซื้อครั้งแรก →</Button>
+                    </Link> 
+                    <Link to="/login">
+                    <Button  className='hover:bg-[#91d4dd]'>เข้าสู่ระบบ</Button>
+                    </Link>
                 </div>
                 <p>ลูกค้าพึงพอใจมากกว่า 10,000 ราย</p>
             </div>
