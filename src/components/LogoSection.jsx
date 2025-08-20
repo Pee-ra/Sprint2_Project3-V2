@@ -10,11 +10,11 @@ export default function LogoSection({ isAdmin }) {
         {isAdmin ? (
           <Settings className="h-4 w-4 text-white" />
         ) : (
-          <span className="text-primary-foreground font-bold text-sm">CE</span>
+          <span className="text-primary-foreground font-bold text-sm">WW</span>
         )}
       </div>
       <div className="flex items-center gap-2">
-        <h1 className="text-lg font-bold text-foreground">CleanEase</h1>
+        <h1 className="text-lg font-bold text-foreground">Whale Wash</h1>
         {isAdmin && (
           <Badge variant="secondary" className="text-xs px-2 py-0 bg-orange-100 text-orange-700">
             Admin
