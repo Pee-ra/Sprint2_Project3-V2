@@ -31,8 +31,8 @@ export const LandingPage = ({ onLogin, onRegister, onAdminLogin }) => {
             </ul>
         </nav>
         
-        <div className='flex'>
-            <div className='mx-20 flex flex-col gap-8'>
+        <div className='flex justify-center'>
+            <div className='mx-20 flex flex-col gap-8 '>
                 <h1 className='text-5xl font-bold'>บริการซักรีดมืออาชีพ<br/>ใช้งานง่ายดาย</h1>
                 <p>ตั้งแต่เสื้อยืดตัวโปรดไปจนถึงผ้านวมผืนใหญ่ เราซัก อบ และพับทุกชิ้น<br/>ด้วยความใส่ใจ สะอาด หอม สดชื่น พร้อมส่งคืนถึงมือคุณอย่างรวดเร็ว<br/>เพียงแค่กดสั่งผ่านเว็บไซต์หรือแอปฯ ไม่ต้องหิ้วผ้า ไม่ต้องรอคิว</p>
                 <div className='flex gap-10'>

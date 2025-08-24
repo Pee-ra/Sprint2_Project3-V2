@@ -129,7 +129,7 @@ export function BookingService({ onNavigateToPayment, user }) {
       </div>
 
 
-      {/* Per KG Rates */}
+      {/* Per KG Rates ถ้ากดเลือกน้ำหนักจะเรนเดอร์อันนี้*/}
       {serviceType === "per-kg" && (
         <div className="space-y-6">
           <h3 className="text-xl font-semibold text-center">เลือกน้ำหนักเสื้อผ้า</h3>
