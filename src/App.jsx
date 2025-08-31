@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate ,Outlet } from 'react-router-dom';
 import { useState } from "react";
 import { LandingPage } from "./views/LandingPage.jsx";
 import  Login  from "./views/Login.jsx";
@@ -12,37 +12,34 @@ import  AdminLogin  from "./views/AdminLogin.jsx";
 import { AdminOrders } from './views/AdminOrders.jsx';
 import { AdminCustomers } from './views/AdminCustomers.jsx';
 import { Layout } from './components/Layout';
+import  ProtectedRoute  from "./components/ProtectedRoute.jsx";
+
 
 // Protected Route component
-function ProtectedRoute({ children, user, requiredRole }) {
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-  
-  if (requiredRole && user.role !== requiredRole) {
-    return <Navigate to={user.role === 'admin' ? '/admin/dashboard' : '/dashboard'} replace />;
-  }
-  
-  return <>{children}</>;
-}
+
 
 // Customer Layout wrapper
 function CustomerLayout({ user, onLogout }) {
   return (
     <ProtectedRoute user={user} requiredRole="customer">
       <Layout user={user} onLogout={onLogout} isAdmin={false} />
+      <Outlet />
     </ProtectedRoute>
   );
 }
+
+
 
 // Admin Layout wrapper
 function AdminLayout({ user, onLogout }) {
   return (
     <ProtectedRoute user={user} requiredRole="admin">
       <Layout user={user} onLogout={onLogout} isAdmin={true} />
+      <Outlet />
     </ProtectedRoute>
   );
 }
+
 
 export default function App() {
   const [user, setUser] = useState(null);

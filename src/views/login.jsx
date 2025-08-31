@@ -5,7 +5,7 @@ import { InputWithLabel } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Checkbox } from "../components/ui/checkbox";
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = ({ onLogin, onSwitchToRegister, onBackToLanding, isAdmin = false }) => {
   const [email, setEmail] = useState("");
@@ -116,7 +116,7 @@ const Login = ({ onLogin, onSwitchToRegister, onBackToLanding, isAdmin = false }
                   onClick={onSwitchToRegister}
                   className="text-emerald-500 mx-2 underline"
                 >
-                  สมัครสมาชิก
+                  <Link to="/register">สมัครสมาชิก</Link>
                 </button>
               </p>
             </form>

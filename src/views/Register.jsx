@@ -121,7 +121,7 @@ export const Register = () => {
               <Button className="w-full">สมัครสมาชิก</Button>
               <p className="py-2 text-xs flex justify-center gap-2">
                 มีบัญชีอยู่แล้ว?{" "}
-                <span className="text-emerald-500"> <Link to="/">เข้าสู่ระบบ</Link></span>
+                <span className="text-emerald-500"> <Link to="/Login">เข้าสู่ระบบ</Link></span>
               </p>
             </form>
           </div>

@@ -6,6 +6,8 @@ import PackageMonth from '../components/ui/PackageMonth';
 import PackageWeight from '../components/ui/PackageWeight';
 import Footer from '../components/ui/Footer';
 import { Link, useNavigate } from 'react-router-dom';
+import ServiceCard from '../components/ui/ServiceCard';
+
 
 
 export const LandingPage = ({ onLogin, onRegister, onAdminLogin }) => {
@@ -15,7 +17,7 @@ export const LandingPage = ({ onLogin, onRegister, onAdminLogin }) => {
             <ul className='flex justify-end gap-6 mt-4'>
                 <Link to="/login">
                 <li className='border-3 p-1.5 px-6 rounded-sm hover:bg-[#91d4dd66] cursor-pointer' >
-                    <span>Sign In</span>
+                    <span>Login</span>
                 </li>
                 </Link>
                 <Link to="/register">
@@ -96,11 +98,12 @@ export const LandingPage = ({ onLogin, onRegister, onAdminLogin }) => {
             </div>
             {/* ทำproduct card รานเดือน */}
             <div className='m-8 cursor-pointer' onClick={onLogin}>
-                <PackageMonth />
+                {/* <PackageMonth /> */}
+                <Link to="/login"><ServiceCard /></Link>
             </div>
 
             <div className='m-8'>
-                <PackageWeight />
+                {/* <PackageWeight /> */}
             </div>
         </div>
 

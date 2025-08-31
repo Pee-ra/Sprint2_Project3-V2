@@ -3,6 +3,8 @@ import { ImageWithFallback } from "../components/ui/ImageWithFallback.jsx";
 import { dashboardServiceCards } from "../data/services.js";
 import { companyFeatures } from "../data/services.js";
 import { Link } from "react-router-dom";
+import ServiceCard from "../components/ui/ServiceCard.jsx";
+
 
 
 export function DashboardView({ user, onNavigateToBooking, onNavigateToTracking }) {
@@ -40,50 +42,7 @@ export function DashboardView({ user, onNavigateToBooking, onNavigateToTracking 
       </div>
 
       {/* Service Cards */}
-      <div className="space-y-6">
-        <h2 className="text-2xl font-semibold text-gray-900">บริการของเรา</h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {dashboardServiceCards.map((service, index) => (
-            <div
-              key={index}
-              className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all group"
-            >
-              <div className="aspect-video rounded-lg overflow-hidden mb-4 group-hover:scale-105 transition-transform">
-                <ImageWithFallback
-                  src={
-                    service.image ||
-                    "https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?w=400&h=250&fit=crop"
-                  }
-                  alt={service.alt || "เสื้อผ้าแบบทางการ"}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <h3 className="text-lg font-semibold mb-2 text-gray-900">
-                {service.title}
-              </h3>
-              <p className="text-muted-foreground mb-4">
-                {service.description}
-              </p>
-              <div className="space-y-2 mb-4">
-                {service.pricing.map((price, idx) => (
-                  <div key={idx} className="flex justify-between text-sm">
-                    <span>{price.label}:</span>
-                    <span className="font-semibold">{price.price}</span>
-                  </div>
-                ))}
-              </div>
-              <Button className="w-full" onClick={onNavigateToBooking}>
-                {index === 0
-                  ? "เลือกแพ็กเกจ"
-                  : index === 1
-                  ? "จองบริการ"
-                  : "เลือกรายการ"}
-              </Button>
-            </div>
-          ))}
-        </div>
-      </div>
+        <ServiceCard />
 
       {/* Features Section */}
       <div className="bg-gradient-to-br from-muted/50 to-muted/30 rounded-2xl p-8">
