@@ -13,7 +13,10 @@ import ServiceCard from '../components/ui/ServiceCard';
 export const LandingPage = ({ onLogin, onRegister, onAdminLogin }) => {
   return (
     <div>
-        <nav className='my-6 mt-0 pb-6 mb-30 border-2 border-[#91d4dd]'>
+        <nav className='my-6 mt-0 pb-6 mb-30 border-b-2 border-[#91d4dd] flex items-center justify-end px-6'>
+            <Link to="/login">
+            <img src="src\assets\Logotextv2.png" alt=""  className="h-20 absolute top-0 left-4 object-contain"/>
+            </Link>
             <ul className='flex justify-end gap-6 mt-4'>
                 <Link to="/login">
                 <li className='border-3 p-1.5 px-6 rounded-sm hover:bg-[#91d4dd66] cursor-pointer' >
@@ -21,7 +24,7 @@ export const LandingPage = ({ onLogin, onRegister, onAdminLogin }) => {
                 </li>
                 </Link>
                 <Link to="/register">
-                <li className='border-3 p-1.5 px-6 rounded-sm bg-teal-500 hover:bg-[#023F51] cursor-pointer' >
+                <li className='border-3 p-1.5 px-6 rounded-sm bg-teal-500 hover:bg-[#91d4dd] cursor-pointer text-white font-semibold' >
                     <span>Get started</span>
                 </li>
                 </Link>
@@ -32,14 +35,20 @@ export const LandingPage = ({ onLogin, onRegister, onAdminLogin }) => {
                 </Link>
             </ul>
         </nav>
+
+
+
         
+        
+
+
         <div className='flex justify-center'>
             <div className='mx-20 flex flex-col gap-8 '>
                 <h1 className='text-5xl font-bold'>บริการซักรีดมืออาชีพ<br/>ใช้งานง่ายดาย</h1>
                 <p>ตั้งแต่เสื้อยืดตัวโปรดไปจนถึงผ้านวมผืนใหญ่ เราซัก อบ และพับทุกชิ้น<br/>ด้วยความใส่ใจ สะอาด หอม สดชื่น พร้อมส่งคืนถึงมือคุณอย่างรวดเร็ว<br/>เพียงแค่กดสั่งผ่านเว็บไซต์หรือแอปฯ ไม่ต้องหิ้วผ้า ไม่ต้องรอคิว</p>
                 <div className='flex gap-10'>
                     <Link to="/register">
-                    <Button  className='bg-teal-500 hover:bg-[#023F51]' >เริ่มสั่งซื้อครั้งแรก →</Button>
+                    <Button  className='bg-teal-500 hover:bg-[#91d4dd]' >เริ่มสั่งซื้อครั้งแรก →</Button>
                     </Link> 
                     <Link to="/login">
                     <Button  className='hover:bg-[#91d4dd]'>เข้าสู่ระบบ</Button>
@@ -97,7 +106,7 @@ export const LandingPage = ({ onLogin, onRegister, onAdminLogin }) => {
                 <p>เลือกแพ็กเกจทีเหมาะสมกับความต้องการของคุณ ทุกแพ็กเกจรวมบริการรับ-ส่งฟรี</p>
             </div>
             {/* ทำproduct card รานเดือน */}
-            <div className='m-8 cursor-pointer' onClick={onLogin}>
+            <div className='m-8 my-16 cursor-pointer' onClick={onLogin}>
                 {/* <PackageMonth /> */}
                 <Link to="/login"><ServiceCard /></Link>
             </div>

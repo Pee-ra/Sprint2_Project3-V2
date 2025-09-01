@@ -9,7 +9,15 @@ import { Link } from "react-router-dom";
 const ServiceCard = ({ user, onNavigateToBooking, onNavigateToTracking }) => {
   return (
     <div className="space-y-6">
-        <h2 className="text-2xl font-semibold text-gray-900 flex justify-center">บริการของเรา</h2>
+        {/* <h2 className="text-2xl font-semibold text-gray-900 flex justify-center"><i class="ri-service-line mr-2"></i>บริการของเรา</h2> */}
+        <div className="flex items-center justify-center gap-2 my-8">
+          <div className="h-0.5 w-12 bg-gray-300 rounded"></div>
+          <h2 className="flex items-center gap-2 text-2xl sm:text-3xl font-semibold text-gray-800">
+            <i className="ri-service-line"></i>
+            บริการของเรา
+          </h2>
+          <div className="h-0.5 w-12 bg-gray-300 rounded"></div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {dashboardServiceCards.map((service, index) => (

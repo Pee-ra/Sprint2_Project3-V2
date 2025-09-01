@@ -7,6 +7,7 @@ import { ImageWithFallback } from "../components/ui/ImageWithFallback.jsx";
 import { perKgRates } from "../data/services.js";
 import { perPieceItems } from "../data/services.js";
 import { ShinyButton } from "@/components/magicui/shiny-button";
+import Footer from '../components/ui/Footer';
 
 export function BookingService({ onNavigateToPayment, user }) {
   const [selectedService, setSelectedService] = useState(null);

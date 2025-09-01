@@ -13,6 +13,8 @@ import { AdminOrders } from './views/AdminOrders.jsx';
 import { AdminCustomers } from './views/AdminCustomers.jsx';
 import { Layout } from './components/Layout';
 import  ProtectedRoute  from "./components/ProtectedRoute.jsx";
+import Footer from './components/ui/Footer.jsx';
+import { useLocation } from 'react-router-dom';
 
 
 // Protected Route component
@@ -20,10 +22,19 @@ import  ProtectedRoute  from "./components/ProtectedRoute.jsx";
 
 // Customer Layout wrapper
 function CustomerLayout({ user, onLogout }) {
+  const location = useLocation();
+
+  // path ที่ต้องการให้แสดง footer
+  const footerRoutes = ["/dashboard", "/booking"];
+
   return (
     <ProtectedRoute user={user} requiredRole="customer">
       <Layout user={user} onLogout={onLogout} isAdmin={false} />
-      <Outlet />
+
+      {/* render เนื้อหาหน้า */}
+
+      {/* render footer เฉพาะบาง path */}
+      {footerRoutes.includes(location.pathname) && <Footer />}
     </ProtectedRoute>
   );
 }
