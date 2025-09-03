@@ -8,6 +8,7 @@ import { perKgRates } from "../data/services.js";
 import { perPieceItems } from "../data/services.js";
 import { ShinyButton } from "@/components/magicui/shiny-button";
 import Footer from '../components/ui/Footer';
+import { Link } from "react-router-dom";
 
 export function BookingService({ onNavigateToPayment, user }) {
   const [selectedService, setSelectedService] = useState(null);
@@ -352,7 +353,7 @@ export function BookingService({ onNavigateToPayment, user }) {
               size="lg"
               onClick={handleSubmit}
             >
-              ดำเนินการชำระเงิน
+              <Link to="/payment">ดำเนินการชำระเงิน</Link>
             </Button>
           </div>
         </Card>

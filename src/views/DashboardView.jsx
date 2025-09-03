@@ -8,6 +8,8 @@ import ServiceCard from "../components/ui/ServiceCard.jsx";
 
 
 export function DashboardView({ user, onNavigateToBooking, onNavigateToTracking }) {
+  
+
   return (
     <div className="space-y-8 justify-center">
       {/* Welcome Hero */}

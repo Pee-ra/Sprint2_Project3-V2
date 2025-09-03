@@ -15,6 +15,7 @@ import { Layout } from './components/Layout';
 import  ProtectedRoute  from "./components/ProtectedRoute.jsx";
 import Footer from './components/ui/Footer.jsx';
 import { useLocation } from 'react-router-dom';
+import Payment from './views/Payment.jsx';
 
 
 // Protected Route component
@@ -86,6 +87,7 @@ export default function App() {
           <Route path="booking" element={<BookingService user={user} />} />
           <Route path="orders" element={<MyOrders />} />
           <Route path="profile" element={<Profile user={user} />} />
+          <Route path="payment" element={<Payment user={user} />}  />
         </Route>
 
         {/* Admin Protected Routes with Layout */}

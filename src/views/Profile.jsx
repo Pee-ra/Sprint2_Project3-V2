@@ -3,13 +3,15 @@ import { Button } from "../components/ui/button.jsx";
 import { Card } from "../components/ui/card.jsx";
 import { Input } from "../components/ui/input.jsx";
 import { Badge } from "../components/ui/badge.jsx";
+import axios from "axios";
+import { set } from "date-fns/set";
 
 export function Profile({ user }) {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    name: user?.name || "",
+    fullName: user?.fullName || "",
     email: user?.email || "",
-    telephone: user?.telephone || "",
+    tel: user?.tel || "",
     roomNumber: user?.roomNumber || "",
 
   });
@@ -55,19 +57,35 @@ export function Profile({ user }) {
       }
     }));
   };
-
-  const handleSave = () => {
-    // Here you would typically send the data to your backend
-    setIsEditing(false);
-    alert("บันทึกข้อมูลเรียบร้อยแล้ว!");
+// Here you would typically send the data to your backend
+    // setIsEditing(false);
+    
+    // alert("บันทึกข้อมูลเรียบร้อยแล้ว!");
+  const handleSave = async () => {
+    try {
+      const saveUserData = {
+        fullName: formData.fullName,
+        email: formData.email,
+        tel: formData.tel,
+        roomNumber: formData.roomNumber,
+      };
+      const response = await axios.put('http://localhost:5001/users', saveUserData);
+      if (response.status === 200) {
+        alert("บันทึกข้อมูลเรียบร้อยแล้ว!");
+      }
+    } catch (error) {
+      console.error("Error saving user data:", error);
+      alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+      setIsEditing(false);
+    }
   };
 
   const handleCancel = () => {
     // Reset form data to original values
     setFormData({
-      name: user?.name || "",
+      fullName: user?.fullName || "",
       email: user?.email || "",
-      telephone: user?.telephone || "",
+      tel: user?.tel || "",
       roomNumber: user?.roomNumber || "",
     });
     setIsEditing(false);
@@ -153,12 +171,12 @@ export function Profile({ user }) {
               <label className="block text-sm font-medium mb-2">ชื่อ-นามสกุล</label>
               {isEditing ? (
                 <Input
-                  value={formData.name}
-                  onChange={(e) => handleInputChange("name", e.target.value)}
+                  value={formData.fullName}
+                  onChange={(e) => handleInputChange("fullName", e.target.value)}
                   placeholder="กรุณากรอกชื่อ-นามสกุล"
                 />
               ) : (
-                <p className="text-sm p-2 bg-muted rounded">{formData.name}</p>
+                <p className="text-sm p-2 bg-muted rounded">{formData.fullName}</p>
               )}
             </div>
 
@@ -180,12 +198,12 @@ export function Profile({ user }) {
               <label className="block text-sm font-medium mb-2">เบอร์โทรศัพท์</label>
               {isEditing ? (
                 <Input
-                  value={formData.telephone}
-                  onChange={(e) => handleInputChange("telephone", e.target.value)}
+                  value={formData.tel}
+                  onChange={(e) => handleInputChange("tel", e.target.value)}
                   placeholder="กรุณากรอกเบอร์โทรศัพท์"
                 />
               ) : (
-                <p className="text-sm p-2 bg-muted rounded">{formData.telephone}</p>
+                <p className="text-sm p-2 bg-muted rounded">{formData.tel}</p>
               )}
             </div>
 

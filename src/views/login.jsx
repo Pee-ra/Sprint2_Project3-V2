@@ -6,26 +6,52 @@ import { Button } from "../components/ui/button";
 import { Checkbox } from "../components/ui/checkbox";
 import { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
+import axios from "axios";
 
-const Login = ({ onLogin, onSwitchToRegister, onBackToLanding, isAdmin = false }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const Login = ({ onLogin}) => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  })
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-
-  
-
-    // ตัวอย่าง: แยก admin / customer แบบง่าย ๆ
-    if (email === "admini@gmail.com" && password === "12345") {
-      onLogin({ id: "1", email, name: "user", role: "customer" });
-      navigate('/dashboard');
-      return;
-    }
-
-    alert("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" });
   };
+
+  const validate = () => {
+    const next = {};
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) next.email = "อีเมลไม่ถูกต้อง";
+    if (formData.password.length < 6) next.password = "รหัสผ่านอย่างน้อย 6 ตัว";
+     setErrors(next);
+    return Object.keys(next).length === 0;
+  };
+
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+    try {
+      setIsSubmitting(true);
+      const res = await axios.post('http://localhost:5001/login', formData);
+      onLogin(res.data.user);
+      // console.log(res.data.user);
+      navigate('/dashboard');
+      alert('เข้าสู่ระบบสําเร็จ');
+    } catch (error) {
+      // console.error(error);
+      setErrors(error.response.data.message);
+      alert(error.response.data.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
 
   return (
     <div className="bg-gray-50 font-sans min-h-screen flex items-center justify-center p-6">
@@ -79,22 +105,24 @@ const Login = ({ onLogin, onSwitchToRegister, onBackToLanding, isAdmin = false }
               เข้าสู่ระบบ
             </h1>
 
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleSubmit}>
               <InputWithLabel
                 label="อีเมล"
                 placeholder="you@example.com"
                 type="email"
+                name="email"
                 icon={<HiOutlineMail />}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                onChange={handleChange}
               />
               <br />
               <InputWithLabel
                 label="รหัสผ่าน"
                 type="password"
+                name="password"
                 icon={<TbLockPassword />}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formData.password}
+                onChange={handleChange}
               />
 
               <div className="flex justify-between py-3">
@@ -106,14 +134,14 @@ const Login = ({ onLogin, onSwitchToRegister, onBackToLanding, isAdmin = false }
               </div>
 
               <div className="flex">
-                <Button className="w-full" type="submit">เข้าสู่ระบบ</Button>
+                <Button className="w-full" type="submit" disabled={isSubmitting}>เข้าสู่ระบบ</Button>
               </div>
 
               <p className="text-xs py-2 flex justify-center">
                 ยังไม่มีบัญชี?
                 <button
                   type="button"
-                  onClick={onSwitchToRegister}
+                  
                   className="text-emerald-500 mx-2 underline"
                 >
                   <Link to="/register">สมัครสมาชิก</Link>

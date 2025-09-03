@@ -10,6 +10,10 @@ import {
 } from "react-icons/ri";
 import { Checkbox } from "../components/ui/checkbox";
 import { Button } from "../components/ui/button";
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { set } from "date-fns/set";
 // import { useState } from "react";
 
 export const Register = () => {
@@ -20,6 +24,55 @@ export const Register = () => {
   // const handleLogin = (e) => {
   //   e.preventDefault();
   // };
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({fullName: "", tel: "",email: "", password: "", roomNumber: "" });
+  const [errors, setErrors] = useState({});
+ 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+
+
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" });
+  };
+
+// vaklidation
+const validate = () => {
+    const next = {};
+    if (!formData.fullName.trim()) next.fullName = "กรอกชื่อ-นามสกุล";
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) next.email = "อีเมลไม่ถูกต้อง";
+    if (formData.password.length < 6) next.password = "รหัสผ่านอย่างน้อย 6 ตัว";
+    if (!/^[0-9]{9,12}$/.test(formData.tel)) next.tel = "เบอร์ควรเป็นตัวเลข 9-12 หลัก";
+    if (!formData.roomNumber.trim()) next.roomNumber = "กรอกหมายเลขห้อง";
+
+    setErrors(next);
+    alert(JSON.stringify(next));
+    return Object.keys(next).length === 0;
+  };
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+    if (password !== confirmPassword) {
+      setErrors("Passwords do not match.");
+      return;}
+    // if (!validate()) return; // ถ้าไม่ผ่าน validation หยุดเลย
+    try {
+        setIsSubmitting(true);
+        const res =  await axios.post('http://localhost:5001/register', formData);
+        alert('สมัครสมาชิกสําเร็จ');
+        navigate('/login');
+    } catch (error) {
+      console.error(error);
+      setErrors(error.response.data.message);
+      alert(error.response.data.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="bg-gray-50 font-sans min-h-screen flex items-center justify-center p-6">
@@ -76,8 +129,11 @@ export const Register = () => {
             <h1 className="text-xl font-semibold mb-2 flex justify-center">
               สมัครสมาชิก
             </h1>
-            <form>
+            <form onSubmit={handleSubmit}>
               <InputWithLabel
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleChange}
                 label="ชื่อ-นามสกุล"
                 placeholder="สวัสดี ชาวโลก"
                 type="text"
@@ -85,28 +141,41 @@ export const Register = () => {
               />
               <br />
               <InputWithLabel
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
                 label="อีเมล"
                 placeholder="example@email.com"
                 type="email"
                 icon={<HiOutlineMail />}
               />
               <InputWithLabel
+                name="tel"
+                value={formData.tel}
+                onChange={handleChange}
                 label="เบอร์โทรศัพท์"
                 type="text"
                 icon={<RiPhoneLine />}
               />
               <InputWithLabel
+                name="roomNumber"
+                value={formData.roomNumber}
+                onChange={handleChange}
                 label="เลขที่ห้อง/ที่อยู่"
                 placeholder="A-00"
                 type=" text"
                 icon={<RiHomeSmile2Line />}
               />
               <InputWithLabel
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
                 label="รหัสผ่าน"
                 type="password"
                 icon={<TbLockPassword />}
               />
               <InputWithLabel
+                name="confirmPassword"
                 label="ยืนยันรหัสผ่าน"
                 type="password"
                 icon={<TbLockPassword />}
@@ -115,10 +184,10 @@ export const Register = () => {
                 <Checkbox />
                 <p className=" text-xs">
                   {" "}
-                  ฉันยอมรับ ข้อกำหนดการใช้บริการ และ นโยบายตวามเป็นส่วนตัว
+                  ฉันยอมรับ ข้อกำหนดการใช้บริการ และ นโยบายความเป็นส่วนตัว
                 </p>
               </div>
-              <Button className="w-full">สมัครสมาชิก</Button>
+              <Button type="submit" disabled={isSubmitting} className="w-full">สมัครสมาชิก</Button>
               <p className="py-2 text-xs flex justify-center gap-2">
                 มีบัญชีอยู่แล้ว?{" "}
                 <span className="text-emerald-500"> <Link to="/Login">เข้าสู่ระบบ</Link></span>
