@@ -13,7 +13,6 @@ import { Button } from "../components/ui/button";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { set } from "date-fns/set";
 // import { useState } from "react";
 
 export const Register = () => {
@@ -25,7 +24,7 @@ export const Register = () => {
   //   e.preventDefault();
   // };
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({fullName: "", tel: "",email: "", password: "", roomNumber: "" });
+  const [formData, setFormData] = useState({fullName: "", tel: "",email: "", password: "",confirmPassword: "", roomNumber: "" });
   const [errors, setErrors] = useState({});
  
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,11 +54,11 @@ const validate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
-    if (password !== confirmPassword) {
+    // if (!validate()) return;
+    if (formData.password !== formData.confirmPassword) {
       setErrors("Passwords do not match.");
       return;}
-    // if (!validate()) return; // ถ้าไม่ผ่าน validation หยุดเลย
+    if (!validate()) return; // ถ้าไม่ผ่าน validation หยุดเลย
     try {
         setIsSubmitting(true);
         const res =  await axios.post('http://localhost:5001/register', formData);
@@ -163,7 +162,7 @@ const validate = () => {
                 onChange={handleChange}
                 label="เลขที่ห้อง/ที่อยู่"
                 placeholder="A-00"
-                type=" text"
+                type="text"
                 icon={<RiHomeSmile2Line />}
               />
               <InputWithLabel
@@ -176,6 +175,8 @@ const validate = () => {
               />
               <InputWithLabel
                 name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
                 label="ยืนยันรหัสผ่าน"
                 type="password"
                 icon={<TbLockPassword />}
