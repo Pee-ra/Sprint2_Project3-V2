@@ -49,13 +49,15 @@ const ServiceCard = ({ user, onNavigateToBooking, onNavigateToTracking }) => {
                   </div>
                 ))}
               </div>
-              <Button className="w-full bg-teal-500 font-semibold" onClick={onNavigateToBooking}>
-                {index === 0
-                  ? "เลือกแพ็กเกจ"
-                  : index === 1
-                  ? "จองบริการ"
-                  : "เลือกรายการ"}
-              </Button>
+              <Link to= "/booking">
+                <Button className="w-full bg-teal-500 font-semibold" onClick={onNavigateToBooking}>
+                  {index === 0
+                    ? "เลือกแพ็กเกจ"
+                    : index === 1
+                    ? "จองบริการ"
+                    : "เลือกรายการ"}
+                </Button>
+              </Link>
             </div>
           ))}
         </div>

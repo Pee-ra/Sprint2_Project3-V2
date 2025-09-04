@@ -9,6 +9,8 @@ import { perPieceItems } from "../data/services.js";
 import { ShinyButton } from "@/components/magicui/shiny-button";
 import Footer from '../components/ui/Footer';
 import { Link } from "react-router-dom";
+import Lottie from "lottie-react";
+import wash from "../components/lottie/wash.json";
 
 export function BookingService({ onNavigateToPayment, user }) {
   const [selectedService, setSelectedService] = useState(null);
@@ -95,6 +97,7 @@ export function BookingService({ onNavigateToPayment, user }) {
       </div>
 
       {/* Service Type Selection */}
+
       <div className="flex justify-center">
         <div className="inline-flex rounded-lg border border-border bg-muted p-1">
           <ShinyButton
@@ -135,6 +138,7 @@ export function BookingService({ onNavigateToPayment, user }) {
       {serviceType === "per-kg" && (
         <div className="space-y-6">
           <h3 className="text-xl font-semibold text-center">เลือกน้ำหนักเสื้อผ้า</h3>
+
           <div className="max-w-2xl mx-auto ">
             <Card className="p-6">
               <div className="space-y-4">

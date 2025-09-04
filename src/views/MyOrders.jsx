@@ -4,6 +4,8 @@ import { Card } from "../components/ui/card.jsx";
 import { Badge } from "../components/ui/badge.jsx";
 import { Input } from "../components/ui/input.jsx";
 import { myOrdershistory } from "../data/services.js";
+import Lottie from "lottie-react";
+import wash from "../components/lottie/wash.json";
 
 
 export function MyOrders() {
@@ -81,13 +83,14 @@ export function MyOrders() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 relative">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-semibold mb-2">ประวัติการสั่งซื้อ</h2>
+        <h2 className="text-2xl font-semibold mb-2">ประวัติการสั่งซื้อ</h2> 
         <p className="text-muted-foreground">
           ติดตามและจัดการคำสั่งซื้อของคุณ
         </p>
+        <Lottie animationData={wash} className=" absolute -top-12 left-60" style={{width: "160px", height: "160px"}}/>
       </div>
 
       {/* Stats Cards */}

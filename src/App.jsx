@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate ,Outlet } from 'react-router-dom';
 import { useState } from "react";
 import { LandingPage } from "./views/LandingPage.jsx";
-import  Login  from "./views/Login.jsx";
+import  Login  from "./views/login.jsx";
 import { BookingService } from "./views/BookingService.jsx";
 import { MyOrders } from "./views/MyOrders.jsx";
 import { Profile } from "./views/Profile.jsx";
@@ -16,6 +16,7 @@ import  ProtectedRoute  from "./components/ProtectedRoute.jsx";
 import Footer from './components/ui/Footer.jsx';
 import { useLocation } from 'react-router-dom';
 import Payment from './views/Payment.jsx';
+// import { UserProvider } from './context/AuthContext.jsx';
 
 
 // Protected Route component
@@ -74,45 +75,47 @@ export default function App() {
 
   return (
     <Router>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<Login onLogin={handleLogin} />} />
-        <Route path="/register" element={<Register onRegister={handleRegister} />} />
-        <Route path="/admin" element={<AdminLogin onLogin={handleAdminLogin} />} />
+      {/* <UserProvider> */}
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login onLogin={handleLogin} />} />
+          <Route path="/register" element={<Register onRegister={handleRegister} />} />
+          <Route path="/admin" element={<AdminLogin onLogin={handleAdminLogin} />} />
 
-        {/* Customer Protected Routes with Layout */}
-        <Route path="/" element={<CustomerLayout user={user} onLogout={handleLogout} />}>
-          <Route path="dashboard" element={<DashboardView user={user} />} />
-          <Route path="booking" element={<BookingService user={user} />} />
-          <Route path="orders" element={<MyOrders />} />
-          <Route path="profile" element={<Profile user={user} />} />
-          <Route path="payment" element={<Payment user={user} />}  />
-        </Route>
+          {/* Customer Protected Routes with Layout */}
+          <Route path="/" element={<CustomerLayout user={user} onLogout={handleLogout} />}>
+            <Route path="dashboard" element={<DashboardView user={user} />} />
+            <Route path="booking" element={<BookingService user={user} />} />
+            <Route path="orders" element={<MyOrders />} />
+            <Route path="profile" element={<Profile user={user} />} />
+            <Route path="payment" element={<Payment user={user} />}  />
+          </Route>
 
-        {/* Admin Protected Routes with Layout */}
-        <Route path="/admin" element={<AdminLayout user={user} onLogout={handleLogout} />}>
-          <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="orders" element={<AdminOrders />} />
-          <Route path="customers" element={<AdminCustomers />} />
+          {/* Admin Protected Routes with Layout */}
+          <Route path="/admin" element={<AdminLayout user={user} onLogout={handleLogout} />}>
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="orders" element={<AdminOrders />} />
+            <Route path="customers" element={<AdminCustomers />} />
 
-        </Route>
+          </Route>
 
-        {/* Redirect based on user role */}
-        <Route 
-          path="/app" 
-          element={
-            user ? (
-              <Navigate to={user.role === 'admin' ? '/admin/dashboard' : '/dashboard'} replace />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          } 
-        />
+          {/* Redirect based on user role */}
+          <Route 
+            path="/app" 
+            element={
+              user ? (
+                <Navigate to={user.role === 'admin' ? '/admin/dashboard' : '/dashboard'} replace />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            } 
+          />
 
-        {/* Catch all - redirect to appropriate page */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+          {/* Catch all - redirect to appropriate page */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      {/* </UserProvider> */}
     </Router>
   );
 }

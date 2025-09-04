@@ -7,8 +7,11 @@ import { Checkbox } from "../components/ui/checkbox";
 import { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
+import { set } from "date-fns/set";
+import Loading from "./Loading";
 
 const Login = ({ onLogin}) => {
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -41,8 +44,10 @@ const Login = ({ onLogin}) => {
       const res = await axios.post('http://localhost:5001/login', formData);
       onLogin(res.data.user);
       // console.log(res.data.user);
-      navigate('/dashboard');
-      alert('เข้าสู่ระบบสําเร็จ');
+      
+      setIsRedirecting(true);
+      setTimeout(() => navigate('/dashboard'), 3000)
+      
     } catch (error) {
       // console.error(error);
       setErrors(error.response.data.message);
@@ -52,6 +57,9 @@ const Login = ({ onLogin}) => {
     }
   };
 
+  if (isRedirecting) {
+    return <div><Loading /></div>;
+  }
 
   return (
     <div className="bg-gray-50 font-sans min-h-screen flex items-center justify-center p-6">
