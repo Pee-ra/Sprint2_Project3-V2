@@ -5,17 +5,16 @@ import { InputWithLabel } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Checkbox } from "../components/ui/checkbox";
 import { useState } from "react";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { set } from "date-fns/set";
 import Loading from "./Loading";
 
-const Login = ({ onLogin}) => {
+const Login = ({ onLogin }) => {
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-  })
+  });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -30,24 +29,21 @@ const Login = ({ onLogin}) => {
     const next = {};
     if (!/^\S+@\S+\.\S+$/.test(formData.email)) next.email = "อีเมลไม่ถูกต้อง";
     if (formData.password.length < 6) next.password = "รหัสผ่านอย่างน้อย 6 ตัว";
-     setErrors(next);
+    setErrors(next);
     return Object.keys(next).length === 0;
   };
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
     try {
       setIsSubmitting(true);
-      const res = await axios.post('http://localhost:5001/login', formData);
+      const res = await axios.post("http://localhost:5001/login", formData);
       onLogin(res.data.user);
       // console.log(res.data.user);
-      
+
       setIsRedirecting(true);
-      setTimeout(() => navigate('/dashboard'), 3000)
-      
+      setTimeout(() => navigate("/dashboard"), 3000);
     } catch (error) {
       // console.error(error);
       setErrors(error.response.data.message);
@@ -58,7 +54,11 @@ const Login = ({ onLogin}) => {
   };
 
   if (isRedirecting) {
-    return <div><Loading /></div>;
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
   }
 
   return (
@@ -68,7 +68,7 @@ const Login = ({ onLogin}) => {
         <div className="items-center justify-center p-6 flex-1/2">
           <button
             type="button"
-            onClick={() => navigate('/landing')}
+            onClick={() => navigate("/landing")}
             className="text-xs flex items-center mb-4 gap-2"
           >
             <AiOutlineArrowLeft />
@@ -142,14 +142,19 @@ const Login = ({ onLogin}) => {
               </div>
 
               <div className="flex">
-                <Button className="w-full" type="submit" disabled={isSubmitting}>เข้าสู่ระบบ</Button>
+                <Button
+                  className="w-full"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  เข้าสู่ระบบ
+                </Button>
               </div>
 
               <p className="text-xs py-2 flex justify-center">
                 ยังไม่มีบัญชี?
                 <button
                   type="button"
-                  
                   className="text-emerald-500 mx-2 underline"
                 >
                   <Link to="/register">สมัครสมาชิก</Link>
