@@ -4,26 +4,22 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { InputWithLabel } from "../components/ui/input";
 import { Button } from "../components/ui/button";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 // แก้ไขตรงนี้: เพิ่ม { onLogin } เข้าไปในพารามิเตอร์ของฟังก์ชัน
-const AdminLogin = ({ onLogin }) => {
+const AdminLogin = () => {
+  const { adminLogin, loading } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleAdminLogin = (e) => {
+  const handleAdminLogin = async(e) => {
     e.preventDefault();
-
-    // ตัวอย่างการตรวจสอบข้อมูลจำลอง
-    if (email === "admini@gmail.com" && password === "12345") {
-      // เรียกใช้ฟังก์ชัน onLogin ที่ส่งมาจาก App.js เพื่ออัปเดต state
-      onLogin({ id: "1", email, name: "user", role: "admin" });
-      
-      // นำทางไปยัง Dashboard
-      navigate('/admin/dashboard');
-    } else {
-      // สามารถเพิ่มการแจ้งเตือนเมื่อล็อกอินไม่สำเร็จที่นี่
-      alert("Invalid email or password");
+    const ok = await adminLogin(email, password); // ✅ เรียกจาก context
+    if (ok) {
+      console.log("✅ Admin login success");
+      navigate("/admin/dashboard");
     }
   };
 

@@ -57,7 +57,7 @@ export default function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
 
           {/* Customer Protected Routes with Layout */}
           <Route path="/" element={<CustomerLayout />}>
