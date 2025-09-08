@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
           headers: { "Cache-Control": "no-cache" },
         });
         // backend ส่ง { userId } กลับมา → ไปดึงโปรไฟล์เต็มก็ได้ หรือใช้เท่าที่มี
-        setUser({ _id: data.userId, role: "customer" });
+        setUser({ ...data.user, role: "customer" });
       } catch {
         setUser(null);
       } finally {
