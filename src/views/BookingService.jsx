@@ -10,8 +10,11 @@ import { ShinyButton } from "@/components/magicui/shiny-button";
 import Footer from "../components/ui/Footer";
 import { Link } from "react-router-dom";
 import Lottie from "lottie-react";
+import { useAuth } from "../context/AuthContext.jsx";
+import { useEffect } from "react";
+import { is } from "date-fns/locale/is";
 
-export function BookingService({ onNavigateToPayment, user }) {
+export function BookingService({ onNavigateToPayment }) {
   const [selectedService, setSelectedService] = useState(null);
   const [serviceType, setServiceType] = useState("per-kg");
   const [customItems, setCustomItems] = useState([]);
@@ -19,7 +22,24 @@ export function BookingService({ onNavigateToPayment, user }) {
   const [pickupTime, setPickupTime] = useState("");
   const [specialInstructions, setSpecialInstructions] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
+  const {user} = useAuth();
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: user?.fullName || "",
+    email: user?.email || "",
+    tel: user?.tel || "",
+    roomNumber: user?.roomNumber || "",
+  });
+  console.log(formData);
 
+  useEffect(() => {
+      setFormData({
+        fullName: user?.fullName || "",
+        email: user?.email || "",
+        tel: user?.tel || "",
+        roomNumber: user?.roomNumber || "",
+      });
+  }, [user]);
   const addCustomItem = (item) => {
     const existingItem = customItems.find((i) => i.name === item.name);
     if (existingItem) {
@@ -67,6 +87,13 @@ export function BookingService({ onNavigateToPayment, user }) {
     if (serviceType === "per-kg") {
       setTotalPrice(service.price);
     }
+  };
+
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
   const handleSubmit = () => {
@@ -323,17 +350,62 @@ export function BookingService({ onNavigateToPayment, user }) {
               />
             </div>
 
-            <div className="bg-muted p-4 rounded-lg">
+            <div className="bg-muted p-4 rounded-lg relative">
+              {!isEditing ?(<button onClick={() => setIsEditing(true)} className="absolute top-4 right-4 px-3 py-1.5 text-sm font-medium 
+               rounded-md bg-chart-2 text-primary-foreground 
+               hover:bg-primary/90">แก้ไขข้อมูล</button>):(<button onClick={() => setIsEditing(false)} className="absolute top-4 right-4 px-3 py-1.5 text-sm font-medium
+                rounded-md  bg-emerald-500 text-primary-foreground transaparent
+                hover:bg-primary/90">ยืนยันการแก้ไข</button>)}
               <h4 className="font-medium mb-2">ข้อมูลการจัดส่ง</h4>
-              <p className="text-sm text-muted-foreground mb-2">
-                <strong>ชื่อ:</strong> {user?.name}
-              </p>
-              <p className="text-sm text-muted-foreground mb-2">
-                <strong>เบอร์โทร:</strong> {user?.telephone}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>ที่อยู่:</strong> ห้อง {user?.roomNumber}
-              </p>
+
+              <div>
+                <p className="text-sm text-muted-foreground mb-2">
+                  <strong>ชื่อ:</strong>{" "}
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      onChange={(e) => handleInputChange("fullName", e.target.value)}
+                      value={formData.fullName}
+                      className="border-3 border-teal-700 rounded-md ml-9.5  px-2 py-1"
+                    />
+                  ) : (
+                    <span>{formData?.fullName}</span>
+                  )}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-sm text-muted-foreground mb-2">
+                  <strong>เบอร์โทร:</strong>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      onChange={(e) => handleInputChange("tel", e.target.value)}
+                      value={formData.tel}
+                      className="border-3 border-teal-700 rounded-md ml-2  px-2 py-1 "
+                    />
+                  ) : (
+                    <span>{formData?.tel}</span>
+                  )}
+                </p>
+              </div>
+              
+              <div>
+                <p className="text-sm text-muted-foreground mb-2">
+                  <strong>ที่อยู่:</strong> 
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      onChange={(e) => handleInputChange("roomNumber", e.target.value)}
+                      value={formData.roomNumber}
+                      className="border-3 border-teal-700 rounded-md ml-8.5  px-2 py-1"
+                    />
+                  ):(
+                    <span>{formData?.roomNumber}</span>
+                  )}
+                </p>
+              </div>
+
             </div>
           </div>
         </Card>
@@ -375,9 +447,9 @@ export function BookingService({ onNavigateToPayment, user }) {
               </div>
             </div>
 
-            <Button className="w-full" size="lg" onClick={handleSubmit}>
-              <Link to="/payment">ดำเนินการชำระเงิน</Link>
-            </Button>
+            <Link to="/payment"><Button className="w-full" size="lg" onClick={handleSubmit}>
+              ดำเนินการชำระเงิน
+            </Button></Link>
           </div>
         </Card>
       )}
