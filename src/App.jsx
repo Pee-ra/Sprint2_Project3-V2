@@ -1,121 +1,84 @@
-import { BrowserRouter as Router, Routes, Route, Navigate ,Outlet } from 'react-router-dom';
-import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { LandingPage } from "./views/LandingPage.jsx";
-import  Login  from "./views/login.jsx";
+import Login from "./views/login.jsx";
 import { BookingService } from "./views/BookingService.jsx";
 import { MyOrders } from "./views/MyOrders.jsx";
 import { Profile } from "./views/Profile.jsx";
 import { DashboardView } from "./views/DashboardView.jsx";
 import { AdminDashboard } from "./views/AdminDashboard.jsx";
 import { Register } from "./views/Register.jsx";
-import  AdminLogin  from "./views/AdminLogin.jsx";
+import AdminLogin from "./views/AdminLogin.jsx";
 import { AdminOrders } from './views/AdminOrders.jsx';
 import { AdminCustomers } from './views/AdminCustomers.jsx';
 import { Layout } from './components/Layout';
-import  ProtectedRoute  from "./components/ProtectedRoute.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Footer from './components/ui/Footer.jsx';
 import { useLocation } from 'react-router-dom';
 import Payment from './views/Payment.jsx';
-// import { UserProvider } from './context/AuthContext.jsx';
-
-
-// Protected Route component
-
+import { AuthProvider, useAuth } from "./context/AuthContext.jsx"; // ✅ import
 
 // Customer Layout wrapper
-function CustomerLayout({ user, onLogout }) {
+function CustomerLayout() {
   const location = useLocation();
+  const { user, logout, booting } = useAuth();   // ✅ ใช้ context
 
-  // path ที่ต้องการให้แสดง footer
+  if (booting) return <div>Loading...</div>;
+
   const footerRoutes = ["/dashboard", "/booking"];
 
   return (
     <ProtectedRoute user={user} requiredRole="customer">
-      <Layout user={user} onLogout={onLogout} isAdmin={false} />
-
-      {/* render เนื้อหาหน้า */}
-
-      {/* render footer เฉพาะบาง path */}
+      <Layout user={user} onLogout={logout} isAdmin={false} />
       {footerRoutes.includes(location.pathname) && <Footer />}
     </ProtectedRoute>
   );
 }
 
-
-
 // Admin Layout wrapper
-function AdminLayout({ user, onLogout }) {
+function AdminLayout() {
+  const { user, logout, booting } = useAuth();
+
+  if (booting) return <div>Loading...</div>;
+
   return (
     <ProtectedRoute user={user} requiredRole="admin">
-      <Layout user={user} onLogout={onLogout} isAdmin={true} />
+      <Layout user={user} onLogout={logout} isAdmin={true} />
       <Outlet />
     </ProtectedRoute>
   );
 }
 
-
 export default function App() {
-  const [user, setUser] = useState(null);
-
-  const handleLogin = (userData) => {
-    setUser({ ...userData, role: "customer" });
-  };
-
-  const handleAdminLogin = (userData) => {
-    setUser({ ...userData, role: "admin" });
-  };
-
-  const handleRegister = (userData) => {
-    setUser({ ...userData, role: "customer" });
-  };
-
-  const handleLogout = () => {
-    setUser(null);
-  };
-
   return (
     <Router>
-      {/* <UserProvider> */}
+      <AuthProvider>   {/* ✅ ครอบด้วย Provider */}
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<Login onLogin={handleLogin} />} />
-          <Route path="/register" element={<Register onRegister={handleRegister} />} />
-          <Route path="/admin" element={<AdminLogin onLogin={handleAdminLogin} />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/admin" element={<AdminLogin />} />
 
           {/* Customer Protected Routes with Layout */}
-          <Route path="/" element={<CustomerLayout user={user} onLogout={handleLogout} />}>
-            <Route path="dashboard" element={<DashboardView user={user} />} />
-            <Route path="booking" element={<BookingService user={user} />} />
+          <Route path="/" element={<CustomerLayout />}>
+            <Route path="dashboard" element={<DashboardView />} />
+            <Route path="booking" element={<BookingService />} />
             <Route path="orders" element={<MyOrders />} />
-            <Route path="profile" element={<Profile user={user} />} />
-            <Route path="payment" element={<Payment user={user} />}  />
+            <Route path="profile" element={<Profile />} />
+            <Route path="payment" element={<Payment />} />
           </Route>
 
           {/* Admin Protected Routes with Layout */}
-          <Route path="/admin" element={<AdminLayout user={user} onLogout={handleLogout} />}>
+          <Route path="/admin" element={<AdminLayout />}>
             <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="orders" element={<AdminOrders />} />
             <Route path="customers" element={<AdminCustomers />} />
-
           </Route>
 
-          {/* Redirect based on user role */}
-          <Route 
-            path="/app" 
-            element={
-              user ? (
-                <Navigate to={user.role === 'admin' ? '/admin/dashboard' : '/dashboard'} replace />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            } 
-          />
-
-          {/* Catch all - redirect to appropriate page */}
+          {/* Catch all - redirect */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      {/* </UserProvider> */}
+      </AuthProvider>
     </Router>
   );
 }

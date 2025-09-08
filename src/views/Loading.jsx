@@ -7,7 +7,7 @@ const Loading = () => {
   return (
     <div>
         <Lottie animationData={whale}/>
-        <TypingAnimation className={"text-center text-2xl "}>ยินดีต้อนรับครับสุดหล่อ สุดสวย</TypingAnimation>
+        <TypingAnimation className={"text-center text-2xl "}>ยินดีต้อนรับครับสุดหล่อ</TypingAnimation>
     </div>
   )
 }
