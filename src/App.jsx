@@ -43,7 +43,6 @@ function AdminLayout() {
   return (
     <ProtectedRoute user={user} requiredRole="admin">
       <Layout user={user} onLogout={logout} isAdmin={true} />
-      <Outlet />
     </ProtectedRoute>
   );
 }
