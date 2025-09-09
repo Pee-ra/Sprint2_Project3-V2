@@ -28,7 +28,7 @@ export const LandingPage = ({ onLogin, onRegister, onAdminLogin }) => {
                     <span>Get started</span>
                 </li>
                 </Link>
-                <Link to="/admin">
+                <Link to="/admin/login">
                 <li className='mr-6 border-3 p-1.5 px-6 rounded-sm hover:bg-[#91d4dd66] cursor-pointer' >
                     <span>Admin</span>
                 </li>

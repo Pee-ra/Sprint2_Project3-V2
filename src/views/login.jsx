@@ -34,7 +34,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-    const ok = await login(formData.email, formData.password);
+    const ok = await login(formData.email, formData.password); //ยิงไปที่ authContext
     if (ok) {
       setIsRedirecting(true);
       setTimeout(() => navigate("/dashboard"), 2500);

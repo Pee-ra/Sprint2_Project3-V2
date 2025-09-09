@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
           headers: { "Cache-Control": "no-cache" },
         });
         // backend ส่ง { userId } กลับมา → ไปดึงโปรไฟล์เต็มก็ได้ หรือใช้เท่าที่มี
-        setUser({ ...data.user, role: "customer" });
+        setUser(data.user);
       } catch {
         setUser(null);
       } finally {
@@ -61,6 +61,26 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const adminLogin = async (email, password) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const res = await axios.post(
+        `${API_URL}/admin/login`,
+        { email, password },
+        { withCredentials: true }
+      );
+      // server set httpOnly cookie แล้ว ส่ง user กลับมาด้วย
+      setUser({ ...res.data.user, role: "admin" });
+      return true;
+    } catch (err) {
+      setError(err.response?.data?.message || "เข้าสู่ระบบไม่สำเร็จ");
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // (ออปชัน) fallback ถ้าไม่ได้ใช้ verify: persist localStorage
   const saveUserToStorage = (u) => localStorage.setItem("user", JSON.stringify(u));
   const loadUserFromStorage = () => {
@@ -69,7 +89,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, booting, loading, error, login, logout }}>
+    <AuthContext.Provider value={{ user, booting, loading, error, login, logout, adminLogin }}>
       {children}
     </AuthContext.Provider>
   );
