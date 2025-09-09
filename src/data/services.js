@@ -48,9 +48,9 @@ export const perKgRates = [
 ];
 
 export const perPieceItems = [
-    { name: "เสื้อสูท", price: 80, category: "เสื้อผ้าพิเศษ" },
+    { name: "เสื้อสูท", price: 120, category: "เสื้อผ้าพิเศษ" },
     { name: "สูทชุด", price: 120, category: "เสื้อผ้าพิเศษ" },
-    { name: "ผ้าปูที่นอน", price: 40, category: "ผ้าบ้าน" },
+    { name: "ผ้าปูที่นอน", price: 50, category: "ผ้าบ้าน" },
     { name: "ปลอกหมอน", price: 20, category: "ผ้าบ้าน" },
     { name: "ผ้าม่าน", price: 100, category: "ผ้าบ้าน" },
     { name: "ผ้าห่ม", price: 150, category: "ผ้าบ้าน" },
@@ -59,17 +59,7 @@ export const perPieceItems = [
 ];
 
 export const dashboardServiceCards = [
-  // {
-  //   title: "แพ็กเกจรายเดือน",
-  //   description: "สมัครแพ็กเกจรายเดือนที่คุ้มค่าสำหรับบริการประจำ",
-  //   image: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400&h=250&fit=crop",
-  //   alt: "เสื้อผ้าที่พับเรียบร้อย",
-  //   pricing: [
-  //     { label: "แพ็กเกจเล็ก", price: "฿299/เดือน" },
-  //     { label: "แพ็กเกจกลาง", price: "฿499/เดือน" },
-  //     { label: "แพ็กเกจใหญ่", price: "฿799/เดือน" },
-  //   ]
-  // },
+
   {
     title: "บริการคิดตามน้ำหนัก",
     description: "ราคายืดหยุ่นตามน้ำหนักของเสื้อผ้าที่ต้องการซัก",
@@ -84,10 +74,12 @@ export const dashboardServiceCards = [
   {
     title: "บริการคิดตามชิ้น",
     description: "ราคาแยกตามประเภทเสื้อผ้าแต่ละชิ้นพร้อมการดูแลพิเศษ",
+    image : "https://unsplash.com/photos/assorted-color-formal-suit-jackets-Db4d6MRIXJc",
+    alt: "ซักรีดรายชิ้น",
     pricing: [
-      { label: "เสื้อเชิ้ต", price: "฿25" },
-      { label: "กางเกงยีนส์", price: "฿35" },
-      { label: "สูท", price: "฿120" },
+      { label: "เสื้อสูท", price: "฿120" },
+      { label: "ผ้าห่ม", price: "฿200" },
+      { label: "ผ้าไหม", price: "฿150" },
     ]
   }
 ];

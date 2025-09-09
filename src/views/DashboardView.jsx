@@ -6,11 +6,12 @@ import { Link } from "react-router-dom";
 import ServiceCard from "../components/ui/ServiceCard.jsx";
 import Lottie from "lottie-react";
 import fish from "../components/lottie/fish.json";
+import { useAuth } from "../context/AuthContext";
 
 
-
-export function DashboardView({ user, onNavigateToBooking, onNavigateToTracking }) {
-  
+export function DashboardView({ onNavigateToBooking, onNavigateToTracking }) {
+  const { user } = useAuth();  // ✅ ดึง user จาก context
+  const firstName = user?.name?.trim()?.split(" ")[0] || "user";
 
   return (
     <div className="space-y-8 justify-center">
@@ -19,8 +20,8 @@ export function DashboardView({ user, onNavigateToBooking, onNavigateToTracking 
         <Lottie animationData={fish} className="absolute top-0 right-0 rotate-90" style={{ width: "237px", height: "200px" }} />
 
         <div className="relative z-10">
-          <h1 className="text-4xl font-bold text-foreground mb-4 ">
-            ยินดีต้อนรับกลับมา, คุณ{user?.name?.split(" ")[0]}!
+          <h1 className="text-4xl font-bold text-foreground mb-4">
+            ยินดีต้อนรับกลับมา, คุณ{firstName}!
           </h1>
           <p className="text-xl text-muted-foreground mb-6">
             เป็นพาร์ทเนอร์บริการซักรีดที่คุณไว้วางใจ -
