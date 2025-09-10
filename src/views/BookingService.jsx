@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import Lottie from "lottie-react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useEffect } from "react";
+import BottomSummaryButton from "../components/ui/BottomSummaryButton.jsx";
 
 export function BookingService({ onNavigateToPayment }) {
   const [selectedService, setSelectedService] = useState(null);
@@ -156,7 +157,7 @@ export function BookingService({ onNavigateToPayment }) {
               setTotalPrice(0);
             }}
           >
-            <i class="ri-weight-line"></i> คิดตามน้ำหนัก
+            <i className="ri-weight-line"></i> คิดตามน้ำหนัก
           </ShinyButton>
           <ShinyButton
             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
@@ -463,6 +464,13 @@ export function BookingService({ onNavigateToPayment }) {
                     <span>฿{item.price * item.quantity}</span>
                   </div>
                 ))}
+              <BottomSummaryButton
+                totalPrice={totalPrice}
+                onSubmit={handleSubmit}
+                show={selectedService || customItems.length > 0}
+                
+                
+              />
             </div>
 
             {/* <div className="pt-4 border-t border-border">
@@ -471,22 +479,22 @@ export function BookingService({ onNavigateToPayment }) {
                 <span className="text-primary">฿{totalPrice}</span>
               </div>
             </div> */}
-            <div className="flex justify-center ">
-              {" "}
-              <Link to="/payment">
-                {" "}
-                <Button
+            {/* <div className="flex justify-center "> */}
+
+            {/* <Link to="/payment"> */}
+
+            {/* <Button
                   className="w-120 flex justify-between font-bold text-lg text-white"
                   size="xl"
                   onClick={handleSubmit}
                 >
                   {" "}
                   รวมทั้งสิ้น :<span className="">฿ {totalPrice}</span>{" "}
-                </Button>{" "}
-              </Link>{" "}
-            </div>
+                </Button>{" "} */}
+            {/* </Link> */}
           </div>
-        </Card>
+          {/* </div> */}
+        </Card >
       )}
     </div>
   );
