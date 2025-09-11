@@ -13,6 +13,8 @@ import Lottie from "lottie-react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useEffect } from "react";
 import BottomSummaryButton from "../components/ui/BottomSummaryButton.jsx";
+import QuantitySelector from "../components/ui/quantitySelecter.jsx";
+import CustomMarquee from "../components/ui/colthset.jsx";
 
 export function BookingService({ onNavigateToPayment }) {
   const [selectedService, setSelectedService] = useState(null);
@@ -172,7 +174,7 @@ export function BookingService({ onNavigateToPayment }) {
               setTotalPrice(0);
             }}
           >
-            <i class="ri-t-shirt-line"></i> คิดตามชิ้น
+            <i className="ri-t-shirt-line"></i> คิดตามชิ้น
           </ShinyButton>
         </div>
       </div>
@@ -222,10 +224,11 @@ export function BookingService({ onNavigateToPayment }) {
 
       {/* Per Piece Items */}
       {serviceType === "per-piece" && (
-        <div className="space-y-6">
+        <div className="space-y-6 mx-20">
           <h3 className="text-xl font-semibold text-center">
             เลือกรายการเสื้อผ้า
           </h3>
+          <CustomMarquee/>
 
           {/* Selected Items */}
           {customItems.length > 0 && (
@@ -281,30 +284,33 @@ export function BookingService({ onNavigateToPayment }) {
           )}
 
           {/* Available Items */}
-          <div className="space-y-4 ">
-            {["เสื้อผ้าพิเศษ", "ผ้าบ้าน"].map((category) => (
-              <Card key={category} className="p-6  ">
-                <h4 className="font-medium mb-4">{category}</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {perPieceItems
-                    .filter((item) => item.category === category)
-                    .map((item) => (
-                      <button
-                        key={item.name}
-                        className="p-3 border border-border rounded-lg text-left hover:border-primary/50 transition-colors"
-                        onClick={() => addCustomItem(item)}
-                      >
-                        <div className="flex justify-between items-center">
-                          <span>{item.name}</span>
-                          <span className="font-semibold text-primary">
-                            ฿{item.price}
-                          </span>
-                        </div>
-                      </button>
-                    ))}
-                </div>
-              </Card>
-            ))}
+
+          <div className="space-y-4">
+            <Card className="p-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3">
+                {perPieceItems.map((item) => (
+                  <button
+                    key={item.name}
+                    className="p-3 border border-border rounded-lg text-left hover:border-primary/50 transition-colors-transform duration-300 hover:scale-103"
+                  >
+                    <div className="flex justify-between items-center">
+                      <span>{item.name}</span>
+                      <div className="flex-col">
+                        <span className="font-semibold text-primary">
+                          ฿{item.price}
+                        </span>
+                        <QuantitySelector
+                          key={item.name}
+                          item={item} //ส่ง
+                          customItems={customItems}
+                          setCustomItems={setCustomItems}
+                        />
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </Card>
           </div>
         </div>
       )}
