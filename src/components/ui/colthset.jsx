@@ -25,6 +25,7 @@ export default function CustomMarquee() {
               className={`
             w-full h-full object-cover
             transition-all duration-300 group-hover:scale-250
+            cursor-grab
           `}
             />
           </div>
