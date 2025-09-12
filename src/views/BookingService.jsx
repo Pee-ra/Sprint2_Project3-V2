@@ -191,7 +191,7 @@ export function BookingService({ onNavigateToPayment }) {
               <div className="space-y-4 flex gap-6">
                 <div className=" rounded-lg overflow-hidden">
                   <ImageWithFallback
-                    src="src/assets/bucket.png"
+                    src="public/bucket.png"
                     alt="ตะกร้าซักผ้า"
                     className="object-cover h-50"
                   />
@@ -228,7 +228,7 @@ export function BookingService({ onNavigateToPayment }) {
           <h3 className="text-xl font-semibold text-center">
             เลือกรายการเสื้อผ้า
           </h3>
-          <CustomMarquee/>
+          <CustomMarquee />
 
           {/* Selected Items */}
           {customItems.length > 0 && (
@@ -474,8 +474,6 @@ export function BookingService({ onNavigateToPayment }) {
                 totalPrice={totalPrice}
                 onSubmit={handleSubmit}
                 show={selectedService || customItems.length > 0}
-                
-                
               />
             </div>
 
@@ -500,7 +498,7 @@ export function BookingService({ onNavigateToPayment }) {
             {/* </Link> */}
           </div>
           {/* </div> */}
-        </Card >
+        </Card>
       )}
     </div>
   );
