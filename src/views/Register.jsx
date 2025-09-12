@@ -121,7 +121,7 @@ const validate = () => {
             <div className="mb-4 flex justify-center">
               <img
                 className="w-30 h-auto flex justify-center items-center "
-                src="../src/assets/logotextv2.png"
+                src="/Logotextv2.png"
                 alt="logo"
               />
             </div>

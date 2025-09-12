@@ -67,7 +67,7 @@ export function TopNavigation({ user, onLogout, isAdmin = false }) {
               to={user ? (isAdmin ? '/admin/dashboard' : '/dashboard') : '/'} 
               className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
             >
-             <img src="../src/assets/Logotextv2.png" // ✅ เปลี่ยนเป็น path ที่ถูกต้องของโลโก้
+             <img src="/Logotextv2.png" // ✅ เปลี่ยนเป็น path ที่ถูกต้องของโลโก้
              alt="Whale Wash Logo"
               className="w-18 h-18 rounded-lg object-cover"
              />

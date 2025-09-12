@@ -29,7 +29,7 @@ const AdminLogin = () => {
         <div className="flex justify-center items-center">
           <img
             className="w-30 h-auto flex justify-center items-center"
-            src="../src/assets/logotextv2.png"
+            src="/Logotextv2.png"
             alt="logo"
           />
         </div>
