@@ -106,7 +106,7 @@ export function AdminDashboard() {
       <div>
         <h1 className="text-3xl font-bold text-gray-900">แดชบอร์ดแอดมิน</h1>
         <p className="text-muted-foreground mt-2">
-          ภาพรวมการดำเนินงานและตัวชี้วัดสำคัญของ CleanEase
+          ภาพรวมการดำเนินงานและตัวชี้วัดสำคัญของ Whale Wash
         </p>
       </div>
 

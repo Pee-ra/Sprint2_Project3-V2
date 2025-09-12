@@ -1,26 +1,27 @@
 import { Button } from "../components/ui/button.jsx";
 import { ImageWithFallback } from "../components/ui/ImageWithFallback.jsx";
-import { dashboardServiceCards } from "../data/services.js";
 import { companyFeatures } from "../data/services.js";
 import { Link } from "react-router-dom";
 import ServiceCard from "../components/ui/ServiceCard.jsx";
 import Lottie from "lottie-react";
 import fish from "../components/lottie/fish.json";
+import { useAuth } from "../context/AuthContext";
 
-
-
-export function DashboardView({ user, onNavigateToBooking, onNavigateToTracking }) {
-  
-
+export function DashboardView({ onNavigateToBooking, onNavigateToTracking }) {
+  const { user } = useAuth();
   return (
     <div className="space-y-8 justify-center">
       {/* Welcome Hero */}
       <div className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-primary/5 to-transparent rounded-2xl p-8">
-        <Lottie animationData={fish} className="absolute top-0 right-0 rotate-90" style={{ width: "237px", height: "200px" }} />
+        <Lottie
+          animationData={fish}
+          className="absolute top-0 right-0 rotate-90"
+          style={{ width: "237px", height: "200px" }}
+        />
 
         <div className="relative z-10">
           <h1 className="text-4xl font-bold text-foreground mb-4 ">
-            ยินดีต้อนรับกลับมา, คุณ{user?.name?.split(" ")[0]}!
+            ยินดีต้อนรับกลับมา, คุณ{user?.fullName} 👋
           </h1>
           <p className="text-xl text-muted-foreground mb-6">
             เป็นพาร์ทเนอร์บริการซักรีดที่คุณไว้วางใจ -
@@ -28,12 +29,9 @@ export function DashboardView({ user, onNavigateToBooking, onNavigateToTracking 
           </p>
           <div className="flex flex-wrap gap-4">
             <Link to="/booking">
-            <Button
-              size="lg"
-              className="h-12 px-6"
-            >
-              จองบริการใหม่
-            </Button>
+              <Button size="lg" className="h-12 px-6">
+                จองบริการใหม่
+              </Button>
             </Link>
             <Button
               variant="outline"
@@ -48,7 +46,7 @@ export function DashboardView({ user, onNavigateToBooking, onNavigateToTracking 
       </div>
 
       {/* Service Cards */}
-        <ServiceCard />
+      <ServiceCard />
 
       {/* Features Section */}
       <div className="bg-gradient-to-br from-muted/50 to-muted/30 rounded-2xl p-8">

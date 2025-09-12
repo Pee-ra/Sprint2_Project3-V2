@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import { Button } from "../components/ui/button.jsx";
 import { Card } from "../components/ui/card.jsx";
 import { Input } from "../components/ui/input.jsx";
 import { Badge } from "../components/ui/badge.jsx";
 import axios from "axios";
 import { set } from "date-fns/set";
+import { useAuth } from "../context/AuthContext";
+import { useEffect } from "react";
 
-export function Profile({ user }) {
+export function Profile() {
+  const {user} = useAuth();
+  // console.log(user);
+  // console.log(user._id);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     fullName: user?.fullName || "",
@@ -15,6 +20,15 @@ export function Profile({ user }) {
     roomNumber: user?.roomNumber || "",
 
   });
+
+  useEffect(() => {
+    setFormData({
+      fullName: user?.fullName || "",
+      email: user?.email || "",
+      tel: user?.tel || "",
+      roomNumber: user?.roomNumber || "",
+    });
+  }, [user]);
 
 
   const [orderHistory, setOrderHistory] = useState([
@@ -48,19 +62,19 @@ export function Profile({ user }) {
     }));
   };
 
-  const handlePreferenceChange = (preference, value) => {
-    setFormData(prev => ({
-      ...prev,
-      preferences: {
-        ...prev.preferences,
-        [preference]: value
-      }
-    }));
-  };
+//   const handlePreferenceChange = (preference, value) => {
+//     setFormData(prev => ({
+//       ...prev,
+//       preferences: {
+//         ...prev.preferences,
+//         [preference]: value
+//       }
+//     }));
+//   };
 // Here you would typically send the data to your backend
-    // setIsEditing(false);
+//     setIsEditing(false);
     
-    // alert("บันทึกข้อมูลเรียบร้อยแล้ว!");
+//     alert("บันทึกข้อมูลเรียบร้อยแล้ว!");
   const handleSave = async () => {
     try {
       const saveUserData = {
@@ -69,7 +83,9 @@ export function Profile({ user }) {
         tel: formData.tel,
         roomNumber: formData.roomNumber,
       };
-      const response = await axios.put('http://localhost:5001/users', saveUserData);
+      console.log(saveUserData);
+      const response = await axios.put(`import.meta.env.VITE_API_URL||"http://localhost:5001"/users/${user._id}`, saveUserData);
+      { withCredentials: true } // ส่ง access token ไปด้วย ยืนยันคนยิง ได้ใช้ไหม?
       if (response.status === 200) {
         alert("บันทึกข้อมูลเรียบร้อยแล้ว!");
       }

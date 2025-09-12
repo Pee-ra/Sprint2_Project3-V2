@@ -15,7 +15,7 @@ export const LandingPage = ({ onLogin, onRegister, onAdminLogin }) => {
     <div>
         <nav className='my-6 mt-0 pb-6 mb-30 border-b-2 border-[#91d4dd] flex items-center justify-end px-6'>
             <Link to="/login">
-            <img src="src\assets\Logotextv2.png" alt=""  className="h-20 absolute top-0 left-4 object-contain"/>
+            <img src="/Logotextv2.png" alt=""  className="h-20 absolute top-0 left-4 object-contain"/>
             </Link>
             <ul className='flex justify-end gap-6 mt-4'>
                 <Link to="/login">
@@ -28,7 +28,7 @@ export const LandingPage = ({ onLogin, onRegister, onAdminLogin }) => {
                     <span>Get started</span>
                 </li>
                 </Link>
-                <Link to="/admin">
+                <Link to="/admin/login">
                 <li className='mr-6 border-3 p-1.5 px-6 rounded-sm hover:bg-[#91d4dd66] cursor-pointer' >
                     <span>Admin</span>
                 </li>

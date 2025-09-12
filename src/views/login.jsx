@@ -8,17 +8,15 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Loading from "./Loading";
+import { useAuth } from "../context/AuthContext";
 
-const Login = ({ onLogin }) => {
+const Login = () => {
   const [isRedirecting, setIsRedirecting] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const navigate = useNavigate();
+
+  const { login, loading, error } = useAuth(); //  ดึงจาก context
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -36,30 +34,14 @@ const Login = ({ onLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-    try {
-      setIsSubmitting(true);
-      const res = await axios.post("http://localhost:5001/login", formData);
-      onLogin(res.data.user);
-      // console.log(res.data.user);
-
+    const ok = await login(formData.email, formData.password); //ยิงไปที่ authContext
+    if (ok) {
       setIsRedirecting(true);
-      setTimeout(() => navigate("/dashboard"), 3000);
-    } catch (error) {
-      // console.error(error);
-      setErrors(error.response.data.message);
-      alert(error.response.data.message);
-    } finally {
-      setIsSubmitting(false);
+      setTimeout(() => navigate("/dashboard"), 2500);
     }
   };
 
-  if (isRedirecting) {
-    return (
-      <div>
-        <Loading />
-      </div>
-    );
-  }
+  if (isRedirecting) return <Loading />;
 
   return (
     <div className="bg-gray-50 font-sans min-h-screen flex items-center justify-center p-6">
@@ -104,7 +86,7 @@ const Login = ({ onLogin }) => {
             <div className="flex justify-center items-center">
               <img
                 className="w-30 h-auto flex justify-center items-center"
-                src="../src/assets/logotextv2.png"
+                src="/Logotextv2.png"
                 alt="logo"
               />
             </div>
@@ -145,7 +127,7 @@ const Login = ({ onLogin }) => {
                 <Button
                   className="w-full"
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={loading}
                 >
                   เข้าสู่ระบบ
                 </Button>

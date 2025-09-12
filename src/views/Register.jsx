@@ -61,7 +61,7 @@ const validate = () => {
     if (!validate()) return; // ถ้าไม่ผ่าน validation หยุดเลย
     try {
         setIsSubmitting(true);
-        const res =  await axios.post('http://localhost:5001/register', formData);
+        const res =  await axios.post(import.meta.env.VITE_API_URL||'http://localhost:5001/register', formData);
         alert('สมัครสมาชิกสําเร็จ');
         navigate('/login');
     } catch (error) {
@@ -121,7 +121,7 @@ const validate = () => {
             <div className="mb-4 flex justify-center">
               <img
                 className="w-30 h-auto flex justify-center items-center "
-                src="../src/assets/logotextv2.png"
+                src="/Logotextv2.png"
                 alt="logo"
               />
             </div>
