@@ -12,7 +12,9 @@ import { Link } from "react-router-dom";
 import Lottie from "lottie-react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useEffect } from "react";
-import { is } from "date-fns/locale/is";
+import BottomSummaryButton from "../components/ui/BottomSummaryButton.jsx";
+import QuantitySelector from "../components/ui/quantitySelecter.jsx";
+import CustomMarquee from "../components/ui/colthset.jsx";
 
 export function BookingService({ onNavigateToPayment }) {
   const [selectedService, setSelectedService] = useState(null);
@@ -22,7 +24,7 @@ export function BookingService({ onNavigateToPayment }) {
   const [pickupTime, setPickupTime] = useState("");
   const [specialInstructions, setSpecialInstructions] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
-  const {user} = useAuth();
+  const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     fullName: user?.fullName || "",
@@ -30,15 +32,27 @@ export function BookingService({ onNavigateToPayment }) {
     tel: user?.tel || "",
     roomNumber: user?.roomNumber || "",
   });
-  console.log(formData);
+
+  // // popup
+  // const [IsAtBottom, setIsAtBottom] = useState(false);
+  // //update when data change
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const bottom =
+  //       window.innerHeight + window.scrollY >= document.body.offsetHeight - 10;
+  //     setIsAtBottom(bottom);
+  //   };
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, []);
 
   useEffect(() => {
-      setFormData({
-        fullName: user?.fullName || "",
-        email: user?.email || "",
-        tel: user?.tel || "",
-        roomNumber: user?.roomNumber || "",
-      });
+    setFormData({
+      fullName: user?.fullName || "",
+      email: user?.email || "",
+      tel: user?.tel || "",
+      roomNumber: user?.roomNumber || "",
+    });
   }, [user]);
   const addCustomItem = (item) => {
     const existingItem = customItems.find((i) => i.name === item.name);
@@ -90,9 +104,9 @@ export function BookingService({ onNavigateToPayment }) {
   };
 
   const handleInputChange = (field, value) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
@@ -115,6 +129,8 @@ export function BookingService({ onNavigateToPayment }) {
     // Navigate to payment with booking details
     onNavigateToPayment();
   };
+
+  // if (!serviceSelected) return null; // ยังไม่เลือกบริการ → ไม่โชว์ป๊อปอัพ
 
   return (
     <div className="space-y-8">
@@ -143,7 +159,7 @@ export function BookingService({ onNavigateToPayment }) {
               setTotalPrice(0);
             }}
           >
-            <i class="ri-weight-line"></i> คิดตามน้ำหนัก
+            <i className="ri-weight-line"></i> คิดตามน้ำหนัก
           </ShinyButton>
           <ShinyButton
             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
@@ -158,7 +174,7 @@ export function BookingService({ onNavigateToPayment }) {
               setTotalPrice(0);
             }}
           >
-            <i class="ri-t-shirt-line"></i> คิดตามชิ้น
+            <i className="ri-t-shirt-line"></i> คิดตามชิ้น
           </ShinyButton>
         </div>
       </div>
@@ -171,20 +187,20 @@ export function BookingService({ onNavigateToPayment }) {
           </h3>
 
           <div className="max-w-2xl mx-auto ">
-            <Card className="p-6">
-              <div className="space-y-4">
-                <div className="aspect-video rounded-lg overflow-hidden mb-4">
+            <Card className="p-6 hover:shadow-md">
+              <div className="space-y-4 flex gap-6">
+                <div className=" rounded-lg overflow-hidden">
                   <ImageWithFallback
-                    src="https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?w=600&h=300&fit=crop"
+                    src="src/assets/bucket.png"
                     alt="ตะกร้าซักผ้า"
-                    className="w-full h-full object-cover"
+                    className="object-cover h-50"
                   />
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 gap-3 w-full ">
                   {perKgRates.map((rate) => (
                     <button
                       key={rate.kg}
-                      className={`p-4 border rounded-lg text-left transition-all ${
+                      className={`p-4 border rounded-lg text-left transition-transform duration-300 hover:scale-103 ${
                         selectedService?.kg === rate.kg
                           ? "border-primary bg-primary/5"
                           : "border-border hover:border-primary/50"
@@ -208,10 +224,11 @@ export function BookingService({ onNavigateToPayment }) {
 
       {/* Per Piece Items */}
       {serviceType === "per-piece" && (
-        <div className="space-y-6">
+        <div className="space-y-6 mx-20">
           <h3 className="text-xl font-semibold text-center">
             เลือกรายการเสื้อผ้า
           </h3>
+          <CustomMarquee/>
 
           {/* Selected Items */}
           {customItems.length > 0 && (
@@ -267,37 +284,40 @@ export function BookingService({ onNavigateToPayment }) {
           )}
 
           {/* Available Items */}
-          <div className="space-y-4 ">
-            {["เสื้อผ้าพิเศษ", "ผ้าบ้าน"].map((category) => (
-              <Card key={category} className="p-6  ">
-                <h4 className="font-medium mb-4">{category}</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {perPieceItems
-                    .filter((item) => item.category === category)
-                    .map((item) => (
-                      <button
-                        key={item.name}
-                        className="p-3 border border-border rounded-lg text-left hover:border-primary/50 transition-colors"
-                        onClick={() => addCustomItem(item)}
-                      >
-                        <div className="flex justify-between items-center">
-                          <span>{item.name}</span>
-                          <span className="font-semibold text-primary">
-                            ฿{item.price}
-                          </span>
-                        </div>
-                      </button>
-                    ))}
-                </div>
-              </Card>
-            ))}
+
+          <div className="space-y-4">
+            <Card className="p-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3">
+                {perPieceItems.map((item) => (
+                  <button
+                    key={item.name}
+                    className="p-3 border border-border rounded-lg text-left hover:border-primary/50 transition-colors-transform duration-300 hover:scale-103"
+                  >
+                    <div className="flex justify-between items-center">
+                      <span>{item.name}</span>
+                      <div className="flex-col">
+                        <span className="font-semibold text-primary">
+                          ฿{item.price}
+                        </span>
+                        <QuantitySelector
+                          key={item.name}
+                          item={item} //ส่ง
+                          customItems={customItems}
+                          setCustomItems={setCustomItems}
+                        />
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </Card>
           </div>
         </div>
       )}
 
       {/* Pickup Schedule */}
       {(selectedService || customItems.length > 0) && (
-        <Card className="p-6">
+        <Card className="px-12 py-6 mx-30">
           <h3 className="text-lg font-semibold mb-4">กำหนดการรับผ้า</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -322,10 +342,9 @@ export function BookingService({ onNavigateToPayment }) {
                 className="w-full px-3 py-2 border border-border rounded-lg bg-input-background"
               >
                 <option value="">เลือกเวลา</option>
-                <option value="09:00-12:00">09:00 - 12:00</option>
-                <option value="12:00-15:00">12:00 - 15:00</option>
-                <option value="15:00-18:00">15:00 - 18:00</option>
-                <option value="18:00-21:00">18:00 - 21:00</option>
+                <option value="08:10-12:00">08:10 - 12:00</option>
+                <option value="12:10-15:00">12:10 - 15:00</option>
+                <option value="15:10-18:00">15:10 - 18:00</option>
               </select>
             </div>
           </div>
@@ -334,7 +353,7 @@ export function BookingService({ onNavigateToPayment }) {
 
       {/* Special Instructions */}
       {(selectedService || customItems.length > 0) && (
-        <Card className="p-6">
+        <Card className="px-12 py-6 mx-30">
           <h3 className="text-lg font-semibold mb-4">ข้อมูลเพิ่มเติม</h3>
           <div className="space-y-4">
             <div>
@@ -351,11 +370,25 @@ export function BookingService({ onNavigateToPayment }) {
             </div>
 
             <div className="bg-muted p-4 rounded-lg relative">
-              {!isEditing ?(<button onClick={() => setIsEditing(true)} className="absolute top-4 right-4 px-3 py-1.5 text-sm font-medium 
+              {!isEditing ? (
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="absolute top-4 right-4 px-3 py-1.5 text-sm font-medium 
                rounded-md bg-chart-2 text-primary-foreground 
-               hover:bg-primary/90">แก้ไขข้อมูล</button>):(<button onClick={() => setIsEditing(false)} className="absolute top-4 right-4 px-3 py-1.5 text-sm font-medium
+               hover:bg-primary/90"
+                >
+                  แก้ไขข้อมูล
+                </button>
+              ) : (
+                <button
+                  onClick={() => setIsEditing(false)}
+                  className="absolute top-4 right-4 px-3 py-1.5 text-sm font-medium
                 rounded-md  bg-emerald-500 text-primary-foreground transaparent
-                hover:bg-primary/90">ยืนยันการแก้ไข</button>)}
+                hover:bg-primary/90"
+                >
+                  ยืนยันการแก้ไข
+                </button>
+              )}
               <h4 className="font-medium mb-2">ข้อมูลการจัดส่ง</h4>
 
               <div>
@@ -364,7 +397,9 @@ export function BookingService({ onNavigateToPayment }) {
                   {isEditing ? (
                     <input
                       type="text"
-                      onChange={(e) => handleInputChange("fullName", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("fullName", e.target.value)
+                      }
                       value={formData.fullName}
                       className="border-3 border-teal-700 rounded-md ml-9.5  px-2 py-1"
                     />
@@ -389,23 +424,24 @@ export function BookingService({ onNavigateToPayment }) {
                   )}
                 </p>
               </div>
-              
+
               <div>
                 <p className="text-sm text-muted-foreground mb-2">
-                  <strong>ที่อยู่:</strong> 
+                  <strong>ที่อยู่:</strong>
                   {isEditing ? (
                     <input
                       type="text"
-                      onChange={(e) => handleInputChange("roomNumber", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("roomNumber", e.target.value)
+                      }
                       value={formData.roomNumber}
                       className="border-3 border-teal-700 rounded-md ml-8.5  px-2 py-1"
                     />
-                  ):(
+                  ) : (
                     <span>{formData?.roomNumber}</span>
                   )}
                 </p>
               </div>
-
             </div>
           </div>
         </Card>
@@ -413,45 +449,58 @@ export function BookingService({ onNavigateToPayment }) {
 
       {/* Summary and Submit */}
       {(selectedService || customItems.length > 0) && (
-        <Card className="p-6">
+        <Card className="px-12 py-6 mx-30">
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">สรุปการจอง</h3>
 
-            {/* <div className="space-y-2">
-              {serviceType === "monthly" && selectedService && (
-                <div className="flex justify-between">
-                  <span>{selectedService.name}</span>
-                  <span>฿{selectedService.price}</span>
-                </div>
-              )}
-              
+            <div className="space-y-2">
               {serviceType === "per-kg" && selectedService && (
                 <div className="flex justify-between">
                   <span>บริการซัก {selectedService.kg} กิโลกรัม</span>
                   <span>฿{selectedService.price}</span>
                 </div>
               )}
-              
-              {serviceType === "per-piece" && customItems.map((item) => (
-                <div key={item.name} className="flex justify-between">
-                  <span>{item.name} x {item.quantity}</span>
-                  <span>฿{item.price * item.quantity}</span>
-                </div>
-              ))}
-            </div> */}
 
-            <div className="pt-4 border-t border-border">
+              {serviceType === "per-piece" &&
+                customItems.map((item) => (
+                  <div key={item.name} className="flex justify-between">
+                    <span>
+                      {item.name} x {item.quantity}
+                    </span>
+                    <span>฿{item.price * item.quantity}</span>
+                  </div>
+                ))}
+              <BottomSummaryButton
+                totalPrice={totalPrice}
+                onSubmit={handleSubmit}
+                show={selectedService || customItems.length > 0}
+                
+                
+              />
+            </div>
+
+            {/* <div className="pt-4 border-t border-border">
               <div className="flex justify-between text-lg font-semibold">
                 <span>รวมทั้งสิ้น:</span>
                 <span className="text-primary">฿{totalPrice}</span>
               </div>
-            </div>
+            </div> */}
+            {/* <div className="flex justify-center "> */}
 
-            <Link to="/payment"><Button className="w-full" size="lg" onClick={handleSubmit}>
-              ดำเนินการชำระเงิน
-            </Button></Link>
+            {/* <Link to="/payment"> */}
+
+            {/* <Button
+                  className="w-120 flex justify-between font-bold text-lg text-white"
+                  size="xl"
+                  onClick={handleSubmit}
+                >
+                  {" "}
+                  รวมทั้งสิ้น :<span className="">฿ {totalPrice}</span>{" "}
+                </Button>{" "} */}
+            {/* </Link> */}
           </div>
-        </Card>
+          {/* </div> */}
+        </Card >
       )}
     </div>
   );

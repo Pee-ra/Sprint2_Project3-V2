@@ -132,17 +132,17 @@ const saveEdit = async () => {
         <SimpleStatCard 
           title="ลูกค้าใหม่" 
           value={stats.new} 
-          color="text-blue-600" 
+          color="text-gray-300" 
         />
         <SimpleStatCard 
           title="ลูกค้าปกติ" 
           value={stats.active} 
-          color="text-green-600" 
+          color="text-gray-300" 
         />
         <SimpleStatCard 
           title="ลูกค้า VIP" 
           value={stats.vip} 
-          color="text-purple-600" 
+          color="text-gray-300" 
         />
         <SimpleStatCard 
           title="รายได้รวม" 
@@ -156,17 +156,17 @@ const saveEdit = async () => {
         {filteredCustomers.map((customer) => (
           <Card key={customer._id} className="p-6">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-              <div className="flex-1 space-y-3">
+              <div className="flex-1 space-y-2">
                 <div className="flex items-center gap-3">
                   <h3 className="font-semibold">{customer.fullName}</h3>
-                  <Badge className={getCustomerStatusColor(customer.status)}>
+                  {/* <Badge className={getCustomerStatusColor(customer.status)}>
                     {getCustomerStatusLabel(customer.status)}
-                  </Badge>
-                  {customer.subscription !== "ไม่มี" && (
+                  </Badge> */}
+                  {/* {customer.subscription !== "ไม่มี" && (
                     <Badge variant="outline">
                       {customer.subscription}
                     </Badge>
-                  )}
+                  )} */}
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -235,14 +235,7 @@ const saveEdit = async () => {
                   ))}
                 </select>
                 
-                <select
-                  value={customer.role}
-                  onChange={(e) => updateCustomerRole(customer.id, e.target.value)}
-                  className="px-3 py-2 border border-border rounded-lg bg-input-background text-sm"
-                >
-                  <option value="customer">Customer</option>
-                  <option value="admin">Admin</option>
-                </select>
+
                 <Button
                   variant="outline"
                   size="sm"
