@@ -1,15 +1,14 @@
 import { Navigate } from "react-router-dom";
 
-
-
-export default function ProtectedRoute({ children, user, requiredRole }) {
+export default function ProtectedRoute({ children, user, roles }) {
   if (!user) {
     return <Navigate to="/login" replace />;
   }
-  
-  if (requiredRole && user.role !== requiredRole) {
-    return <Navigate to={user.role === 'admin' ? '/admin/dashboard' : '/dashboard'} replace />;
+
+  // ถ้ากำหนด roles มา → ตรวจว่ามี role ปัจจุบันหรือไม่
+  if (Array.isArray(roles) && !roles.includes(user.role)) {
+    return <Navigate to="/403" replace />;
   }
-  
+
   return <>{children}</>;
 }

@@ -41,7 +41,8 @@ export function AuthProvider({ children }) {
         { withCredentials: true }
       );
       // server set httpOnly cookie แล้ว ส่ง user กลับมาด้วย
-      setUser({ ...res.data.user, role: "customer" });
+      // setUser({ ...res.data.user, role: "customer" });
+      setUser(res.data.user);
       return true;
     } catch (err) {
       setError(err.response?.data?.message || "เข้าสู่ระบบไม่สำเร็จ");
@@ -71,7 +72,8 @@ export function AuthProvider({ children }) {
         { withCredentials: true }
       );
       // server set httpOnly cookie แล้ว ส่ง user กลับมาด้วย
-      setUser({ ...res.data.user, role: "admin" });
+      // setUser({ ...res.data.user, role: "admin" });
+      setUser(res.data.user);
       return true;
     } catch (err) {
       setError(err.response?.data?.message || "เข้าสู่ระบบไม่สำเร็จ");
