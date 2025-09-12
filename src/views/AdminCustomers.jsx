@@ -33,7 +33,7 @@ export function AdminCustomers() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get('http://localhost:5001/adminPage/users');
+        const res = await axios.get(import.meta.env.VITE_API_URL||'http://localhost:5001/adminPage/users');
         const users = res.data.users;
 
         const mapUsers = users.map((user) => ({
@@ -76,7 +76,7 @@ const saveEdit = async () => {
 
   try {
     await axios.put(
-      `http://localhost:5001/adminPage/users/${userId}`,
+      `${import.meta.env.VITE_API_URL || "http://localhost:5001"}/adminPage/users/${userId}`,
       { role: tempRole },
       { withCredentials: true } // ถ้าใช้ cookie-auth
     );

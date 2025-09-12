@@ -84,7 +84,7 @@ export function Profile() {
         roomNumber: formData.roomNumber,
       };
       console.log(saveUserData);
-      const response = await axios.put(`http://localhost:5001/users/${user._id}`, saveUserData);
+      const response = await axios.put(`import.meta.env.VITE_API_URL||"http://localhost:5001"/users/${user._id}`, saveUserData);
       { withCredentials: true } // ส่ง access token ไปด้วย ยืนยันคนยิง ได้ใช้ไหม?
       if (response.status === 200) {
         alert("บันทึกข้อมูลเรียบร้อยแล้ว!");
