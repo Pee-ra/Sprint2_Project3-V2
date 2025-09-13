@@ -36,30 +36,40 @@ export const LandingPage = ({ onLogin, onRegister, onAdminLogin }) => {
             </ul>
         </nav>
 
-
-
-        
-        
-
-
-        <div className='flex justify-center'>
-            <div className='mx-20 flex flex-col gap-8 '>
-                <h1 className='text-5xl font-bold'>บริการซักรีดมืออาชีพ<br/>ใช้งานง่ายดาย</h1>
-                <p>ตั้งแต่เสื้อยืดตัวโปรดไปจนถึงผ้านวมผืนใหญ่ เราซัก อบ และพับทุกชิ้น<br/>ด้วยความใส่ใจ สะอาด หอม สดชื่น พร้อมส่งคืนถึงมือคุณอย่างรวดเร็ว<br/>เพียงแค่กดสั่งผ่านเว็บไซต์หรือแอปฯ ไม่ต้องหิ้วผ้า ไม่ต้องรอคิว</p>
-                <div className='flex gap-10'>
-                    <Link to="/register">
-                    <Button  className='bg-teal-500 hover:bg-[#91d4dd]' >เริ่มสั่งซื้อครั้งแรก →</Button>
-                    </Link> 
-                    <Link to="/login">
-                    <Button  className='hover:bg-[#91d4dd]'>เข้าสู่ระบบ</Button>
-                    </Link>
-                </div>
-                <p>ลูกค้าพึงพอใจมากกว่า 10,000 ราย</p>
-            </div>
-            <div className='w-md'>
-                <img src="https://www.ananda.co.th/blog/thegenc/wp-content/uploads/2021/12/5-6.jpg" alt="" />
-            </div>
+      <div className="flex justify-center">
+        <div className="flex flex-col gap-8 ">
+          <SparklesText className="text-5xl font-bold text-teal-500">
+            บริการซักรีดมืออาชีพ
+            <br />
+            <span className="text-black"> ใช้งานง่ายดาย</span>
+          </SparklesText>
+          <p className="text-lg tracking-wide">
+            ตั้งแต่เสื้อยืดตัวโปรดไปจนถึงผ้านวมผืนใหญ่ เราซัก อบ และพับทุกชิ้น
+            <br />
+            ด้วยความใส่ใจ สะอาด หอม สดชื่น พร้อมส่งคืนถึงมือคุณอย่างรวดเร็ว
+            <br />
+            เพียงแค่กดสั่งผ่านเว็บไซต์หรือแอปฯ ไม่ต้องหิ้วผ้า ไม่ต้องรอคิว
+          </p>
+          <div className="flex gap-6">
+            <Link to="/register">
+              <Button className="bg-teal-500 hover:bg-[#91d4dd]">
+                เริ่มสั่งซื้อครั้งแรก →
+              </Button>
+            </Link>
+            <Link to="/login">
+              <Button className="hover:bg-[#91d4dd]">เข้าสู่ระบบ</Button>
+            </Link>
+          </div>
+          <p>ลูกค้าพึงพอใจมากกว่า 10,000 ราย</p>
         </div>
+        <div className="w-md ml-6">
+          <img
+            src="https://www.ananda.co.th/blog/thegenc/wp-content/uploads/2021/12/5-6.jpg"
+            alt="women-washing"
+            className="rounded-2xl"
+          />
+        </div>
+      </div>
 
         <div className='mt-30 '>
             <div>  
