@@ -56,7 +56,7 @@ const Login = () => {
           <button
             type="button"
             onClick={() => navigate("/landing")}
-            className="text-xs flex items-center mb-4 gap-2"
+            className="text-xs flex items-center mb-4 gap-2 bg-primary w-fit px-2 py-1 rounded-md text-white transition-all hover:bg-primary/80 hover:font-bold"
           >
             <AiOutlineArrowLeft />
             กลับหน้าแรก
