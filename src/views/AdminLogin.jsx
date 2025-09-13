@@ -10,7 +10,7 @@ import { useAuth } from "../context/AuthContext";
 // แก้ไขตรงนี้: เพิ่ม { onLogin } เข้าไปในพารามิเตอร์ของฟังก์ชัน
 const AdminLogin = () => {
   const { adminLogin, loading } = useAuth();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
