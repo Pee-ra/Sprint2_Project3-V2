@@ -191,7 +191,7 @@ export function BookingService({ onNavigateToPayment }) {
               <div className="space-y-4 flex gap-6">
                 <div className=" rounded-lg overflow-hidden">
                   <ImageWithFallback
-                    src="public/bucket.png"
+                    src="bucket.png"
                     alt="ตะกร้าซักผ้า"
                     className="object-cover h-50"
                   />
