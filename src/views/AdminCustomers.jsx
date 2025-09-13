@@ -17,7 +17,7 @@ import {
 } from "../data/admindata.js";
 import axios from "axios";
 // import { fi } from "date-fns/locale/fi";
-import { useAuth } from "../context/AuthContext";
+// import { useAuth } from "../context/AuthContext";
 
 export function AdminCustomers() {
   const [customers, setCustomers] = useState([]);
@@ -33,7 +33,7 @@ export function AdminCustomers() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get(import.meta.env.VITE_API_URL||'http://localhost:5001/adminPage/users');
+        const res = await axios.get(import.meta.env.VITE_API_URL||'http://localhost:5001/adminPage/users', { withCredentials: true });
         const users = res.data.users;
 
         const mapUsers = users.map((user) => ({

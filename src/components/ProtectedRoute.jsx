@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 
-export default function ProtectedRoute({ children, user, roles }) {
+export default function ProtectedRoute({ children, user, roles, requiredRole }) {
   if (!user) {
     return <Navigate to="/login" replace />;
   }
@@ -10,5 +10,9 @@ export default function ProtectedRoute({ children, user, roles }) {
     return <Navigate to="/403" replace />;
   }
 
+  // ถ้ากำหนด requiredRole มา → ตรวจว่ามี role ปัจจุบันหรือไม่
+  if (requiredRole && user.role !== requiredRole) {
+    return <Navigate to="/403" replace />;
+  }
   return <>{children}</>;
 }

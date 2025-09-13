@@ -27,7 +27,8 @@ function CustomerLayout() {
   const footerRoutes = ["/dashboard", "/booking"];
 
   return (
-    <ProtectedRoute user={user} requiredRole="customer">
+    // children ของ ProtectedRoute
+    <ProtectedRoute user={user}>
       <Layout user={user} onLogout={logout} isAdmin={false} />
       {footerRoutes.includes(location.pathname) && <Footer />}
     </ProtectedRoute>
@@ -41,7 +42,7 @@ function AdminLayout() {
   if (booting) return <div>Loading...</div>;
 
   return (
-    <ProtectedRoute user={user} requiredRole="admin">
+    <ProtectedRoute user={user} requiredRole={"admin"}>
       <Layout user={user} onLogout={logout} isAdmin={true} />
     </ProtectedRoute>
   );
@@ -75,7 +76,8 @@ export default function App() {
           </Route>
 
           {/* Catch all - redirect */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} /> 
+          {/* path อื่นไปที่/ */}
         </Routes>
       </AuthProvider>
     </Router>

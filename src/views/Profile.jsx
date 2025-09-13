@@ -20,6 +20,7 @@ export function Profile() {
     roomNumber: user?.roomNumber || "",
 
   });
+  
 
   useEffect(() => {
     setFormData({
@@ -83,9 +84,10 @@ export function Profile() {
         tel: formData.tel,
         roomNumber: formData.roomNumber,
       };
-      console.log(saveUserData);
-      const response = await axios.put(`import.meta.env.VITE_API_URL||"http://localhost:5001"/users/${user._id}`, saveUserData);
-      { withCredentials: true } // ส่ง access token ไปด้วย ยืนยันคนยิง ได้ใช้ไหม?
+      const userId = user._id;
+
+      const response = await axios.put(`${import.meta.env.VITE_API_URL || "http://localhost:5001"}/users/${userId}`, saveUserData  , { withCredentials: true });
+       // ส่ง access token ไปด้วย ยืนยันคนยิง ได้ใช้ไหม?
       if (response.status === 200) {
         alert("บันทึกข้อมูลเรียบร้อยแล้ว!");
       }
