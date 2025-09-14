@@ -7,6 +7,7 @@ import PackageWeight from '../components/ui/PackageWeight';
 import Footer from '../components/ui/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import ServiceCard from '../components/ui/ServiceCard';
+import { SparklesText } from '../components/magicui/sparkles-text';
 
 
 
