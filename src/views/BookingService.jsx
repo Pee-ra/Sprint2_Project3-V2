@@ -8,7 +8,7 @@ import { perKgRates } from "../data/services.js";
 import { perPieceItems } from "../data/services.js";
 import { ShinyButton } from "@/components/magicui/shiny-button";
 import Footer from "../components/ui/Footer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useEffect } from "react";
@@ -33,18 +33,7 @@ export function BookingService({ onNavigateToPayment }) {
     roomNumber: user?.roomNumber || "",
   });
 
-  // // popup
-  // const [IsAtBottom, setIsAtBottom] = useState(false);
-  // //update when data change
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const bottom =
-  //       window.innerHeight + window.scrollY >= document.body.offsetHeight - 10;
-  //     setIsAtBottom(bottom);
-  //   };
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => window.removeEventListener("scroll", handleScroll);
-  // }, []);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setFormData({
@@ -54,6 +43,21 @@ export function BookingService({ onNavigateToPayment }) {
       roomNumber: user?.roomNumber || "",
     });
   }, [user]);
+
+  useEffect(() => {
+    if (serviceType === "per-piece") {
+      const total = customItems.reduce(
+        (sum, item) => sum + item.price * (item.quantity || 0),
+        0
+      );
+      setTotalPrice(total);
+    } else if (serviceType === "per-kg" && selectedService) {
+      setTotalPrice(selectedService.price);
+    } else {
+      setTotalPrice(0);
+    }
+  }, [serviceType, customItems, selectedService]);
+
   const addCustomItem = (item) => {
     const existingItem = customItems.find((i) => i.name === item.name);
     if (existingItem) {
@@ -68,21 +72,21 @@ export function BookingService({ onNavigateToPayment }) {
     updateTotalPrice();
   };
 
-  const removeCustomItem = (itemName) => {
-    setCustomItems(customItems.filter((i) => i.name !== itemName));
-    updateTotalPrice();
-  };
+  // const removeCustomItem = (itemName) => {
+  //   setCustomItems(customItems.filter((i) => i.name !== itemName));
+  //   updateTotalPrice();
+  // };
 
-  const updateItemQuantity = (itemName, quantity) => {
-    if (quantity <= 0) {
-      removeCustomItem(itemName);
-    } else {
-      setCustomItems(
-        customItems.map((i) => (i.name === itemName ? { ...i, quantity } : i))
-      );
-    }
-    updateTotalPrice();
-  };
+  // const updateItemQuantity = (itemName, quantity) => {
+  //   if (quantity <= 0) {
+  //     removeCustomItem(itemName);
+  //   } else {
+  //     setCustomItems(
+  //       customItems.map((i) => (i.name === itemName ? { ...i, quantity } : i))
+  //     );
+  //   }
+  //   updateTotalPrice();
+  // };
 
   const updateTotalPrice = () => {
     if (serviceType === "per-kg" && selectedService) {
@@ -110,7 +114,7 @@ export function BookingService({ onNavigateToPayment }) {
     }));
   };
 
-  const handleSubmit = () => {
+  const validOrder = () => {
     if (!selectedService && serviceType !== "per-piece") {
       alert("กรุณาเลือกบริการ");
       return;
@@ -125,7 +129,6 @@ export function BookingService({ onNavigateToPayment }) {
       alert("กรุณาเลือกวันและเวลารับผ้า");
       return;
     }
-
     // Navigate to payment with booking details
     onNavigateToPayment();
   };
@@ -191,7 +194,7 @@ export function BookingService({ onNavigateToPayment }) {
               <div className="space-y-4 flex gap-6">
                 <div className=" rounded-lg overflow-hidden">
                   <ImageWithFallback
-                    src="bucket.png"
+                    src="src/assets/bucket.png"
                     alt="ตะกร้าซักผ้า"
                     className="object-cover h-50"
                   />
@@ -228,10 +231,10 @@ export function BookingService({ onNavigateToPayment }) {
           <h3 className="text-xl font-semibold text-center">
             เลือกรายการเสื้อผ้า
           </h3>
-          <CustomMarquee />
+          <CustomMarquee/>
 
-          {/* Selected Items */}
-          {customItems.length > 0 && (
+          {/* Selected Items shoe total on top */}
+          {/* {customItems.length > 0 && (
             <Card className="p-6">
               <h4 className="font-medium mb-4">รายการที่เลือก</h4>
               <div className="space-y-3">
@@ -281,7 +284,7 @@ export function BookingService({ onNavigateToPayment }) {
                 </div>
               </div>
             </Card>
-          )}
+          )} */}
 
           {/* Available Items */}
 
@@ -291,7 +294,7 @@ export function BookingService({ onNavigateToPayment }) {
                 {perPieceItems.map((item) => (
                   <button
                     key={item.name}
-                    className="p-3 border border-border rounded-lg text-left hover:border-primary/50 transition-colors-transform duration-300 hover:scale-103"
+                    className="p-3 border border-border rounded-lg text-left hover:border-primary/50 transition-colors-transform duration-300 hover:scale-103 hover:bg-primary-foreground"
                   >
                     <div className="flex justify-between items-center">
                       <span>{item.name}</span>
@@ -472,32 +475,11 @@ export function BookingService({ onNavigateToPayment }) {
                 ))}
               <BottomSummaryButton
                 totalPrice={totalPrice}
-                onSubmit={handleSubmit}
+                onSubmit={()=> navigate("/payment")}
                 show={selectedService || customItems.length > 0}
               />
             </div>
-
-            {/* <div className="pt-4 border-t border-border">
-              <div className="flex justify-between text-lg font-semibold">
-                <span>รวมทั้งสิ้น:</span>
-                <span className="text-primary">฿{totalPrice}</span>
-              </div>
-            </div> */}
-            {/* <div className="flex justify-center "> */}
-
-            {/* <Link to="/payment"> */}
-
-            {/* <Button
-                  className="w-120 flex justify-between font-bold text-lg text-white"
-                  size="xl"
-                  onClick={handleSubmit}
-                >
-                  {" "}
-                  รวมทั้งสิ้น :<span className="">฿ {totalPrice}</span>{" "}
-                </Button>{" "} */}
-            {/* </Link> */}
           </div>
-          {/* </div> */}
         </Card>
       )}
     </div>
