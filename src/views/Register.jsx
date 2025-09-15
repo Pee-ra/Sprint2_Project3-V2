@@ -60,10 +60,10 @@ export const Register = () => {
 
     setErrors(next);
     if (Object.keys(next).length > 0) {
-    // ❌ มี error → โชว์ข้อความ error
-    alert(Object.values(next).join("\n"));
-    return false;
-  }
+      // ❌ มี error → โชว์ข้อความ error
+      alert(Object.values(next).join("\n"));
+      return false;
+    }
     return true;
   };
 
@@ -77,18 +77,22 @@ export const Register = () => {
     }
     if (!validate()) return; // ถ้าไม่ผ่าน validation หยุดเลย
     try {
-        setIsSubmitting(true);
-        const payload = {
-          fullName: formData.fullName,
-          tel: formData.tel,
-          email: formData.email,
-          password: formData.password,
-          roomNumber: formData.roomNumber,
-        };
-        const res =  await axios.post(`${import.meta.env.VITE_API_URL ||'http://localhost:5001'}/register`, payload, { withCredentials: true });
+      setIsSubmitting(true);
+      const payload = {
+        fullName: formData.fullName,
+        tel: formData.tel,
+        email: formData.email,
+        password: formData.password,
+        roomNumber: formData.roomNumber,
+      };
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL || "http://localhost:5001"}/register`,
+        payload,
+        { withCredentials: true }
+      );
 
-        alert('สมัครสมาชิกสําเร็จ');
-        navigate('/login');
+      alert("สมัครสมาชิกสําเร็จ");
+      navigate("/login");
     } catch (error) {
       console.error(error);
       setErrors(error.response.data.message);
@@ -100,10 +104,10 @@ export const Register = () => {
 
   return (
     <div className="bg-gray-50 font-sans min-h-screen flex items-center justify-center p-6">
-      <div className="bg-white w-full max-w-5xl flex shadow-lg rounded-xl overflow-hidden items-center justify-center p-6">
+      <div className="bg-white w-full max-w-5xl flex flex-col md:flex-row shadow-lg rounded-xl overflow-hidden">
         {/* left content */}
-        <div className=" items-center justify-center p-6 flex-1/2">
-            <button
+        <div className=" hidden md:flex md:w-1/2 flex-col items-start justify-center p-6">
+          <button
             type="button"
             onClick={() => navigate("/landing")}
             className="text-xs flex items-center mb-4 gap-2 bg-primary w-fit px-2 py-1 rounded-md text-white transition-all hover:font-bold"
@@ -111,7 +115,7 @@ export const Register = () => {
             <AiOutlineArrowLeft />
             กลับหน้าแรก
           </button>
-          
+
           <p className=" text-2xl font-bold py-4">
             เข้าร่วมกับ Whale wash วันนี้
           </p>
@@ -146,7 +150,7 @@ export const Register = () => {
           </div>
         </div>
         {/* Right Form */}
-        <div className="min-h-screen flex items-center justify-center p-6 flex-1/3 min-w-auto">
+        <div className="w-full md:w-1/2 flex items-center justify-center p-6">
           <div className="bg-white p-6 rounded-lg shadow-md max-w-md w-full">
             <div className=" flex justify-center">
               <img

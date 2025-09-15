@@ -17,14 +17,14 @@ export default function BottomSummaryButton({ totalPrice, onSubmit, show }) {
 
   if (!show) return null;
 
-  return (
-    <div
-      className={`z-50 transition-all duration-300 w-full ${
-        isAtBottom ? "sticky bottom-0 left-0" : "fixed bottom-0 left-0"
-      }`}
-    >
-      <div className="flex justify-center w-full bottom-0">
-        <InteractiveHoverButton type="submit" onClick={onSubmit} className="flex justify-between items-center px-6 py-4 text-white font-bold bg-primary rounded-lg  min-w-[250px] max-w-[350]">
+ return (
+    <div className="w-full">
+      <div className="flex justify-center w-full bg-white/90 backdrop-blur-md border-t">
+        <InteractiveHoverButton
+          type="submit"
+          onClick={onSubmit}
+          className="flex justify-between items-center px-6 py-4 text-white font-bold bg-primary rounded-none w-full max-w-md"
+        >
           <span>รวมทั้งสิ้น :</span>
           <span>฿ {totalPrice}</span>
         </InteractiveHoverButton>

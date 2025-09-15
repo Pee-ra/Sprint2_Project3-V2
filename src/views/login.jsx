@@ -50,9 +50,9 @@ const Login = () => {
 
   return (
     <div className="bg-gray-50 font-sans min-h-screen flex items-center justify-center p-6">
-      <div className="bg-white w-full max-w-5xl flex shadow-lg rounded-xl overflow-hidden items-center justify-center p-6">
+      <div className="bg-white w-full max-w-5xl flex flex-col md:flex-row shadow-lg rounded-xl overflow-hidden">
         {/* left content */}
-        <div className="items-center justify-center p-6 flex-1/2">
+        <div className="hidden md:flex md:w-1/2 flex-col items-start justify-center p-6">
           <button
             type="button"
             onClick={() => navigate("/landing")}
@@ -86,7 +86,7 @@ const Login = () => {
         </div>
 
         {/* Right Form */}
-        <div className="min-h-screen flex items-center justify-center p-6 flex-1/3 min-w-auto">
+        <div className="w-full md:w-1/2 flex items-center justify-center p-6">
           <div className="bg-white p-6 rounded-lg shadow-md max-w-md w-full">
             <div className="flex justify-center items-center">
               <img

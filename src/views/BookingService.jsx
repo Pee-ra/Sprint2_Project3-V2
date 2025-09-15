@@ -320,7 +320,7 @@ export function BookingService({ onNavigateToPayment }) {
 
       {/* Pickup Schedule */}
       {(selectedService || customItems.length > 0) && (
-        <Card className="px-12 py-6 mx-30">
+        <Card className="w-full px-4 sm:px-8 py-6 mx-auto max-w-2xl">
           <h3 className="text-lg font-semibold mb-4">กำหนดการรับผ้า</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -356,7 +356,7 @@ export function BookingService({ onNavigateToPayment }) {
 
       {/* Special Instructions */}
       {(selectedService || customItems.length > 0) && (
-        <Card className="px-12 py-6 mx-30">
+        <Card className="w-full px-4 sm:px-8 py-6 mx-auto max-w-2xl">
           <h3 className="text-lg font-semibold mb-4">ข้อมูลเพิ่มเติม</h3>
           <div className="space-y-4">
             <div>
@@ -452,7 +452,7 @@ export function BookingService({ onNavigateToPayment }) {
 
       {/* Summary and Submit */}
       {(selectedService || customItems.length > 0) && (
-        <Card className="px-12 py-6 mx-30">
+        <Card className="w-full px-4 sm:px-8 py-6 mx-auto max-w-2xl">
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">สรุปการจอง</h3>
 
