@@ -34,7 +34,7 @@ export const Register = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" });
+    setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
   };
 
 // vaklidation
@@ -47,22 +47,32 @@ const validate = () => {
     if (!formData.roomNumber.trim()) next.roomNumber = "กรอกหมายเลขห้อง";
 
     setErrors(next);
-    alert(JSON.stringify(next));
-    return Object.keys(next).length === 0;
+    if (Object.keys(next).length > 0) {
+    // ❌ มี error → โชว์ข้อความ error
+    alert(Object.values(next).join("\n"));
+    return false;
+  }
+    return true;
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (!validate()) return;
+    if (!validate()) return;
     if (formData.password !== formData.confirmPassword) {
       setErrors("Passwords do not match.");
       return;}
     if (!validate()) return; // ถ้าไม่ผ่าน validation หยุดเลย
     try {
         setIsSubmitting(true);
-        const res =  await axios.post(`${import.meta.env.VITE_API_URL ||'http://localhost:5001'}/register`, formData);
-        { withCredentials: true }
+        const payload = {
+          fullName: formData.fullName,
+          tel: formData.tel,
+          email: formData.email,
+          password: formData.password,
+          roomNumber: formData.roomNumber,
+        };
+        const res =  await axios.post(`${import.meta.env.VITE_API_URL ||'http://localhost:5001'}/register`, payload, { withCredentials: true });
+
         alert('สมัครสมาชิกสําเร็จ');
         navigate('/login');
     } catch (error) {
