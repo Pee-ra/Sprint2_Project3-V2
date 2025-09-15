@@ -1,14 +1,14 @@
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { HiOutlineMail } from "react-icons/hi";
-import { TbCheckbox, TbLockPassword } from "react-icons/tb";
+import { TbLockPassword } from "react-icons/tb";
 import { Link } from "react-router-dom";
-import { Input, InputWithLabel } from "../components/ui/input";
+import { InputWithLabel } from "../components/ui/input";
 import {
   RiCheckboxCircleLine,
   RiHomeSmile2Line,
   RiPhoneLine,
 } from "react-icons/ri";
-import { Checkbox } from "../components/ui/checkbox";
+// import { Checkbox } from "../components/ui/checkbox";
 import { Button } from "../components/ui/button";
 import axios from "axios";
 import { useState } from "react";
@@ -24,26 +24,38 @@ export const Register = () => {
   //   e.preventDefault();
   // };
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({fullName: "", tel: "",email: "", password: "",confirmPassword: "", roomNumber: "" });
+  const [formData, setFormData] = useState({
+    fullName: "",
+    tel: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    roomNumber: "",
+  });
   const [errors, setErrors] = useState({});
- 
+
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-
-
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
   };
 
-// vaklidation
-const validate = () => {
+  // vaklidation
+  const validate = () => {
+    const basicPattern = /^0\d{8,9}$/;
+    const repeatedPattern = /^([0-9])\1{8,9}$/;
     const next = {};
     if (!formData.fullName.trim()) next.fullName = "กรอกชื่อ-นามสกุล";
     if (!/^\S+@\S+\.\S+$/.test(formData.email)) next.email = "อีเมลไม่ถูกต้อง";
     if (formData.password.length < 6) next.password = "รหัสผ่านอย่างน้อย 6 ตัว";
-    if (!/^[0-9]{9,12}$/.test(formData.tel)) next.tel = "เบอร์ควรเป็นตัวเลข 9-12 หลัก";
+    if (
+      !basicPattern.test(formData.tel) ||
+      repeatedPattern.test(formData.tel)
+    ) {
+      next.tel = "กรอกเบอร์โทรศัพท์";
+    }
+
     if (!formData.roomNumber.trim()) next.roomNumber = "กรอกหมายเลขห้อง";
 
     setErrors(next);
@@ -60,7 +72,9 @@ const validate = () => {
     if (!validate()) return;
     if (formData.password !== formData.confirmPassword) {
       setErrors("Passwords do not match.");
-      return;}
+      alert("รหัสผ่านไม่ตรงกัน");
+      return;
+    }
     if (!validate()) return; // ถ้าไม่ผ่าน validation หยุดเลย
     try {
         setIsSubmitting(true);
@@ -89,10 +103,15 @@ const validate = () => {
       <div className="bg-white w-full max-w-5xl flex shadow-lg rounded-xl overflow-hidden items-center justify-center p-6">
         {/* left content */}
         <div className=" items-center justify-center p-6 flex-1/2">
-          <Link to="/" className="text-xs  flex items-center mb-4 gap-2">
+            <button
+            type="button"
+            onClick={() => navigate("/landing")}
+            className="text-xs flex items-center mb-4 gap-2 bg-primary w-fit px-2 py-1 rounded-md text-white transition-all hover:font-bold"
+          >
             <AiOutlineArrowLeft />
             กลับหน้าแรก
-          </Link>
+          </button>
+          
           <p className=" text-2xl font-bold py-4">
             เข้าร่วมกับ Whale wash วันนี้
           </p>
@@ -114,7 +133,7 @@ const validate = () => {
               <RiCheckboxCircleLine />
               <p className="py-2">
                 ราคายีดหยุ่น <br />
-                แพ็คเกจรายเดือนหรือจ่ายตามการไช้
+                หลากหลายแพ็คเกจหรือจ่ายตามการไช้
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -129,17 +148,17 @@ const validate = () => {
         {/* Right Form */}
         <div className="min-h-screen flex items-center justify-center p-6 flex-1/3 min-w-auto">
           <div className="bg-white p-6 rounded-lg shadow-md max-w-md w-full">
-            <div className="mb-4 flex justify-center">
+            <div className=" flex justify-center">
               <img
                 className="w-30 h-auto flex justify-center items-center "
                 src="/Logotextv2.png"
                 alt="logo"
               />
             </div>
-            <h1 className="text-xl font-semibold mb-2 flex justify-center">
+            <h1 className="text-xl font-semibold mb-8 flex justify-center">
               สมัครสมาชิก
             </h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
               <InputWithLabel
                 name="fullName"
                 value={formData.fullName}
@@ -149,7 +168,6 @@ const validate = () => {
                 type="text"
                 icon={<HiOutlineMail />}
               />
-              <br />
               <InputWithLabel
                 name="email"
                 value={formData.email}
@@ -192,17 +210,26 @@ const validate = () => {
                 type="password"
                 icon={<TbLockPassword />}
               />
-              <div className="flex gap-2 py-2">
+              {/* <div className="flex gap-2 py-2">
                 <Checkbox />
                 <p className=" text-xs">
                   {" "}
                   ฉันยอมรับ ข้อกำหนดการใช้บริการ และ นโยบายความเป็นส่วนตัว
                 </p>
-              </div>
-              <Button type="submit" disabled={isSubmitting} className="w-full">สมัครสมาชิก</Button>
+              </div> */}
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full mt-4"
+              >
+                สมัครสมาชิก
+              </Button>
               <p className="py-2 text-xs flex justify-center gap-2">
                 มีบัญชีอยู่แล้ว?{" "}
-                <span className="text-emerald-500"> <Link to="/Login">เข้าสู่ระบบ</Link></span>
+                <span className="text-emerald-500">
+                  {" "}
+                  <Link to="/Login">เข้าสู่ระบบ</Link>
+                </span>
               </p>
             </form>
           </div>
@@ -211,5 +238,3 @@ const validate = () => {
     </div>
   );
 };
-
-

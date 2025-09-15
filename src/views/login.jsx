@@ -6,7 +6,6 @@ import { Button } from "../components/ui/button";
 import { Checkbox } from "../components/ui/checkbox";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import Loading from "./Loading";
 import { useAuth } from "../context/AuthContext";
 
@@ -16,7 +15,7 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  const { login, loading, error } = useAuth(); //  ดึงจาก context
+  const { login, loading } = useAuth(); //  ดึงจาก context
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -33,11 +32,17 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
+    if (!validate()) {
+      alert("กรุณากรอกข้อมูลให้ถูกต้อง");
+      return;
+    }
     const ok = await login(formData.email, formData.password); //ยิงไปที่ authContext
     if (ok) {
+      alert("เข้าสู่ระบบสําเร็จ");
       setIsRedirecting(true);
       setTimeout(() => navigate("/dashboard"), 2500);
+    } else {
+      alert("อีเมลหรือรัหสผ่านไม่ถูกต้อง");
     }
   };
 
@@ -51,7 +56,7 @@ const Login = () => {
           <button
             type="button"
             onClick={() => navigate("/landing")}
-            className="text-xs flex items-center mb-4 gap-2"
+            className="text-xs flex items-center mb-4 gap-2 bg-primary w-fit px-2 py-1 rounded-md text-white transition-all hover:bg-primary/80 hover:font-bold"
           >
             <AiOutlineArrowLeft />
             กลับหน้าแรก
@@ -124,11 +129,7 @@ const Login = () => {
               </div>
 
               <div className="flex">
-                <Button
-                  className="w-full"
-                  type="submit"
-                  disabled={loading}
-                >
+                <Button className="w-full" type="submit" disabled={loading}>
                   เข้าสู่ระบบ
                 </Button>
               </div>

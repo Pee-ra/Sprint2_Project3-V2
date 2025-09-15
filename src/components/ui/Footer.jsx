@@ -25,7 +25,7 @@ const Footer = () => {
           {/* brand */}
           <div className="flex flex-col justify-center items-center">
             <img
-              src="src\assets\Logotextv2.png"
+              src="Logotextv2.png"
               alt="logo"
               className="aspect-square w-25"
             />

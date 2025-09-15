@@ -24,15 +24,10 @@ export default function BottomSummaryButton({ totalPrice, onSubmit, show }) {
       }`}
     >
       <div className="flex justify-center w-full bottom-0">
-        <Link to="/payment">
-          <InteractiveHoverButton
-            onClick={onSubmit}
-            className="flex justify-between items-center px-6 py-4 text-white font-bold bg-primary rounded-lg  min-w-[250px] max-w-[350]"
-          >
-            <span>รวมทั้งสิ้น :</span>
-            <span>฿ {totalPrice}</span>
-          </InteractiveHoverButton>
-        </Link>
+        <InteractiveHoverButton type="submit" onClick={onSubmit} className="flex justify-between items-center px-6 py-4 text-white font-bold bg-primary rounded-lg  min-w-[250px] max-w-[350]">
+          <span>รวมทั้งสิ้น :</span>
+          <span>฿ {totalPrice}</span>
+        </InteractiveHoverButton>
       </div>
     </div>
   );
