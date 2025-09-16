@@ -45,7 +45,7 @@ const Payment = () => {
           <div className="flex flex-col rounded-2xl bg-gray-50 font-sans p-6 gap-3 m-3 h-min w-100">
             <h1>เลือกวิธีชำระเงิน</h1>
             <p>เลือกวิธีที่คุณต้องการชำระเงินสำหรับบริการซักรีด</p>
-            <Button>PromptPay</Button>
+            <img src='https://www.pp-qr.com/api/image/0818592041/10' alt="QR Code" width={200} height={200} />
           </div>
           <div className="flex flex-col rounded-2xl bg-gray-50 font-sans p-6 gap-3 m-3 w-100">
             <p>หมายเลขออเดอร์: {order?.orderNumber}</p>
