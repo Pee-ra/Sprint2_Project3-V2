@@ -15,6 +15,8 @@ import { useEffect } from "react";
 import BottomSummaryButton from "../components/ui/BottomSummaryButton.jsx";
 import QuantitySelector from "../components/ui/quantitySelecter.jsx";
 import CustomMarquee from "../components/ui/colthset.jsx";
+import axios from "axios";
+
 
 export function BookingService({ onNavigateToPayment }) {
   const [selectedService, setSelectedService] = useState(null);
@@ -134,6 +136,50 @@ export function BookingService({ onNavigateToPayment }) {
   };
 
   // if (!serviceSelected) return null; // ยังไม่เลือกบริการ → ไม่โชว์ป๊อปอัพ
+  const submitOrder = async () => {
+  try {
+    // สร้าง payload
+    const payload = {
+      serviceType,
+      weightDetails:
+        serviceType === "per-kg"
+          ? {
+              kg: selectedService.kg,
+              price: selectedService.price,
+            }
+          : undefined,
+      itemDetails:
+        serviceType === "per-piece"
+          ? customItems.map((i) => ({
+              name: i.name,
+              quantity: i.quantity,
+              price: i.price,
+              subtotal: i.price * i.quantity,
+            }))
+          : [],
+      pickupDetails: {
+        date: pickupDate,
+        time: pickupTime,
+      },
+      specialInstructions,
+      customerInfo: formData,
+      totalPrice,
+    };
+
+    const { data } = await axios.post(
+      `${import.meta.env.VITE_API_URL || "http://localhost:5001"}/api/v1/orders`,
+      payload,
+      { withCredentials: true } // เพื่อแนบ cookie token
+    );
+
+    alert("จองสำเร็จ!");
+    console.log(data);
+    navigate("/payment");
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+    alert("เกิดข้อผิดพลาดในการจอง");
+  }
+};
 
   return (
     <div className="space-y-8">
@@ -475,7 +521,7 @@ export function BookingService({ onNavigateToPayment }) {
                 ))}
               <BottomSummaryButton
                 totalPrice={totalPrice}
-                onSubmit={()=> navigate("/payment")}
+                onSubmit={submitOrder}
                 show={selectedService || customItems.length > 0}
               />
             </div>

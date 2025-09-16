@@ -1,18 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect  } from "react";
 import { Button } from "../components/ui/button.jsx";
 import { Card } from "../components/ui/card.jsx";
 import { Badge } from "../components/ui/badge.jsx";
 import { Input } from "../components/ui/input.jsx";
-import { myOrdershistory } from "../data/services.js";
 import Lottie from "lottie-react";
 import wash from "../components/lottie/wash.json";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 
 export function MyOrders() {
-  const [orders, setOrders] = useState(myOrdershistory);
+  const [orders, setOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("ทั้งหมด");
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL || "http://localhost:5001"}/api/v1/orders/me`,
+          { withCredentials: true }
+        );
+        setOrders(res.data.orders || []);
+      } catch (err) {
+        console.error(err);
+        setError("ไม่สามารถโหลดคำสั่งซื้อได้");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchOrders();
+  }, []);
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -45,11 +67,14 @@ export function MyOrders() {
   };
 
   const filteredOrders = orders.filter(order => {
-    const matchesSearch = order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         order.service.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "ทั้งหมด" || order.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
+  const matchesSearch =
+    order.orderNumber?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    order.serviceType?.toLowerCase().includes(searchTerm.toLowerCase());
+  const matchesStatus =
+    statusFilter === "ทั้งหมด" ||
+    (order.status && order.status === statusFilter);
+  return matchesSearch && matchesStatus;
+});
 
   const stats = {
     total: orders.length,
@@ -165,15 +190,16 @@ export function MyOrders() {
       {/* Orders List */}
       <div className="space-y-4">
         {filteredOrders.map((order) => (
-          <Card key={order.id} className="p-6">
+          <Card key={order._id} className="p-6">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div className="flex-1 space-y-3">
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">{getStatusIcon(order.status)}</span>
                   <div>
-                    <h3 className="font-semibold">{order.id}</h3>
+                    <h3 className="font-semibold">{order.orderNumber}</h3>
                     <p className="text-sm text-muted-foreground">
-                      สั่งเมื่อ: {order.orderDate}
+                      สั่งเมื่อ: {new Date(order.createdAt).toLocaleDateString("th-TH")}
+
                     </p>
                   </div>
                   <Badge className={getStatusColor(order.status)}>
@@ -184,21 +210,36 @@ export function MyOrders() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-muted-foreground">บริการ</p>
-                    <p className="font-medium">{order.service}</p>
+                    <p className="font-medium">{order.serviceType}</p>
                     <p className="text-sm text-muted-foreground">
-                      ยอดเงิน: ฿{order.amount.toLocaleString()}
+                      ยอดเงิน: ฿{order.totalPrice?.toLocaleString()}
                     </p>
                   </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">กำหนดการ</p>
-                    <p className="text-sm">รับผ้า: {order.pickupDate || "ยังไม่กำหนด"}</p>
-                    <p className="text-sm">ส่งคืน: {order.deliveryDate || "ยังไม่กำหนด"}</p>
+                  <div> 
+                    <p className="text-sm">
+                       รับผ้า:{" "}
+                      {order.pickupDetails?.date
+                      ? new Date(order.pickupDetails.date).toLocaleDateString("th-TH")
+                      : "ยังไม่กำหนด"}{" "}
+                     ({order.pickupDetails?.time || "ยังไม่กำหนด"})
+                    </p>
+
+                    <p className="text-sm">
+                   ส่งคืน:{" "}
+                   {order.pickupDetails?.date
+                  ? new Date(
+                   new Date(order.pickupDetails.date).setDate(
+                    new Date(order.pickupDetails.date).getDate() + 2
+                     )
+                    ).toLocaleDateString("th-TH")
+                    : "ยังไม่กำหนด"}
+                    </p>
                   </div>
                 </div>
 
                 <div>
                   <p className="text-sm text-muted-foreground">รายการ</p>
-                  <p className="text-sm">{order.items.join(", ")}</p>
+                  <p className="text-sm">{order.itemDetails?.map(i => `${i.name} x${i.quantity}`).join(", ")}</p>
                 </div>
 
                 {order.specialInstructions && (
@@ -259,7 +300,9 @@ export function MyOrders() {
           <p className="text-muted-foreground mb-4">
             ลองเปลี่ยนเงื่อนไขการค้นหาหรือตัวกรอง
           </p>
-          <Button>จองบริการใหม่</Button>
+          <Button asChild>
+         <Link to="/booking">จองบริการใหม่</Link>
+          </Button>
         </div>
       )}
 
