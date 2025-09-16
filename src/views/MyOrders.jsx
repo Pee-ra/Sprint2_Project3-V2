@@ -56,7 +56,7 @@ export function MyOrders() {
 
     try {
       setCancelingId(orderId);
-      await axios.delete(`${API}/api/v1/orders/me/${orderId}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL || "http://localhost:5001"}/api/v1/orders/me/${orderId}`, {
         withCredentials: true,
       });
 

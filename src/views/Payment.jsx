@@ -12,7 +12,7 @@ const Payment = () => {
     const fetchOrder = async () => {
       try {
         const res = await axios.get(
-           `http://localhost:5001/api/v1/orders/${orderId}`,
+           `${import.meta.env.VITE_API_URL || "http://localhost:5001"}/api/v1/orders/${orderId}`,
           { withCredentials: true }
         );
         setOrder(res.data.order); // หรือ res.data แล้วแต่รูปแบบ response

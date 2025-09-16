@@ -76,27 +76,59 @@ export function Profile() {
 //     setIsEditing(false);
     
 //     alert("บันทึกข้อมูลเรียบร้อยแล้ว!");
-  const handleSave = async () => {
-    try {
-      const saveUserData = {
-        fullName: formData.fullName,
-        email: formData.email,
-        tel: formData.tel,
-        roomNumber: formData.roomNumber,
-      };
-      const userId = user._id;
+const handleSave = async () => {
+  try {
+    const saveUserData = {
+      fullName: formData.fullName,
+      email: formData.email,
+      tel: formData.tel,
+      roomNumber: formData.roomNumber,
+    };
+    const userId = user._id;
 
-      const response = await axios.put(`${import.meta.env.VITE_API_URL || "http://localhost:5001"}/users/${userId}`, saveUserData  , { withCredentials: true });
-       // ส่ง access token ไปด้วย ยืนยันคนยิง ได้ใช้ไหม?
-      if (response.status === 200) {
-        alert("บันทึกข้อมูลเรียบร้อยแล้ว!");
+    const { data, status } = await axios.put(
+      `${import.meta.env.VITE_API_URL || "http://localhost:5001"}/users/${userId}`,
+      saveUserData,
+      { withCredentials: true }
+    );
+
+    if (status === 200) {
+      // รองรับหลายรูปแบบ response ของ backend
+      const updated =
+        data?.user || data?.data || data; // เลือก object ผู้ใช้ที่ backend ส่งกลับ
+
+      // 1) อัปเดต state ที่ใช้เรนเดอร์หน้า Profile
+      setFormData((prev) => ({
+        ...prev,
+        fullName: updated.fullName ?? prev.fullName,
+        email: updated.email ?? prev.email,
+        tel: updated.tel ?? prev.tel,
+        roomNumber: updated.roomNumber ?? prev.roomNumber,
+      }));
+
+      // 2) อัปเดต context (ถ้า AuthContext มี setUser)
+      if (typeof setUser === "function") {
+        setUser((prev) => ({
+          ...prev,
+          fullName: updated.fullName ?? prev.fullName,
+          email: updated.email ?? prev.email,
+          tel: updated.tel ?? prev.tel,
+          roomNumber: updated.roomNumber ?? prev.roomNumber,
+        }));
       }
-    } catch (error) {
-      console.error("Error saving user data:", error);
-      alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+
+      // 3) ปิดโหมดแก้ไข
       setIsEditing(false);
+
+      alert("บันทึกข้อมูลเรียบร้อยแล้ว!");
     }
-  };
+  } catch (error) {
+    console.error("Error saving user data:", error);
+    alert(error?.response?.data?.message || "เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+    // จะปิดโหมดแก้ไขหรือไม่แล้วแต่ต้องการ
+    // setIsEditing(false);
+  }
+};
 
   const handleCancel = () => {
     // Reset form data to original values
