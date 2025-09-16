@@ -173,8 +173,8 @@ export function BookingService({ onNavigateToPayment }) {
     );
 
     alert("จองสำเร็จ!");
-    console.log(data);
-    navigate("/payment");
+    // console.log(data);
+    navigate(`/payment/${data.data._id}`)
   } catch (err) {
     console.error(err.response?.data || err.message);
     alert("เกิดข้อผิดพลาดในการจอง");
@@ -281,55 +281,33 @@ export function BookingService({ onNavigateToPayment }) {
 
           {/* Selected Items shoe total on top */}
           {/* {customItems.length > 0 && (
-            <Card className="p-6">
-              <h4 className="font-medium mb-4">รายการที่เลือก</h4>
-              <div className="space-y-3">
-                {customItems.map((item) => (
-                  <div
-                    key={item.name}
-                    className="flex items-center justify-between p-3 bg-muted rounded-lg"
-                  >
-                    <div>
-                      <span className="font-medium">{item.name}</span>
-                      <span className="text-xl text-muted-foreground ml-2">
-                        ฿{item.price}/ชิ้น
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button
-                        className="w-8 h-8 rounded border border-border flex items-center justify-center hover:bg-background"
-                        onClick={() =>
-                          updateItemQuantity(item.name, item.quantity - 1)
-                        }
-                      >
-                        -
-                      </button>
-                      <span className="w-8 text-center">{item.quantity}</span>
-                      <button
-                        className="w-8 h-8 rounded border border-border flex items-center justify-center hover:bg-background"
-                        onClick={() =>
-                          updateItemQuantity(item.name, item.quantity + 1)
-                        }
-                      >
-                        +
-                      </button>
-                      <button
-                        className="ml-2 text-destructive hover:text-destructive/80"
-                        onClick={() => removeCustomItem(item.name)}
-                      >
-                        ลบ
-                      </button>
-                    </div>
-                  </div>
-                ))}
-                <div className="pt-3 border-t border-border">
-                  <div className="flex justify-between font-semibold">
-                    <span>รวม:</span>
-                    <span className="text-primary">฿{totalPrice}</span>
-                  </div>
-                </div>
-              </div>
-            </Card>
+            <div className="space-y-4">
+        <Card className="p-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3">
+            {perPieceItems.map((item) => (
+  <div
+    key={item.name}
+    className="p-3 border border-border rounded-lg text-left hover:border-primary/50 transition-colors-transform duration-300 hover:scale-103 hover:bg-primary-foreground"
+  >
+    <div className="flex justify-between items-center">
+      <span>{item.name}</span>
+      <div className="flex-col">
+        <span className="font-semibold text-primary">
+          ฿{item.price}
+        </span>
+        <QuantitySelector
+          key={item.name}
+          item={item}
+          customItems={customItems}
+          setCustomItems={setCustomItems}
+        />
+      </div>
+    </div>
+  </div>
+))}
+
+        </Card>
+        </div>
           )} */}
 
           {/* Available Items */}

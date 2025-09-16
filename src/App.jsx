@@ -65,7 +65,7 @@ export default function App() {
             <Route path="booking" element={<BookingService />} />
             <Route path="orders" element={<MyOrders />} />
             <Route path="profile" element={<Profile />} />
-            <Route path="payment" element={<Payment />} />
+            <Route path="/payment/:orderId" element={<Payment />} />
           </Route>
 
           {/* Admin Protected Routes with Layout */}
