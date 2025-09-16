@@ -20,7 +20,7 @@ import axios from "axios";
 
 export function BookingService({ onNavigateToPayment }) {
   const [selectedService, setSelectedService] = useState(null);
-  const [serviceType, setServiceType] = useState("per-kg");
+  const [serviceType, setServiceType] = useState("คิดตามน้ำหนัก");
   const [customItems, setCustomItems] = useState([]);
   const [pickupDate, setPickupDate] = useState("");
   const [pickupTime, setPickupTime] = useState("");
@@ -47,13 +47,13 @@ export function BookingService({ onNavigateToPayment }) {
   }, [user]);
 
   useEffect(() => {
-    if (serviceType === "per-piece") {
+    if (serviceType === "คิดตามชิ้น") {
       const total = customItems.reduce(
         (sum, item) => sum + item.price * (item.quantity || 0),
         0
       );
       setTotalPrice(total);
-    } else if (serviceType === "per-kg" && selectedService) {
+    } else if (serviceType === "คิดตามน้ำหนัก" && selectedService) {
       setTotalPrice(selectedService.price);
     } else {
       setTotalPrice(0);
@@ -91,9 +91,9 @@ export function BookingService({ onNavigateToPayment }) {
   // };
 
   const updateTotalPrice = () => {
-    if (serviceType === "per-kg" && selectedService) {
+    if (serviceType === "คิดตามน้ำหนัก" && selectedService) {
       setTotalPrice(selectedService.price);
-    } else if (serviceType === "per-piece") {
+    } else if (serviceType === "คิดตามชิ้น") {
       const total = customItems.reduce(
         (sum, item) => sum + item.price * item.quantity,
         0
@@ -104,7 +104,7 @@ export function BookingService({ onNavigateToPayment }) {
 
   const selectService = (service) => {
     setSelectedService(service);
-    if (serviceType === "per-kg") {
+    if (serviceType === "คิดตามน้ำหนัก") {
       setTotalPrice(service.price);
     }
   };
@@ -117,12 +117,12 @@ export function BookingService({ onNavigateToPayment }) {
   };
 
   const validOrder = () => {
-    if (!selectedService && serviceType !== "per-piece") {
+    if (!selectedService && serviceType !== "คิดตามชิ้น") {
       alert("กรุณาเลือกบริการ");
       return;
     }
 
-    if (serviceType === "per-piece" && customItems.length === 0) {
+    if (serviceType === "คิดตามชิ้น" && customItems.length === 0) {
       alert("กรุณาเลือกรายการเสื้อผ้า");
       return;
     }
@@ -142,14 +142,14 @@ export function BookingService({ onNavigateToPayment }) {
     const payload = {
       serviceType,
       weightDetails:
-        serviceType === "per-kg"
+        serviceType === "คิดตามน้ำหนัก"
           ? {
               kg: selectedService.kg,
               price: selectedService.price,
             }
           : undefined,
       itemDetails:
-        serviceType === "per-piece"
+        serviceType === "คิดตามชิ้น"
           ? customItems.map((i) => ({
               name: i.name,
               quantity: i.quantity,
@@ -197,12 +197,12 @@ export function BookingService({ onNavigateToPayment }) {
         <div className="inline-flex rounded-lg border border-border bg-muted p-1">
           <ShinyButton
             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              serviceType === "per-kg"
+              serviceType === "คิดตามน้ำหนัก"
                 ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground"
             }`}
             onClick={() => {
-              setServiceType("per-kg");
+              setServiceType("คิดตามน้ำหนัก");
               setSelectedService(null);
               setCustomItems([]);
               setTotalPrice(0);
@@ -212,12 +212,12 @@ export function BookingService({ onNavigateToPayment }) {
           </ShinyButton>
           <ShinyButton
             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              serviceType === "per-piece"
+              serviceType === "คิดตามชิ้น"
                 ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground "
             }`}
             onClick={() => {
-              setServiceType("per-piece");
+              setServiceType("คิดตามชิ้น");
               setSelectedService(null);
               setCustomItems([]);
               setTotalPrice(0);
@@ -229,7 +229,7 @@ export function BookingService({ onNavigateToPayment }) {
       </div>
 
       {/* Per KG Rates ถ้ากดเลือกน้ำหนักจะเรนเดอร์อันนี้*/}
-      {serviceType === "per-kg" && (
+      {serviceType === "คิดตามน้ำหนัก" && (
         <div className="space-y-6">
           <h3 className="text-xl font-semibold text-center">
             เลือกน้ำหนักเสื้อผ้า
@@ -272,7 +272,7 @@ export function BookingService({ onNavigateToPayment }) {
       )}
 
       {/* Per Piece Items */}
-      {serviceType === "per-piece" && (
+      {serviceType === "คิดตามชิ้น" && (
         <div className="space-y-6 mx-20">
           <h3 className="text-xl font-semibold text-center">
             เลือกรายการเสื้อผ้า
@@ -481,14 +481,14 @@ export function BookingService({ onNavigateToPayment }) {
             <h3 className="text-lg font-semibold">สรุปการจอง</h3>
 
             <div className="space-y-2">
-              {serviceType === "per-kg" && selectedService && (
+              {serviceType === "คิดตามน้ำหนัก" && selectedService && (
                 <div className="flex justify-between">
                   <span>บริการซัก {selectedService.kg} กิโลกรัม</span>
                   <span>฿{selectedService.price}</span>
                 </div>
               )}
 
-              {serviceType === "per-piece" &&
+              {serviceType === "คิดตามชิ้น" &&
                 customItems.map((item) => (
                   <div key={item.name} className="flex justify-between">
                     <span>
