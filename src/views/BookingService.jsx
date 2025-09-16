@@ -138,18 +138,21 @@ export function BookingService({ onNavigateToPayment }) {
   // if (!serviceSelected) return null; // ยังไม่เลือกบริการ → ไม่โชว์ป๊อปอัพ
   const submitOrder = async () => {
   try {
-    // สร้าง payload
+    // map ไทย -> code
+    const mappedServiceType =
+      serviceType === "คิดตามน้ำหนัก" ? "per-kg" : "per-piece";
+
     const payload = {
-      serviceType,
+      serviceType: mappedServiceType, // ✅ ส่งเป็น per-kg หรือ per-piece
       weightDetails:
-        serviceType === "คิดตามน้ำหนัก"
+        mappedServiceType === "per-kg"
           ? {
               kg: selectedService.kg,
               price: selectedService.price,
             }
           : undefined,
       itemDetails:
-        serviceType === "คิดตามชิ้น"
+        mappedServiceType === "per-piece"
           ? customItems.map((i) => ({
               name: i.name,
               quantity: i.quantity,
@@ -169,12 +172,11 @@ export function BookingService({ onNavigateToPayment }) {
     const { data } = await axios.post(
       `${import.meta.env.VITE_API_URL || "http://localhost:5001"}/api/v1/orders`,
       payload,
-      { withCredentials: true } // เพื่อแนบ cookie token
+      { withCredentials: true }
     );
 
     alert("จองสำเร็จ!");
-    // console.log(data);
-    navigate(`/payment/${data.data._id}`)
+    navigate(`/payment/${data.data._id}`);
   } catch (err) {
     console.error(err.response?.data || err.message);
     alert("เกิดข้อผิดพลาดในการจอง");
