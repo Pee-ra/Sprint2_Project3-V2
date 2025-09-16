@@ -8,7 +8,6 @@ import wash from "../components/lottie/wash.json";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-
 export function MyOrders() {
   const [orders, setOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,16 +15,31 @@ export function MyOrders() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [cancelingId, setCancelingId] = useState(null);
+
+  const API = import.meta.env.VITE_API_URL || "http://localhost:5001";
+
+  // ---------- helpers (เพิ่ม) ----------
+  const normStatus = (s) => (s ? String(s).trim().toLowerCase() : "");
+  const toThaiStatus = (s) =>
+    ({ pending: "รอรับผ้า", completed: "เสร็จสิ้น", canceled: "ยกเลิก" }[normStatus(s)] || "ไม่ทราบสถานะ");
+  const getStatusColor = (s) =>
+    ({ pending: "bg-yellow-100 text-yellow-800", completed: "bg-green-100 text-green-800", canceled: "bg-red-100 text-red-800" }[normStatus(s)] || "bg-gray-100 text-gray-800");
+  const getStatusIcon = (s) =>
+    ({ pending: "📦", completed: "✅", canceled: "❌" }[normStatus(s)] || "📋");
+  // ------------------------------------
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          `${import.meta.env.VITE_API_URL || "http://localhost:5001"}/api/v1/orders/me`,
+          `${API}/api/v1/orders/me`,
           { withCredentials: true }
         );
-        setOrders(res.data.orders || []);
+        // เติมค่าเริ่มต้นให้ order ที่ยังไม่มี status
+        const list = (res.data.orders || []).map(o => ({ ...o, status: o.status || "pending" }));
+        setOrders(list);
       } catch (err) {
         console.error(err);
         setError("ไม่สามารถโหลดคำสั่งซื้อได้");
@@ -36,62 +50,50 @@ export function MyOrders() {
     fetchOrders();
   }, []);
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "รอรับผ้า":
-        return "bg-yellow-100 text-yellow-800";
-      case "กำลังดำเนินการ":
-        return "bg-blue-100 text-blue-800";
-      case "เสร็จสิ้น":
-        return "bg-green-100 text-green-800";
-      case "ยกเลิก":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
+  const cancelOrder = async (orderId) => {
+    const ok = window.confirm("คุณแน่ใจหรือไม่ที่จะยกเลิกคำสั่งซื้อนี้?");
+    if (!ok) return;
 
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case "รอรับผ้า":
-        return "📦";
-      case "กำลังดำเนินการ":
-        return "🔄";
-      case "เสร็จสิ้น":
-        return "✅";
-      case "ยกเลิก":
-        return "❌";
-      default:
-        return "📋";
+    try {
+      setCancelingId(orderId);
+      await axios.delete(`${API}/api/v1/orders/me/${orderId}`, {
+        withCredentials: true,
+      });
+
+      setOrders(prev =>
+        prev.map(order =>
+          order._id === orderId
+            ? { ...order, status: "canceled" }
+            : order
+        )
+      );
+    } catch (err) {
+      console.error("Cancel order error:", err);
+      alert("ยกเลิกคำสั่งซื้อไม่สำเร็จ กรุณาลองใหม่");
+    } finally {
+      setCancelingId(null);
     }
   };
 
   const filteredOrders = orders.filter(order => {
-  const matchesSearch =
-    order.orderNumber?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    order.serviceType?.toLowerCase().includes(searchTerm.toLowerCase());
-  const matchesStatus =
-    statusFilter === "ทั้งหมด" ||
-    (order.status && order.status === statusFilter);
-  return matchesSearch && matchesStatus;
-});
+    const matchesSearch =
+      order.orderNumber?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.serviceType?.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const s = normStatus(order.status || "pending");
+    const matchesStatus =
+      statusFilter === "ทั้งหมด" || s === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
 
   const stats = {
     total: orders.length,
-    pending: orders.filter(o => o.status === "รอรับผ้า").length,
-    inProgress: orders.filter(o => o.status === "กำลังดำเนินการ").length,
-    completed: orders.filter(o => o.status === "เสร็จสิ้น").length,
+    pending: orders.filter(o => normStatus(o.status || "pending") === "pending").length,
+    completed: orders.filter(o => normStatus(o.status) === "completed").length,
     totalSpent: orders
-      .filter(o => o.status === "เสร็จสิ้น")
-      .reduce((sum, o) => sum + o.amount, 0)
-  };
-
-  const cancelOrder = (orderId) => {
-    if (window.confirm("คุณแน่ใจหรือไม่ที่จะยกเลิกคำสั่งซื้อนี้?")) {
-      setOrders(orders.map(order =>
-        order.id === orderId ? { ...order, status: "ยกเลิก" } : order
-      ));
-    }
+      .filter(o => normStatus(o.status) === "completed")
+      .reduce((sum, o) => sum + (o.totalPrice || 0), 0)
   };
 
   const reorder = (order) => {
@@ -118,50 +120,6 @@ export function MyOrders() {
         <Lottie animationData={wash} className=" absolute -top-12 left-60" style={{width: "160px", height: "160px"}}/>
       </div>
 
-      {/* Stats Cards */}
-      {/* <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-        <Card className="p-4">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-primary mb-1">
-              {stats.total}
-            </div>
-            <div className="text-sm text-muted-foreground">คำสั่งซื้อทั้งหมด</div>
-          </div>
-        </Card>
-        <Card className="p-4">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-yellow-600 mb-1">
-              {stats.pending}
-            </div>
-            <div className="text-sm text-muted-foreground">รอรับผ้า</div>
-          </div>
-        </Card>
-        <Card className="p-4">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-blue-600 mb-1">
-              {stats.inProgress}
-            </div>
-            <div className="text-sm text-muted-foreground">กำลังดำเนินการ</div>
-          </div>
-        </Card>
-        <Card className="p-4">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-green-600 mb-1">
-              {stats.completed}
-            </div>
-            <div className="text-sm text-muted-foreground">เสร็จสิ้น</div>
-          </div>
-        </Card>
-        <Card className="p-4">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-purple-600 mb-1">
-              ฿{stats.totalSpent.toLocaleString()}
-            </div>
-            <div className="text-sm text-muted-foreground">ยอดใช้จ่ายรวม</div>
-          </div>
-        </Card>
-      </div> */}
-
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex-1">
@@ -178,119 +136,124 @@ export function MyOrders() {
             onChange={(e) => setStatusFilter(e.target.value)}
             className="w-full px-3 py-2 border border-border rounded-lg bg-input-background"
           >
+            {/* คงค่า 'ทั้งหมด' ไว้ตามเดิม */}
             <option value="ทั้งหมด">ทุกสถานะ</option>
-            <option value="รอรับผ้า">รอรับผ้า</option>
-            <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
-            <option value="เสร็จสิ้น">เสร็จสิ้น</option>
-            <option value="ยกเลิก">ยกเลิก</option>
+            <option value="pending">รอรับผ้า</option>
+            <option value="completed">เสร็จสิ้น</option>
+            <option value="canceled">ยกเลิก</option>
           </select>
         </div>
       </div>
 
       {/* Orders List */}
       <div className="space-y-4">
-        {filteredOrders.map((order) => (
-          <Card key={order._id} className="p-6">
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-              <div className="flex-1 space-y-3">
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">{getStatusIcon(order.status)}</span>
-                  <div>
-                    <h3 className="font-semibold">{order.orderNumber}</h3>
-                    <p className="text-sm text-muted-foreground">
-                      สั่งเมื่อ: {new Date(order.createdAt).toLocaleDateString("th-TH")}
-
-                    </p>
+        {filteredOrders.map((order) => {
+          const s = normStatus(order.status || "pending");
+          return (
+            <Card key={order._id} className="p-6">
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div className="flex-1 space-y-3">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">{getStatusIcon(s)}</span>
+                    <div>
+                      <h3 className="font-semibold">{order.orderNumber}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        สั่งเมื่อ: {new Date(order.createdAt).toLocaleDateString("th-TH")}
+                      </p>
+                    </div>
+                    <Badge className={getStatusColor(s)}>
+                      {toThaiStatus(s)}
+                    </Badge>
                   </div>
-                  <Badge className={getStatusColor(order.status)}>
-                    {order.status}
-                  </Badge>
-                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">บริการ</p>
-                    <p className="font-medium">{order.serviceType}</p>
-                    <p className="text-sm text-muted-foreground">
-                      ยอดเงิน: ฿{order.totalPrice?.toLocaleString()}
-                    </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm text-muted-foreground">บริการ</p>
+                      <p className="font-medium">{order.serviceType}</p>
+                      <p className="text-sm text-muted-foreground">
+                        ยอดเงิน: ฿{order.totalPrice?.toLocaleString()}
+                      </p>
+                    </div>
+                    <div> 
+                      <p className="text-sm">
+                        รับผ้า:{" "}
+                        {order.pickupDetails?.date
+                          ? new Date(order.pickupDetails.date).toLocaleDateString("th-TH")
+                          : "ยังไม่กำหนด"}{" "}
+                        ({order.pickupDetails?.time || "ยังไม่กำหนด"})
+                      </p>
+
+                      <p className="text-sm">
+                        ส่งคืน:{" "}
+                        {order.pickupDetails?.date
+                          ? new Date(
+                              new Date(order.pickupDetails.date).setDate(
+                                new Date(order.pickupDetails.date).getDate() + 2
+                              )
+                            ).toLocaleDateString("th-TH")
+                          : "ยังไม่กำหนด"}
+                      </p>
+                    </div>
                   </div>
-                  <div> 
+
+                  <div>
+                    <p className="text-sm text-muted-foreground">รายการ</p>
                     <p className="text-sm">
-                       รับผ้า:{" "}
-                      {order.pickupDetails?.date
-                      ? new Date(order.pickupDetails.date).toLocaleDateString("th-TH")
-                      : "ยังไม่กำหนด"}{" "}
-                     ({order.pickupDetails?.time || "ยังไม่กำหนด"})
-                    </p>
-
-                    <p className="text-sm">
-                   ส่งคืน:{" "}
-                   {order.pickupDetails?.date
-                  ? new Date(
-                   new Date(order.pickupDetails.date).setDate(
-                    new Date(order.pickupDetails.date).getDate() + 2
-                     )
-                    ).toLocaleDateString("th-TH")
-                    : "ยังไม่กำหนด"}
+                      {order.itemDetails?.map(i => `${i.name} x${i.quantity}`).join(", ")}
                     </p>
                   </div>
+
+                  {order.specialInstructions && (
+                    <div>
+                      <p className="text-sm text-muted-foreground">คำแนะนำพิเศษ</p>
+                      <p className="text-sm">{order.specialInstructions}</p>
+                    </div>
+                  )}
                 </div>
 
-                <div>
-                  <p className="text-sm text-muted-foreground">รายการ</p>
-                  <p className="text-sm">{order.itemDetails?.map(i => `${i.name} x${i.quantity}`).join(", ")}</p>
-                </div>
-
-                {order.specialInstructions && (
-                  <div>
-                    <p className="text-sm text-muted-foreground">คำแนะนำพิเศษ</p>
-                    <p className="text-sm">{order.specialInstructions}</p>
-                  </div>
-                )}
-              </div>
-
-              <div className="flex flex-col gap-2 lg:min-w-[180px]">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full"
-                  onClick={() => setSelectedOrder(order)}
-                >
-                  ดูรายละเอียด
-                </Button>
-
-                {order.status === "รอรับผ้า" && (
+                <div className="flex flex-col gap-2 lg:min-w-[180px]">
                   <Button
-                    variant="destructive"
+                    variant="outline"
                     size="sm"
                     className="w-full"
-                    onClick={() => cancelOrder(order.id)}
+                    onClick={() => setSelectedOrder(order)}
                   >
-                    ยกเลิกคำสั่งซื้อ
+                    ดูรายละเอียด
                   </Button>
-                )}
 
-                {order.status === "เสร็จสิ้น" && (
-                  <Button
-                    variant="default"
-                    size="sm"
-                    className="w-full"
-                    onClick={() => reorder(order)}
-                  >
-                    สั่งซื้อซ้ำ
-                  </Button>
-                )}
+                  {!order.isDeleted && s === "pending" && (
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      className="w-full"
+                      onClick={() => cancelOrder(order._id)}
+                      disabled={cancelingId === order._id}
+                    >
+                      {cancelingId === order._id ? "กำลังยกเลิก..." : "ยกเลิกคำสั่งซื้อ"}
+                    </Button>
+                  )}
 
-                {(order.status === "กำลังดำเนินการ" || order.status === "รอรับผ้า") && (
-                  <Button variant="outline" size="sm" className="w-full">
-                    ติดตามสถานะ
-                  </Button>
-                )}
+                  {order.status === "เสร็จสิ้น" && (
+                    <Button
+                      variant="default"
+                      size="sm"
+                      className="w-full"
+                      onClick={() => reorder(order)}
+                    >
+                      สั่งซื้อซ้ำ
+                    </Button>
+                  )}
+
+                  {(order.status === "กำลังดำเนินการ" || order.status === "รอรับผ้า") && (
+                    <Button variant="outline" size="sm" className="w-full">
+                      ติดตามสถานะ
+                    </Button>
+                  )}
+                </div>
               </div>
-            </div>
-          </Card>
-        ))}
+            </Card>
+          );
+        })}
       </div>
 
       {filteredOrders.length === 0 && (
@@ -301,7 +264,7 @@ export function MyOrders() {
             ลองเปลี่ยนเงื่อนไขการค้นหาหรือตัวกรอง
           </p>
           <Button asChild>
-         <Link to="/booking">จองบริการใหม่</Link>
+            <Link to="/booking">จองบริการใหม่</Link>
           </Button>
         </div>
       )}
@@ -325,9 +288,9 @@ export function MyOrders() {
                 <div className="flex items-center gap-3">
                   <span className="text-3xl">{getStatusIcon(selectedOrder.status)}</span>
                   <div>
-                    <h4 className="font-semibold text-lg">{selectedOrder.id}</h4>
+                    <h4 className="font-semibold text-lg">{selectedOrder.orderNumber}</h4>
                     <Badge className={getStatusColor(selectedOrder.status)}>
-                      {selectedOrder.status}
+                      {toThaiStatus(selectedOrder.status)}
                     </Badge>
                   </div>
                 </div>
@@ -338,15 +301,15 @@ export function MyOrders() {
                     <div className="space-y-1 text-sm">
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">บริการ:</span>
-                        <span>{selectedOrder.service}</span>
+                        <span>{selectedOrder.serviceType}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">ยอดเงิน:</span>
-                        <span>฿{selectedOrder.amount.toLocaleString()}</span>
+                        <span>฿{(selectedOrder.totalPrice || 0).toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">วันที่สั่ง:</span>
-                        <span>{selectedOrder.orderDate}</span>
+                        <span>{new Date(selectedOrder.createdAt).toLocaleDateString("th-TH")}</span>
                       </div>
                     </div>
                   </div>
@@ -356,11 +319,24 @@ export function MyOrders() {
                     <div className="space-y-1 text-sm">
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">วันรับผ้า:</span>
-                        <span>{selectedOrder.pickupDate || "ยังไม่กำหนด"}</span>
+                        <span>
+                          {selectedOrder.pickupDetails?.date
+                            ? new Date(selectedOrder.pickupDetails.date).toLocaleDateString("th-TH")
+                            : "ยังไม่กำหนด"}{" "}
+                          ({selectedOrder.pickupDetails?.time || "ยังไม่กำหนด"})
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">วันส่งคืน:</span>
-                        <span>{selectedOrder.deliveryDate || "ยังไม่กำหนด"}</span>
+                        <span>
+                          {selectedOrder.pickupDetails?.date
+                            ? new Date(
+                                new Date(selectedOrder.pickupDetails.date).setDate(
+                                  new Date(selectedOrder.pickupDetails.date).getDate() + 2
+                                )
+                              ).toLocaleDateString("th-TH")
+                            : "ยังไม่กำหนด"}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -369,10 +345,10 @@ export function MyOrders() {
                 <div>
                   <h5 className="font-medium mb-2">รายการเสื้อผ้า</h5>
                   <ul className="space-y-1 text-sm">
-                    {selectedOrder.items.map((item, index) => (
-                      <li key={index} className="flex items-center gap-2">
+                    {(selectedOrder.itemDetails || []).map((it, i) => (
+                      <li key={i} className="flex items-center gap-2">
                         <div className="w-2 h-2 bg-primary rounded-full"></div>
-                        {item}
+                        {it.name} x{it.quantity}
                       </li>
                     ))}
                   </ul>
@@ -386,24 +362,6 @@ export function MyOrders() {
                     </p>
                   </div>
                 )}
-
-                {selectedOrder.status === "กำลังดำเนินการ" && (
-                  <div className="bg-blue-50 p-4 rounded-lg">
-                    <h5 className="font-medium mb-2 text-blue-900">สถานะปัจจุบัน</h5>
-                    <p className="text-sm text-blue-800">
-                      เสื้อผ้าของคุณอยู่ในขั้นตอนการซัก คาดว่าจะเสร็จสิ้นตามกำหนดเวลา
-                    </p>
-                  </div>
-                )}
-
-                {selectedOrder.status === "เสร็จสิ้น" && (
-                  <div className="bg-green-50 p-4 rounded-lg">
-                    <h5 className="font-medium mb-2 text-green-900">เสร็จสิ้นแล้ว!</h5>
-                    <p className="text-sm text-green-800">
-                      เสื้อผ้าของคุณได้รับการซักและส่งคืนเรียบร้อยแล้ว
-                    </p>
-                  </div>
-                )}
               </div>
             </div>
           </Card>
@@ -412,3 +370,5 @@ export function MyOrders() {
     </div>
   );
 }
+
+export default MyOrders
