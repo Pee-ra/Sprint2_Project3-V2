@@ -40,7 +40,7 @@ const Login = () => {
     if (ok) {
       alert("เข้าสู่ระบบสําเร็จ");
       setIsRedirecting(true);
-      setTimeout(() => navigate("/dashboard"), 2500);
+      setTimeout(() => navigate("/dashboard"), 3000);
     } else {
       alert("อีเมลหรือรัหสผ่านไม่ถูกต้อง");
     }
