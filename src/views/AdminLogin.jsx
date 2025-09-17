@@ -6,6 +6,7 @@ import { InputWithLabel } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 
 // แก้ไขตรงนี้: เพิ่ม { onLogin } เข้าไปในพารามิเตอร์ของฟังก์ชัน
 const AdminLogin = () => {
@@ -26,6 +27,14 @@ const AdminLogin = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-6 flex-1/3 min-w-auto">
       <div className="bg-white p-6 rounded-lg shadow-md max-w-md w-full">
+        <button
+            type="button"
+            onClick={() => navigate("/landing")}
+            className="text-xs flex items-center mb-4 gap-2 bg-primary w-fit px-2 py-1 rounded-md text-white transition-all hover:bg-primary/80 hover:font-bold"
+            >
+            <AiOutlineArrowLeft />
+            กลับหน้าแรก
+        </button>
         <div className="flex justify-center items-center">
           <img
             className="w-30 h-auto flex justify-center items-center"

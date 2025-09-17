@@ -36,6 +36,7 @@ export const Register = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // handle change เพื่อจัดเก็บข้อมูล
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
@@ -80,7 +81,7 @@ export const Register = () => {
       setIsSubmitting(true);
       const payload = {
         fullName: formData.fullName,
-        tel: formData.tel,
+        tel: formData.tel, //ส่งข้อมูลให้ backend
         email: formData.email,
         password: formData.password,
         roomNumber: formData.roomNumber,
