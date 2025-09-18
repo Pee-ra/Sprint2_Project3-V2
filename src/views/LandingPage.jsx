@@ -205,7 +205,7 @@ export const LandingPage = ({ onLogin, onRegister, onAdminLogin }) => {
       {/* STATS STRIP */}
       <section className="bg-[#023f51] text-white">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
-          <h2 className="text-xl sm:text-2xl font-bold mb-6">ได้รับความไว้วางใจจากผู้ใช้บริการ</h2>
+          <h2 className="text-xl sm:text-2xl font-bold mb-6 items-center flex justify-center">ได้รับความไว้วางใจจากผู้ใช้บริการ</h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
             <div>
               <h3 className="text-2xl font-bold">10,000+</h3>
